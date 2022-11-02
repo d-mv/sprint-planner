@@ -1,0 +1,48 @@
+.container {
+	display: flex;
+	flex-flow: column;
+	border: .1rem solid var(--black);
+	padding: 1rem;
+
+	.input {
+		display: flex;
+		justify-content: space-between;
+		margin-block-end: 2rem;
+	}
+
+	.name {
+		width: 100%;
+	}
+
+	.divider {
+		margin: 1rem auto;
+	}
+
+	.actions {
+		padding: .5rem 1rem;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.days-block {
+		width: auto;
+	}
+
+	.message {
+		width: fit-content;
+		margin: 0 auto;
+	}
+
+	.item {
+		width: 13rem;
+	}
+
+	.title {
+		padding: 1rem 0 0 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+}

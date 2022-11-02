@@ -1,0 +1,37 @@
+export const TEXT = {
+  sprint: { addSprint: 'Add Sprint', cancelAddSprint: 'Cancel' },
+  engineer: {
+    add: 'Add Engineer',
+    new: 'Create Engineer',
+    create: 'Create',
+    update: 'Update',
+    cancel: 'Cancel',
+    addSelected: 'Add Selected',
+    noAdd: 'No engineers to add',
+    assign: 'Assign work',
+    createWork: 'Create work',
+    noUnAssigned: 'No unassigned work. Create ☝️',
+    daysOffButton: 'Days Off',
+  },
+  work: {
+    form: {
+      jira: 'Jira Ticket',
+      epic: 'Jira Epic',
+      title: 'Title',
+      est: 'Estimate',
+      assign: 'assign',
+      createAssign: 'Create and assign',
+      start: 'Start',
+      end: 'End',
+    },
+    unassign: 'Unassign',
+  },
+  days: {
+    addDayOff: 'Add day off',
+    addDay: 'Add day',
+    daysOff: 'Days Off',
+    noDaysOff: 'No days off',
+    cancel: 'Cancel',
+    remove: 'Remove',
+  },
+};

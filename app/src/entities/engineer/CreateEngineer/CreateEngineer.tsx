@@ -1,0 +1,75 @@
+import { nanoid } from 'nanoid';
+import { Button, TextField } from '@mui/material';
+import { Dayjs } from 'dayjs';
+
+import { ChangeEvent, useEffect, useState } from 'react';
+
+import { Engineer as EngineerType } from '../engineer.models';
+import classes from './CreateEngineer.module.scss';
+import { TEXT } from '../../../data';
+import { setupText } from '../../../tools';
+import { createEngineer, useDispatch } from '../../../state';
+import { Divider } from '../../../atoms';
+import { AddDaysOff } from '../../days';
+
+const TXT = setupText(TEXT)('engineer');
+
+interface Props {
+  onCancel: () => void;
+}
+export function CreateEngineer({ onCancel }: Props) {
+  const [fName, setFName] = useState('');
+  const [lName, setLName] = useState('');
+  const [isValid, setIsValid] = useState(false);
+  const [daysOff, setDaysOff] = useState<Dayjs[]>([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (fName && lName && !isValid) setIsValid(true);
+    else if ((!fName || !lName) && isValid) setIsValid(false);
+  }, [fName, lName, isValid]);
+
+  function handleCreate() {
+    const engineer: EngineerType = {
+      id: nanoid(),
+      person: { firstName: fName, lastName: lName },
+      daysOff,
+    };
+    dispatch(createEngineer(engineer));
+    onCancel();
+  }
+
+  function handleFistNameChange(e: ChangeEvent<HTMLInputElement>) {
+    setFName(e.currentTarget.value);
+  }
+
+  function handleLastNameChange(e: ChangeEvent<HTMLInputElement>) {
+    setLName(e.currentTarget.value);
+  }
+
+  return (
+    <div className={classes.container}>
+      <div className={classes.input}>
+        <TextField
+          id='standard-basic'
+          label='First Name'
+          variant='standard'
+          onChange={handleFistNameChange}
+        />
+        <TextField
+          id='standard-basic'
+          label='Last Name'
+          variant='standard'
+          onChange={handleLastNameChange}
+        />
+      </div>
+      <AddDaysOff daysOff={daysOff} setDaysOff={setDaysOff} />
+      <Divider noMargin width='50%' className={classes.divider} />
+      <div className={classes.actions}>
+        <Button variant='contained' disabled={!isValid} onClick={handleCreate}>
+          {TXT('create')}
+        </Button>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,17 @@
+.container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.date {
+	width: auto;
+}
+
+.actions {
+	height: fit-content;
+	width: fit-content;
+
+	button+button {
+		margin-inline-start: 1rem;
+	}
+}

@@ -1,0 +1,20 @@
+.container {
+	padding-block-end: 1rem;
+
+	.inputs {
+		display: flex;
+		flex-flow: column;
+		width: 80%;
+		margin: 0 auto;
+	}
+
+	.input-item {
+		margin-block-end: 1rem;
+	}
+
+	.actions {
+		padding: 1rem 0;
+		display: grid;
+		place-items: center;
+	}
+}

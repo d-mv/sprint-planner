@@ -1,0 +1,19 @@
+.container {
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem;
+
+	.selector {
+		width: 100%;
+	}
+
+	.action {
+		min-width: 10rem;
+		display: grid;
+		place-items: center;
+	}
+
+	.message {
+		margin: 0 auto;
+	}
+}

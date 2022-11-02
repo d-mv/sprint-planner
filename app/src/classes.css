@@ -1,0 +1,57 @@
+:root {
+  --border: 0.1rem solid #e0e0e0;
+}
+
+.center {
+  display: grid;
+  place-items: center;
+}
+
+.border {
+  border: var(--border);
+}
+
+.margin-center {
+  margin: 0 auto !important;
+}
+
+.padding-1 {
+  padding: 1rem;
+}
+
+.width-fit {
+  width: fit-content;
+}
+
+.line {
+  display: flex;
+}
+
+.column {
+  display: flex;
+  flex-flow: column;
+}
+
+.s-between {
+  justify-content: space-between;
+}
+
+.m-b-start-1 {
+  margin-block-start: 1rem;
+}
+
+.txt-center {
+  text-align: center;
+}
+
+.b-top-0 {
+  border-top: none;
+}
+
+.w-100 {
+  width: 1005;
+}
+
+.m-h-1 {
+  margin: 0 1rem;
+}
