@@ -1,17 +1,16 @@
 import { failure, success, Result, PromisedResult } from '..';
 import { ControllerRequest } from '../../models';
 import { makeMatch } from '../../tools';
-import { incomingSprintToDbFormat } from './sprint.tools';
 
-export const SprintController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
+export const AssignedWorkController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
   {
     add: async ({ query, context }) => {
-      const result = await context.collections.sprint.create(incomingSprintToDbFormat(query.payload));
+      const result = await context.collections.assignedWork.create(query.payload);
 
       return success(result);
     },
     delete: async ({ query, context }) => {
-      const result = await context.collections.sprint.deleteOne(query.payload);
+      const result = await context.collections.assignedWork.deleteOne(query.payload);
 
       if (result.deletedCount) return success('OK');
 
@@ -22,17 +21,17 @@ export const SprintController = makeMatch<(arg: ControllerRequest) => PromisedRe
 
       if (!item) return failure('Missing data', 400);
 
-      const result = await context.collections.sprint.updateOne(query.payload);
+      const result = await context.collections.assignedWork.updateOne(query.payload);
 
       if (result.modifiedCount) return success('OK');
 
       return failure('Failed to update record', 500);
     },
     getAll: async ({ context }) => {
-      const result = await context.collections.sprint.find({});
+      const result = await context.collections.assignedWork.find({});
 
       return success(result);
     },
   },
-  () => failure('SprintController action is not found', 400),
+  () => failure('AssignedWorkController action is not found', 400),
 );

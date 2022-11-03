@@ -1,5 +1,4 @@
 export interface Sprint {
-  id: string;
   name: string;
   startDate: Date;
   endDate: Date;
@@ -7,7 +6,6 @@ export interface Sprint {
 }
 
 export interface SprintRequest {
-  id: string;
   name: string;
   startDate: string;
   endDate: string;

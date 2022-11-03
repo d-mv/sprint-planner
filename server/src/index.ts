@@ -1,5 +1,6 @@
 import { config } from 'dotenv';
-import { connectDb } from './db';
+
+import { connectDb } from './adaptors';
 
 import { server } from './server';
 

@@ -1,7 +1,7 @@
 import { connect } from 'mongoose';
 import { path } from 'ramda';
 
-import { STATE } from '../entities';
+import { STATE } from '../../entities';
 
 export async function connectDb(url: string) {
   try {

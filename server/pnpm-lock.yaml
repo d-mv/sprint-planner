@@ -1,17 +1,21 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@faker-js/faker': ^7.6.0
   '@fastify/caching': ^8.0.1
   '@fastify/compress': ^6.1.1
   '@fastify/cors': ^8.1.1
   '@fastify/helmet': ^10.0.2
   '@fastify/type-provider-json-schema-to-ts': ^2.1.1
   '@getify/eslint-plugin-proper-arrows': 11.0.3
+  '@types/colors': ^1.2.1
   '@types/jest': ^29.2.1
   '@types/node': ^18.11.9
   '@types/ramda': ^0.28.18
   '@typescript-eslint/eslint-plugin': 5.42.0
   '@typescript-eslint/parser': 5.42.0
+  colors: ^1.4.0
+  dayjs: ^1.11.6
   dotenv: ^16.0.3
   eslint: 8.26.0
   eslint-config-prettier: 8.5.0
@@ -36,17 +40,21 @@ specifiers:
   typescript: ^4.8.4
 
 dependencies:
+  '@faker-js/faker': 7.6.0
   '@fastify/caching': 8.0.1
   '@fastify/compress': 6.1.1
   '@fastify/cors': 8.1.1
   '@fastify/helmet': 10.0.2
   '@fastify/type-provider-json-schema-to-ts': 2.1.1_3g3ztdj4p4epytqdykib6svjfm
   '@getify/eslint-plugin-proper-arrows': 11.0.3_eslint@8.26.0
+  '@types/colors': 1.2.1
   '@types/jest': 29.2.1
   '@types/node': 18.11.9
   '@types/ramda': 0.28.18
   '@typescript-eslint/eslint-plugin': 5.42.0_6xw5wg2354iw4zujk2f3vyfrzu
   '@typescript-eslint/parser': 5.42.0_wyqvi574yv7oiwfeinomdzmc3m
+  colors: 1.4.0
+  dayjs: 1.11.6
   dotenv: 16.0.3
   eslint: 8.26.0
   eslint-config-prettier: 8.5.0_eslint@8.26.0
@@ -1182,6 +1190,11 @@ packages:
       - supports-color
     dev: false
 
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
+    dev: false
+
   /@fastify/accept-negotiator/1.0.0:
     resolution: {integrity: sha512-4R/N2KfYeld7A5LGkai+iUFMahXcxxYbDp+XS2B1yuL3cdmZLJ9TlCnNzT3q5xFTqsYm0GPpinLUwfSwjcVjyA==}
     engines: {node: '>=14'}
@@ -1613,6 +1626,13 @@ packages:
     resolution: {integrity: sha512-FcFaxOr2V5KZCviw1TnutEMVUVsGt4D2hP1TAfXZAMKuHYW3xQhe3jTxNPWutgCJ3/X1c5yX8ZoGVEItxKbwBg==}
     dependencies:
       '@babel/types': 7.20.0
+    dev: false
+
+  /@types/colors/1.2.1:
+    resolution: {integrity: sha512-7jNkpfN2lVO07nJ1RWzyMnNhH/I5N9iWuMPx9pedptxJ4MODf8rRV0lbJi6RakQ4sKQk231Fw4e2W9n3D7gZ3w==}
+    deprecated: This is a stub types definition. colors provides its own type definitions, so you don't need this installed.
+    dependencies:
+      colors: 1.4.0
     dev: false
 
   /@types/graceful-fs/4.1.5:
@@ -2265,6 +2285,11 @@ packages:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
     dev: false
 
+  /colors/1.4.0:
+    resolution: {integrity: sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==}
+    engines: {node: '>=0.1.90'}
+    dev: false
+
   /concat-map/0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: false
@@ -2307,6 +2332,10 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+    dev: false
+
+  /dayjs/1.11.6:
+    resolution: {integrity: sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==}
     dev: false
 
   /debug/2.6.9:

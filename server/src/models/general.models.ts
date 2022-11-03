@@ -1,5 +1,5 @@
 import { Mongoose } from 'mongoose';
-import { SprintCollection } from '../entities';
+import { AssignedWorkCollection, EngineerCollection, SprintCollection, WorkCollection } from '../entities';
 import { STATE } from '../entities/state/state';
 import { Query } from './query.models';
 
@@ -10,6 +10,9 @@ export type RecordObject<Values = unknown> = Record<string, Values>;
 
 export interface Collections {
   sprint: typeof SprintCollection;
+  engineer: typeof EngineerCollection;
+  work: typeof WorkCollection;
+  assignedWork: typeof AssignedWorkCollection;
 }
 
 export interface ControllerRequest<QueryPayload = AnyValue> {
