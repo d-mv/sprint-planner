@@ -1,22 +1,26 @@
-import clsx from 'clsx';
 import { useEffect } from 'react';
-import { Engineers, SprintHeader, Sprints } from '../entities';
-import { StateActions, useDispatch } from '../state';
-import classes from './App.module.scss';
+
+import { Login, Main } from '../pages';
+import { getIsConnected, StateActions, useDispatch, useSelector } from '../state';
+import { ifTrue } from '../tools';
+
 export function App() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const isConnected = useSelector(getIsConnected);
 
   useEffect(() => {
-    dispatch({type: StateActions.BOOT})
-  },[])
+    dispatch({ type: StateActions.BOOT });
+  }, []);
+
+  const renderLogin = () => <Login />;
+
+  const renderMain = () => <Main />;
+
   return (
-    <div className={clsx('column', classes.container)}>
-      <SprintHeader />
-      <div className='line'>
-        <div className={classes['eng-header']}>left</div>
-        <Sprints />
-      </div>
-      <Engineers />
-    </div>
+    <>
+      {ifTrue(isConnected, renderMain)}
+      {ifTrue(!isConnected, renderLogin)}
+    </>
   );
 }

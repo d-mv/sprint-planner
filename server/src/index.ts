@@ -6,7 +6,7 @@ import { server } from './server';
 
 config();
 
-const MONGODB_URL = process.env['MONGODB_URL'];
+const MONGODB_URL = process.env['MONGODB_UR'];
 
 if (MONGODB_URL) connectDb(MONGODB_URL);
 

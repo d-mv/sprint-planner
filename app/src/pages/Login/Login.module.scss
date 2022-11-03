@@ -1,0 +1,39 @@
+.container {
+	height: 100%;
+	width: 100%;
+	display: grid;
+	place-items: center;
+
+	.center {
+		display: flex;
+		flex-flow: column;
+		width: 80%;
+		max-width: 80rem;
+		align-items: center;
+	}
+
+	.button {
+		padding: 1rem;
+	}
+
+	.message {
+		height: 2rem;
+		display: grid;
+		place-items: center;
+		margin-block-start: 1rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+.input-block {
+	display: flex;
+	width: 100%;
+	;
+
+}
+
+.title {
+	white-space: nowrap;
+	margin-inline-end: 1rem;
+}
