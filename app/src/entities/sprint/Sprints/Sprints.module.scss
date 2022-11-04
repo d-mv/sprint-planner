@@ -1,4 +1,6 @@
 .container {
-	grid-area: right;
 	display: flex;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	width: fit-content;
 }

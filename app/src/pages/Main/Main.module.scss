@@ -2,8 +2,13 @@
 	height: 100%;
 	width: 100%;
 
+	.sprints {
+		width: 100%;
+		overflow: scroll;
+	}
+
 	.eng-header {
 		height: 6.5rem;
-		width: 55rem;
+		min-width: 55rem;
 	}
 }
