@@ -1,11 +1,11 @@
-import { Dayjs } from "dayjs";
+import { Dayjs } from 'dayjs';
+import { MongoDocument } from '../../models';
 
-import { DayType } from "../days";
+import { DayType } from '../days';
 
-export interface Sprint {
-	id: string;
-	name: string;
-	startDate: Dayjs;
-	endDate: Dayjs;
-	days: DayType[];
+export interface Sprint<Day = Dayjs> {
+  name: string;
+  startDate: Day;
+  endDate: Day;
+  days: MongoDocument<DayType<Day>>[];
 }

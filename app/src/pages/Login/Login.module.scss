@@ -29,11 +29,10 @@
 .input-block {
 	display: flex;
 	width: 100%;
-	;
-
 }
 
 .title {
 	white-space: nowrap;
-	margin-inline-end: 1rem;
+	margin-inline-end: 1rem !important;
+	padding-block-start: .3rem;
 }

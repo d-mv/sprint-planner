@@ -2,6 +2,8 @@ import { faker } from '@faker-js/faker';
 import dayjs, { Dayjs } from 'dayjs';
 import { compose } from 'ramda';
 import { AssignedWorkCollection, EngineerCollection, SprintCollection, WorkCollection } from './entities';
+// import { DayType } from './entities/sprint/sprint.models';
+import { incomingSprintToDbFormat } from './entities/sprint/sprint.tools';
 import { buildArray, capitalize } from './tools';
 
 const { lorem, name, random } = faker;
@@ -12,7 +14,15 @@ function binaryChoice<T>(opt1: T, opt2: T): T {
   return choice ? opt1 : opt2;
 }
 
-function generateDaysOff(start: Dayjs): Date[] {
+// function generateDaysOff(start: Dayjs): DayType[] {
+//   const choice = binaryChoice(2, 4);
+
+//   const date = start.add(choice, 'days');
+
+//   return [{ date: date.toDate(), month: parseInt(date.month().toString()) + 1, isWeekend: checkIfWeekend(date) }];
+// }
+
+function generateEngineersDaysOff(start: Dayjs): Date[] {
   const choice = binaryChoice(2, 4);
 
   return [start.add(choice, 'days').toDate()];
@@ -34,12 +44,14 @@ export async function seed() {
 
     endDate = startDate.add(14, 'days');
 
-    await SprintCollection.create({
+    const sprint = {
       name: compose(capitalize, lorem.words)(3),
-      startDate: startDate.toDate(),
-      endDate: endDate.toDate(),
-      daysOff: generateDaysOff(startDate),
-    });
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
+      days: [],
+    };
+
+    await SprintCollection.create(incomingSprintToDbFormat(sprint));
   }
 
   const engineerIds: string[] = [];
@@ -50,7 +62,7 @@ export async function seed() {
         firstName: name.firstName(),
         lastName: name.lastName(),
       },
-      daysOff: generateDaysOff(dayjs()),
+      daysOff: generateEngineersDaysOff(dayjs()),
     });
 
     engineerIds.push(_id.toString());

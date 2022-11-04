@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import clsx from 'clsx';
 import { Dayjs } from 'dayjs';
 import { MouseEvent } from 'react';
+import { MongoDocument } from '../../../models';
 
 import { getIsDayOff, useSelector } from '../../../state';
 import { buildId } from '../../../tools';
@@ -9,12 +10,13 @@ import { DayType } from '../days.models';
 import classes from './Day.module.scss';
 
 interface Props {
-  day: DayType;
+  day: MongoDocument<DayType>;
   onClick?: (date: Dayjs) => (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function Day({ day, onClick }: Props) {
   const isDayOff = useSelector(getIsDayOff);
+
   const { date, month, isWeekend } = day;
 
   const isOff = isDayOff(date);
@@ -25,17 +27,15 @@ export function Day({ day, onClick }: Props) {
 
   return (
     <button
-      key={day.id}
-      id={buildId('day', day.id)}
+      key={day._id}
+      id={buildId('day', day._id)}
       onClick={handleClick}
       className={clsx('border center', classes['header-cell'], {
         [classes.weekend]: isWeekend,
         [classes['day-off']]: isOff,
       })}
     >
-      <Typography variant='subtitle1'>{`${month}/${date
-        .date()
-        .toString()}`}</Typography>
+      <Typography variant='subtitle1'>{`${month}/${date.date().toString()}`}</Typography>
     </button>
   );
 }

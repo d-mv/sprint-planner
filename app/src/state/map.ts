@@ -1,6 +1,7 @@
 import { Dayjs } from 'dayjs';
 import { assoc } from 'ramda';
 import { AssignedWork, Engineer, Sprint, Work } from '../entities';
+import { MongoDocument } from '../models';
 import { Action, MappedReducerFns, StateActions, State } from './types';
 
 export const MAP: MappedReducerFns = new Map();
@@ -21,7 +22,15 @@ MAP.set(StateActions.SET_IS_LOADING, (state: State, action: Action<[key: string,
   return assoc('isLoading', assoc(key, value, state.isLoading), state);
 });
 
-MAP.set(StateActions.ADD_SPRINT, (state: State, action: Action<Sprint>) => {
+MAP.set(StateActions.SET_SPRINTS, (state: State, action: Action<MongoDocument<Sprint<Dayjs>>[]>) => {
+  if (!action.payload) return state;
+
+  return { ...state, sprints: action.payload };
+});
+
+// to revise
+
+MAP.set(StateActions.ADD_SPRINT, (state: State, action: Action<MongoDocument<Sprint<Dayjs>>>) => {
   if (!action.payload) return state;
 
   return { ...state, sprints: [...state.sprints, action.payload] };

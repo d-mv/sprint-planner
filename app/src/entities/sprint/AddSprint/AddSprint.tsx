@@ -1,6 +1,5 @@
 import { Button, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { nanoid } from 'nanoid';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import EventNoteRoundedIcon from '@mui/icons-material/EventNoteRounded';
@@ -13,65 +12,57 @@ import './inputOverride.css';
 import { addSprint, useDispatch } from '../../../state';
 import { buildSprintDays } from '../../days/days.tools';
 import { Sprint } from '../sprint.models';
+import { compose } from 'ramda';
 
 interface Props {
   onClose: () => void;
 }
+
 export function AddSprint({ onClose }: Props) {
   const [dates, setDates] = useState([new Date(), new Date()]);
+
   const [name, setName] = useState('');
+
   const [isValid, setIsValid] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (name && dates?.length === 2 && dates?.every(Boolean) && !isValid)
-      setIsValid(true);
-    else if (
-      (!name || !dates || dates?.length !== 2 || !dates?.every(Boolean)) &&
-      isValid
-    )
-      setIsValid(false);
+    if (name && dates?.length === 2 && dates?.every(Boolean) && !isValid) setIsValid(true);
+    else if ((!name || !dates || dates?.length !== 2 || !dates?.every(Boolean)) && isValid) setIsValid(false);
   }, [name, dates, isValid]);
 
   function updateBorderColor(isActive = false) {
     return function call() {
-      const element = document.getElementsByClassName(
-        'react-daterange-picker__wrapper'
-      );
+      const element = document.getElementsByClassName('react-daterange-picker__wrapper');
+
       if (isActive) element[0]?.setAttribute('style', 'border-color: #1976d2');
       else element[0]?.setAttribute('style', 'rgb(147,147,147)');
     };
   }
+
   function handleDateChange(arg: AnyValue) {
     setDates(arg as Date[]);
   }
 
-  function handleNameChange(
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  function handleNameChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setName(e.currentTarget.value);
   }
 
   function handleSubmit() {
     const sprint: Sprint = {
-      id: nanoid(),
       name,
       startDate: dayjs(dates[0]),
       endDate: dayjs(dates[1]),
       days: [],
     };
-    dispatch(
-      addSprint({
-        ...sprint,
-        days: buildSprintDays(sprint),
-      })
-    );
+
+    compose(dispatch, addSprint)(sprint);
     onClose();
   }
+
   function renderIcon(clear = false) {
-    return (
-      <span>{clear ? <ClearRoundedIcon /> : <EventNoteRoundedIcon />}</span>
-    );
+    return <span>{clear ? <ClearRoundedIcon /> : <EventNoteRoundedIcon />}</span>;
   }
 
   return (
@@ -80,12 +71,7 @@ export function AddSprint({ onClose }: Props) {
         <Typography variant='body1' className={classes.label}>
           Name
         </Typography>
-        <TextField
-          id='standard-basic'
-          variant='standard'
-          required={true}
-          onChange={handleNameChange}
-        />
+        <TextField id='standard-basic' variant='standard' required={true} onChange={handleNameChange} />
       </div>
       <div className={classes.block}>
         <Typography variant='body1' className={classes.label}>

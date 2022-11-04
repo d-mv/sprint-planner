@@ -1,9 +1,9 @@
 import { State } from '.';
-import { assignedWork, dayOff, engineers, sprint, works } from './seed';
+import { assignedWork, dayOff, engineers, works } from './seed';
 
 export const INITIAL_STATE: State = {
   isLoading: {},
-  sprints: [sprint],
+  sprints: [],
   daysOff: [dayOff],
   engineers,
   addedEngineers: ['xxxx', 'xxxx2', 'xxxx3'],

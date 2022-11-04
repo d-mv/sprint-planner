@@ -6,14 +6,14 @@ interface Props {
   noMargin: boolean;
   width: string;
 }
+
 export function Divider({ className, noMargin, width }: Partial<Props>) {
   let style: CSSProperties = {
     width: width ?? '75%',
     borderTop: `.1rem solid ${grey['300']}`,
   };
 
-  if (!noMargin)
-    style = { ...style, margin: '0 auto', marginBlockEnd: '.1rem' };
+  if (!noMargin) style = { ...style, margin: '0 auto', marginBlockEnd: '.1rem' };
 
   return <div className={className} style={style} />;
 }

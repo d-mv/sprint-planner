@@ -1,15 +1,16 @@
 import { Dayjs } from 'dayjs';
 
 import { AssignedWork, Engineer, Sprint, Work } from '../entities';
-import { AnyValue, RecordObject } from '../models';
+import { AnyValue, MongoDocument, RecordObject } from '../models';
 
 export enum StateActions {
   SET_AUTH_ERROR = 'setAuthError',
-  // SET_AUTH_STRING = 'setAuthString',
   SET_IS_CONNECTED = 'setIsConnected',
-  SET_IS_LOADING = 'setISLoading',
+  SET_IS_LOADING = 'setIsLoading',
   LOGIN = 'login',
   BOOT = 'boot',
+  SET_SPRINTS = 'setSprints',
+  // to revise
   ADD_SPRINT = 'addSprint',
   ADD_REMOVE_DAY_OFF = 'addRemoveDayOff',
   CREATE_ENGINEER = 'createEngineer',
@@ -29,7 +30,7 @@ export interface Action<T = AnyValue> {
 
 export interface State {
   isLoading: RecordObject<boolean>;
-  sprints: Sprint[];
+  sprints: MongoDocument<Sprint<Dayjs>>[];
   daysOff: Dayjs[];
   engineers: Engineer[];
   addedEngineers: string[];

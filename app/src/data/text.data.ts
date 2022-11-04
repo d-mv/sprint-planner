@@ -1,4 +1,10 @@
 export const TEXT = {
+  login: {
+    label: 'Enter connection string',
+    placeholder: 'mongodb://user:password@localhost:27017/db_name',
+    enter: 'Enter',
+    isloading: 'Trying to login to DB...',
+  },
   sprint: { addSprint: 'Add Sprint', cancelAddSprint: 'Cancel' },
   engineer: {
     add: 'Add Engineer',

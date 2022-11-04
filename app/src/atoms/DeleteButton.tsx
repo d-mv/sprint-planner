@@ -7,6 +7,7 @@ interface Props {
   onClick: () => void;
   tooltip?: string;
 }
+
 export function DeleteButton({ onClick, tooltip }: Props) {
   const button = (
     <IconButton edge='end' aria-label='delete' onClick={onClick}>
@@ -14,7 +15,7 @@ export function DeleteButton({ onClick, tooltip }: Props) {
     </IconButton>
   );
 
-	if (tooltip) return <Tooltip message={tooltip}>{button}</Tooltip>;
+  if (tooltip) return <Tooltip message={tooltip}>{button}</Tooltip>;
 
   return button;
 }

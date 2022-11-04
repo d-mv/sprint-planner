@@ -1,8 +1,7 @@
 import { Dayjs } from 'dayjs';
 
-export interface DayType {
-  id: string;
-  date: Dayjs;
+export interface DayType<Day = Dayjs> {
+  date: Day;
   month: number;
   isWeekend?: boolean;
   isOff?: boolean;

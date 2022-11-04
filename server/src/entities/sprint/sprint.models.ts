@@ -1,13 +1,14 @@
-export interface Sprint {
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  daysOff: Date[];
+export interface DayType<Day = Date> {
+  date: Day;
+  month: number;
+  isWeekend?: boolean;
+  isOff?: boolean;
+  isWork?: boolean;
 }
 
-export interface SprintRequest {
+export interface Sprint<Day = Date> {
   name: string;
-  startDate: string;
-  endDate: string;
-  daysOff: string[];
+  startDate: Day;
+  endDate: Day;
+  days: DayType<Day>[];
 }

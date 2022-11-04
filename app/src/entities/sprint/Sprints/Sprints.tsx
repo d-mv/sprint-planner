@@ -1,26 +1,36 @@
-import { Popover } from '@mui/material';
-import { Dayjs } from 'dayjs';
 import { map } from 'ramda';
-import { MouseEvent, useState } from 'react';
+import { useEffect } from 'react';
 
 import { Sprint as SprintType } from '../sprint.models';
-import { Option } from '../../../models';
-import {
-  addRemoveDayOff,
-  getIsDayOff,
-  getSprints,
-  useDispatch,
-  useSelector,
-} from '../../../state';
-// import { SprintPopup } from '../../days/DayPopup';
+import { getAuthError, getIsLoading, getSprints, useSelector } from '../../../state';
 import { Sprint } from '../Sprint';
 import classes from './Sprints.module.scss';
+import { MongoDocument } from '../../../models';
+import { useSprints } from '../../../adaptors';
+import { ErrorMessage, Spinner } from '../../../atoms';
 
 export function Sprints() {
   const sprints = useSelector(getSprints);
 
-  function renderSprint(sprint: SprintType) {
-    return <Sprint key={sprint.id} sprint={sprint} />;
+  const error = useSelector(getAuthError);
+
+  const isLoading = useSelector(getIsLoading)('get-sprints');
+
+  const { get } = useSprints();
+
+  useEffect(() => {
+    get();
+  }, []);
+
+  function renderSprint(sprint: MongoDocument<SprintType>) {
+    // eslint-disable-next-line no-console
+    console.log(sprint);
+    return <Sprint key={sprint._id} sprint={sprint} />;
   }
+
+  if (isLoading) return <Spinner />;
+
+  if (error) return <ErrorMessage message={error} />;
+
   return <div className={classes.container}>{map(renderSprint, sprints)}</div>;
 }

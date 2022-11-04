@@ -7,7 +7,7 @@ export function Main() {
   return (
     <div className={clsx('column', classes.container)}>
       <SprintHeader />
-      <div className='line'>
+      <div className='line width-fit'>
         <div className={classes['eng-header']}>left</div>
         <Sprints />
       </div>

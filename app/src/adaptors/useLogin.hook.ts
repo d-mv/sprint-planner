@@ -21,7 +21,7 @@ export function useLogin() {
   function request(url: string) {
     compose(dispatch, setIsLoading)(['login', true]);
 
-    compose(dispatch, setAuthError)('');
+    if (error) compose(dispatch, setAuthError)('');
 
     query<'OK'>('auth', 'connect', url)
       .then(r => (r.isOK ? handlePositive() : handleNegative(r.message)))

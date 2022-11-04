@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { useLogin } from '../adaptors';
+import { CONFIG } from '../config';
 
 import { Login, Main } from '../pages';
 import { getIsConnected, StateActions, useDispatch, useSelector } from '../state';
@@ -9,8 +11,12 @@ export function App() {
 
   const isConnected = useSelector(getIsConnected);
 
+  const { request } = useLogin();
+
   useEffect(() => {
     dispatch({ type: StateActions.BOOT });
+
+    if (CONFIG.mongoDb) request(CONFIG.mongoDb);
   }, []);
 
   const renderLogin = () => <Login />;

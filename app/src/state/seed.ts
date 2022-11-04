@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { buildSprintDays } from '../entities/days/days.tools';
+// import { buildSprintDays } from '../entities/days/days.tools';
 
 export const engineers = [
   {
@@ -19,43 +19,51 @@ export const engineers = [
   },
 ];
 
-const start = dayjs();
-const sprintTemp = {
-  id: 'yc7JCsRMiFtUEfJpml9v4',
-  name: 'Nov 1',
-  startDate: start,
-  endDate: start.add(14, 'days'),
-  days: [],
-};
-const days = buildSprintDays(sprintTemp);
-export const sprint = { ...sprintTemp, days };
+// const start = dayjs();
 
-export const works = [{
-  estimate: 4,
-  id: 'AJLK1TsE9FC3DrPtRFNZk',
-  jiraTicket: 'ECP-Some',
-  title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.'
-},{
-  estimate: 4,
-  id: 'AJLK1TsE9FC3DrPtFNZk',
-  jiraTicket: 'ECP-Some',
-  title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.'
-},{
-  estimate: 4,
-  id: 'AJLK1TsE9FC3DrtRFNZk',
-  jiraTicket: 'ECP-Some',
-  title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.'
-},{
-  estimate: 4,
-  id: 'AJLK1TsE9FC3rPtRFNZk',
-  jiraTicket: 'ECP-Some',
-  title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.'
-},{
-  estimate: 4,
-  id: 'AJLK1TsE9C3DrPtRFNZk',
-  jiraTicket: 'ECP-Some',
-  title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.'
-}];
+// const sprintTemp = {
+//   id: 'yc7JCsRMiFtUEfJpml9v4',
+//   name: 'Nov 1',
+//   startDate: start,
+//   endDate: start.add(14, 'days'),
+//   days: [],
+// };
+// const days = buildSprintDays(sprintTemp);
+
+// export const sprint = { ...sprintTemp, days };
+
+export const works = [
+  {
+    estimate: 4,
+    id: 'AJLK1TsE9FC3DrPtRFNZk',
+    jiraTicket: 'ECP-Some',
+    title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.',
+  },
+  {
+    estimate: 4,
+    id: 'AJLK1TsE9FC3DrPtFNZk',
+    jiraTicket: 'ECP-Some',
+    title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.',
+  },
+  {
+    estimate: 4,
+    id: 'AJLK1TsE9FC3DrtRFNZk',
+    jiraTicket: 'ECP-Some',
+    title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.',
+  },
+  {
+    estimate: 4,
+    id: 'AJLK1TsE9FC3rPtRFNZk',
+    jiraTicket: 'ECP-Some',
+    title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.',
+  },
+  {
+    estimate: 4,
+    id: 'AJLK1TsE9C3DrPtRFNZk',
+    jiraTicket: 'ECP-Some',
+    title: 'Occaecat nulla ut elit excepteur sunt nisi pariatur. Duis laboris cillum ullamco occaecat culpa deserunt.',
+  },
+];
 
 export const assignedWork = {
   end: dayjs().add(4, 'days'),
@@ -66,4 +74,3 @@ export const assignedWork = {
 };
 
 export const dayOff = dayjs('11/07/2022');
-

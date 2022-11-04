@@ -2,21 +2,21 @@ import { Button, IconButton, Input, InputAdornment, Typography } from '@mui/mate
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { ChangeEvent, useState } from 'react';
-
-import { Spacer, Tooltip } from '../../atoms';
-import classes from './Login.module.scss';
 import clsx from 'clsx';
-import { compose } from 'ramda';
-import { getAuthError, getIsLoading, login, useDispatch, useSelector } from '../../state';
-import { ifTrue } from '../../tools';
+
+import { ErrorMessage, Tooltip } from '../../atoms';
+import classes from './Login.module.scss';
+import { getAuthError, getIsLoading, useSelector } from '../../state';
+import { setupText } from '../../tools';
 import { useLogin } from '../../adaptors';
+import { TEXT } from '../../data';
+
+const TXT = setupText(TEXT)('login');
 
 export function Login() {
   const [show, setShow] = useState(false);
 
   const [value, setValue] = useState('');
-
-  const dispatch = useDispatch();
 
   const error = useSelector(getAuthError);
 
@@ -41,16 +41,23 @@ export function Login() {
   }
 
   function renderMessage() {
-    if (isLoading) return <Typography variant='body2'>Trying to login to DB...</Typography>;
+    if (isLoading) return <Typography variant='body2'>{TXT('isloading')}</Typography>;
 
-    if (error)
-      return (
-        <Typography variant='body2' color='error'>
-          {error}
-        </Typography>
-      );
+    if (error) return <ErrorMessage message={error} />;
 
     return '';
+  }
+
+  function renderToggler() {
+    return (
+      <Tooltip message='Show/Hide'>
+        <InputAdornment position='end'>
+          <IconButton onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
+            {show ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        </InputAdornment>
+      </Tooltip>
+    );
   }
 
   return (
@@ -58,7 +65,7 @@ export function Login() {
       <div className={clsx('column', classes.center)}>
         <div className={classes['input-block']}>
           <Typography variant='body1' className={classes.title}>
-            Enter connection string
+            {TXT('label')}
           </Typography>
           <Input
             id='password-input'
@@ -66,25 +73,14 @@ export function Login() {
             value={value}
             fullWidth
             onChange={handleChange}
-            endAdornment={
-              <Tooltip message='Show/Hide'>
-                <InputAdornment position='end'>
-                  <IconButton
-                    aria-label='Toggle password visibility'
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                  >
-                    {show ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              </Tooltip>
-            }
+            placeholder={TXT('placeholder')}
+            endAdornment={renderToggler()}
           />
         </div>
         <div className={classes.message}>{renderMessage()}</div>
         <div className={classes.button}>
           <Button variant='contained' disabled={!value || isLoading} color='primary' onClick={handleSubmit}>
-            Enter
+            {TXT('enter')}
           </Button>
         </div>
       </div>

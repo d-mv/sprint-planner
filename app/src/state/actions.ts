@@ -1,6 +1,7 @@
 import { Dayjs } from 'dayjs';
 
 import { AssignedWork, Engineer, Sprint, Work } from '../entities';
+import { MongoDocument } from '../models';
 import { Action, StateActions } from './types';
 
 export const setIsLoading = (payload: [key: string, value: boolean]): Action => ({
@@ -13,11 +14,6 @@ export const setAuthError = (payload: string): Action => ({
   payload,
 });
 
-// export const setAuthString = (payload: string): Action => ({
-//   type: StateActions.SET_AUTH_STRING,
-//   payload,
-// });
-
 export const setIsConnected = (payload: boolean): Action => ({
   type: StateActions.SET_IS_CONNECTED,
   payload,
@@ -27,6 +23,13 @@ export const login = (payload: string): Action => ({
   type: StateActions.LOGIN,
   payload,
 });
+
+export const setSprints = (payload: MongoDocument<Sprint<Dayjs>>[]): Action => ({
+  type: StateActions.SET_SPRINTS,
+  payload,
+});
+
+// to revise:
 
 export const addSprint = (payload: Sprint): Action => ({
   type: StateActions.ADD_SPRINT,

@@ -10,11 +10,14 @@ interface Props {
 
 export function CountOfCount({ total, left, tooltip }: Props) {
   const isComplete = left === total;
+
   const isEmpty = !left;
 
   function getColor() {
     if (isComplete) return 'success';
+
     if (isEmpty) return 'error';
+
     return 'secondary';
   }
 

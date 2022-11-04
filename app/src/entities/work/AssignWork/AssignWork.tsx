@@ -1,10 +1,4 @@
-import {
-  Button,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from '@mui/material';
+import { Button, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
@@ -12,12 +6,7 @@ import { compose, map } from 'ramda';
 import { ChangeEvent, useState } from 'react';
 
 import { TEXT } from '../../../data';
-import {
-  assignWork,
-  getUnAssignedWorks,
-  useDispatch,
-  useSelector,
-} from '../../../state';
+import { assignWork, getUnAssignedWorks, useDispatch, useSelector } from '../../../state';
 import { setupText } from '../../../tools';
 import { AssignedWork, Work } from '../work.models';
 import classes from './AssignWork.module.scss';
@@ -28,12 +17,14 @@ interface Props {
   engineerId: string;
   onCancel: () => void;
 }
+
 export function AssignWork({ engineerId, onCancel }: Props) {
   const unassignedWorks = useSelector(getUnAssignedWorks);
 
   const [selected, setSelected] = useState(unassignedWorks[0].id ?? '');
 
   const [start, setStart] = useState(dayjs());
+
   const dispatch = useDispatch();
 
   function handleAssign() {
@@ -43,12 +34,14 @@ export function AssignWork({ engineerId, onCancel }: Props) {
       engineerId,
       start,
     };
+
     compose(dispatch, assignWork)(assignedWork);
     onCancel();
   }
 
   function handleDateChange(e: ChangeEvent<HTMLInputElement>) {
     const value = dayjs(e.currentTarget.value);
+
     setStart(value);
   }
 

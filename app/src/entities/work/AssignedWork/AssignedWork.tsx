@@ -5,6 +5,7 @@ import { compose, map } from 'ramda';
 
 import { DeleteButton, Tooltip } from '../../../atoms';
 import { TEXT } from '../../../data';
+import { MongoDocument } from '../../../models';
 import { unAssignWork, useDispatch } from '../../../state';
 import { setupText } from '../../../tools';
 import { DayType, useWorkDays, WorkDay } from '../../days';
@@ -22,7 +23,9 @@ interface Props {
 
 export function AssignedWork({ workToRender, engineer }: Props) {
   const { days, isOverSprint } = useWorkDays({ engineer, workToRender });
+
   const dispatch = useDispatch();
+
   const { work } = workToRender;
 
   function handleUnassign() {
@@ -44,6 +47,7 @@ export function AssignedWork({ workToRender, engineer }: Props) {
 
   function renderOverSprint() {
     if (!isOverSprint) return null;
+
     return (
       <Tooltip message='This work is longer than sprint(s)'>
         <WarningIcon />
@@ -51,8 +55,8 @@ export function AssignedWork({ workToRender, engineer }: Props) {
     );
   }
 
-  function renderWorkDay(day: DayType) {
-    return <WorkDay key={day.id} day={day} />;
+  function renderWorkDay(day: MongoDocument<DayType>) {
+    return <WorkDay key={day._id} day={day} />;
   }
 
   return (

@@ -1,10 +1,13 @@
-import { Sprint, SprintRequest } from './sprint.models';
+import { buildSprintDays } from '../../tools';
+import { Sprint } from './sprint.models';
 
-export function incomingSprintToDbFormat(data: SprintRequest): Sprint {
-  return {
+export function incomingSprintToDbFormat(data: Sprint<string>): Sprint {
+  const sprint = {
     ...data,
     startDate: new Date(data.startDate),
     endDate: new Date(data.endDate),
-    daysOff: data.daysOff.map(day => new Date(day)),
+    days: [],
   };
+
+  return { ...sprint, days: buildSprintDays(data.startDate, data.endDate) };
 }
