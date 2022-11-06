@@ -1,6 +1,6 @@
 import { compose } from 'ramda';
 
-import { AssignedWork, assignedWorksDayToDayjs } from '../entities';
+import { AssignedWork, assignedWorkDayToDayjs, assignedWorksDayToDayjs } from '../entities';
 import { MongoDocument } from '../models';
 import {
   getMessage,
@@ -10,6 +10,7 @@ import {
   useDispatch,
   useSelector,
   removeAssignedWork,
+  addAssignedWork,
 } from '../state';
 import { query } from './http.adaptor';
 
@@ -28,9 +29,24 @@ export function useAssignedWork() {
     compose(dispatch, setIsLoading)(['get-assigned-work', false]);
   }
 
-  function create() {
-    // eslint-disable-next-line no-console
-    console.log('create');
+  function handleAddPositive(data: MongoDocument<AssignedWork<string>>) {
+    compose(dispatch, addAssignedWork, assignedWorkDayToDayjs)(data);
+    compose(dispatch, setIsLoading)(['add-assigned-work', false]);
+  }
+
+  function handleAddNegative(message: string) {
+    compose(dispatch, setMessage)(message);
+    compose(dispatch, setIsLoading)(['add-assigned-work', false]);
+  }
+
+  function add(data: Partial<AssignedWork>) {
+    compose(dispatch, setIsLoading)(['add-assigned-work', true]);
+
+    if (error) compose(dispatch, setMessage)('');
+
+    query<MongoDocument<AssignedWork<string>>>('assigned_work', 'add', data)
+      .then(r => (r.isOK ? handleAddPositive(r.payload) : handleAddNegative(r.message)))
+      .catch(err => handleAddNegative(err.message));
   }
 
   function get() {
@@ -68,5 +84,5 @@ export function useAssignedWork() {
       .catch(err => handleRemoveNegative(err.message));
   }
 
-  return { create, get, update, remove };
+  return { add, get, update, remove };
 }

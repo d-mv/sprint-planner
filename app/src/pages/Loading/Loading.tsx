@@ -15,7 +15,7 @@ const MESSAGES = makeMatch(
     [LoadingActions.GET_WORKS]: 'works',
     [LoadingActions.GET_LOGIN]: 'accessing DB',
   },
-  'data',
+  '',
 );
 
 export function Loading() {
@@ -31,7 +31,7 @@ export function Loading() {
     return <Typography variant='body1' key={s}>{`- ${s}...`}</Typography>;
   }
 
-  if (!filtered.length) return null;
+  if (!filtered.length || (filtered.length === 1 && filtered[0] === '')) return null;
 
   return (
     <Collapse orientation='vertical' in={Boolean(filtered.length)}>

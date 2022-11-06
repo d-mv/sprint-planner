@@ -11,20 +11,19 @@ export enum StateActions {
   BOOT = 'boot',
   SET_SPRINTS = 'setSprints',
   SET_ENGINEERS = 'setEngineers',
+  UPDATE_ENGINEER = 'updateEngineer',
   SET_ADDED_ENGINEERS = 'setAddedEngineers',
   SET_ASSIGNED_WORKS = 'setAssignedWorks',
   REMOVE_ASSIGNED_WORK = 'removeAssignedWork',
+  ADD_ASSIGNED_WORK = 'addAssignedWork',
   SET_WORKS = 'setWorks',
   // to revise
   ADD_SPRINT = 'addSprint',
   ADD_REMOVE_DAY_OFF = 'addRemoveDayOff',
   CREATE_ENGINEER = 'createEngineer',
-  ADD_REMOVE_ENGINEER_DAY_OFF = 'addRemoveEngineerDayOff',
   ADD_ENGINEER = 'addEngineer',
   ADD_WORK = 'addWork',
   ASSIGN_WORK = 'assignWork',
-  UNASSIGN_WORK = 'unassignWork',
-  UPDATE_ENGINEER_DAYS_OFF = 'updateEngineerDaysOff',
 }
 
 export interface Action<T = AnyValue> {

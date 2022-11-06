@@ -1,26 +1,17 @@
 import { Button, Collapse, Typography } from '@mui/material';
 import clsx from 'clsx';
-import { Dayjs } from 'dayjs';
-import { compose } from 'ramda';
 import { useState } from 'react';
 
 import { CountOfCount, Message } from '../../../atoms';
 import { TEXT } from '../../../data';
 import { MongoDocument } from '../../../models';
-import {
-  getUnAssignedWorksQty,
-  getWorkDaysLeft,
-  getWorkDaysPerEngineer,
-  updateEngineerDaysOff,
-  useDispatch,
-  useSelector,
-} from '../../../state';
+import { getUnAssignedWorksQty, getWorkDaysLeft, getWorkDaysPerEngineer, useSelector } from '../../../state';
 import { CONSTANTS } from '../../../theme';
 import { ifTrue, setupText } from '../../../tools';
-import { AddDaysOff } from '../../days';
 import { AssignWork, CreateAssignWork } from '../../work';
 import { Engineer as EngineerType } from '../engineer.models';
 import { makeName } from '../engineer.tools';
+import { EngineerDaysOff } from '../EngineerDaysOff';
 import { EngineerWorks } from '../EngineerWorks';
 import classes from './Engineer.module.scss';
 
@@ -43,22 +34,18 @@ export function Engineer({ engineer }: Props) {
 
   const [isDaysOffOpen, setIsDaysOffOpen] = useState(false);
 
-  const [daysOff, setDaysOff] = useState<Dayjs[]>(engineer.daysOff);
-
-  const [isDaysOffUpdated, setDaysOffUpdated] = useState(false);
-
-  const dispatch = useDispatch();
+  const closeDaysOff = () => setIsDaysOffOpen(false);
 
   function toggle(item: 'assign' | 'daysOff' | 'create') {
     return function call() {
       if (item === 'assign') {
-        if (isDaysOffOpen) setIsDaysOffOpen(false);
+        if (isDaysOffOpen) closeDaysOff();
 
         if (isCreateOpen) setIsCreateOpen(false);
 
         setIsAssignOpen(state => !state);
       } else if (item === 'create') {
-        if (isDaysOffOpen) setIsDaysOffOpen(false);
+        if (isDaysOffOpen) closeDaysOff();
 
         if (isAssignOpen) setIsAssignOpen(false);
 
@@ -73,17 +60,6 @@ export function Engineer({ engineer }: Props) {
     };
   }
 
-  function handleUpdate() {
-    setIsDaysOffOpen(false);
-    setDaysOffUpdated(false);
-    compose(dispatch, updateEngineerDaysOff)({ engineerId: engineer._id, days: daysOff });
-  }
-
-  function handleSetDaysOff(days: Dayjs[]) {
-    setDaysOff(days);
-    setDaysOffUpdated(true);
-  }
-
   function renderCreate() {
     return <CreateAssignWork engineerId={engineer._id} onCancel={toggle('create')} />;
   }
@@ -95,16 +71,7 @@ export function Engineer({ engineer }: Props) {
   }
 
   function renderDaysOff() {
-    return (
-      <div className='padding-1'>
-        <AddDaysOff daysOff={daysOff} setDaysOff={handleSetDaysOff} />
-        <div className='w-100 center padding-1'>
-          <Button variant='contained' size='small' disabled={!isDaysOffUpdated} onClick={handleUpdate}>
-            {TXT('update')}
-          </Button>
-        </div>
-      </div>
-    );
+    return <EngineerDaysOff engineer={engineer} onClose={closeDaysOff} />;
   }
 
   function renderActions() {

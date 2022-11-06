@@ -1,6 +1,7 @@
 import { Dayjs } from 'dayjs';
 import { assoc } from 'ramda';
 import { AssignedWork, Engineer, Sprint, Work } from '../entities';
+
 import { MongoDocument } from '../models';
 import { Action, MappedReducerFns, StateActions, State } from './types';
 
@@ -34,6 +35,19 @@ MAP.set(StateActions.SET_ENGINEERS, (state: State, action: Action<MongoDocument<
   return { ...state, engineers: action.payload };
 });
 
+MAP.set(StateActions.UPDATE_ENGINEER, (state: State, action: Action<Partial<MongoDocument<Engineer>>>) => {
+  if (!action.payload || !action.payload._id) return state;
+
+  return {
+    ...state,
+    engineers: state.engineers.map(engineer => {
+      if (engineer._id !== action.payload?._id) return engineer;
+
+      return { ...engineer, ...action.payload };
+    }),
+  };
+});
+
 MAP.set(StateActions.SET_ADDED_ENGINEERS, (state: State, action: Action<string[]>) => {
   if (!action.payload) return state;
 
@@ -45,10 +59,17 @@ MAP.set(StateActions.SET_ASSIGNED_WORKS, (state: State, action: Action<MongoDocu
 
   return { ...state, assignedWorks: action.payload };
 });
+
 MAP.set(StateActions.REMOVE_ASSIGNED_WORK, (state: State, action: Action<string>) => {
   if (!action.payload) return state;
 
   return { ...state, assignedWorks: state.assignedWorks.filter(work => work._id !== action.payload) };
+});
+
+MAP.set(StateActions.ADD_ASSIGNED_WORK, (state: State, action: Action<MongoDocument<AssignedWork>>) => {
+  if (!action.payload) return state;
+
+  return { ...state, assignedWorks: [...state.assignedWorks, action.payload] };
 });
 
 MAP.set(StateActions.SET_WORKS, (state: State, action: Action<MongoDocument<Work>[]>) => {
@@ -103,35 +124,3 @@ MAP.set(StateActions.ASSIGN_WORK, (state: State, action: Action<MongoDocument<As
 
   return assoc('assignedWorks', [...state.assignedWorks, action.payload], state);
 });
-
-MAP.set(StateActions.UNASSIGN_WORK, (state: State, action: Action<string>) => {
-  // eslint-disable-next-line no-console
-  console.log('hi', action);
-
-  if (!action.payload) return state;
-
-  return assoc(
-    'assignedWorks',
-    state.assignedWorks.filter(work => work.workId !== action.payload),
-    state,
-  );
-});
-
-MAP.set(
-  StateActions.UPDATE_ENGINEER_DAYS_OFF,
-  (state: State, action: Action<{ engineerId: string; days: Dayjs[] }>) => {
-    const { payload } = action;
-
-    if (!payload) return state;
-
-    return assoc(
-      'engineers',
-      state.engineers.map(engineer => {
-        if (engineer._id === payload.engineerId) return assoc('daysOff', payload.days, engineer);
-
-        return engineer;
-      }),
-      state,
-    );
-  },
-);

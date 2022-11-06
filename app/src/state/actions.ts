@@ -34,6 +34,11 @@ export const setEngineers = (payload: MongoDocument<Engineer>[]): Action => ({
   payload,
 });
 
+export const updateEngineer = (payload: Partial<MongoDocument<Engineer>>): Action => ({
+  type: StateActions.UPDATE_ENGINEER,
+  payload,
+});
+
 export const setAddedEngineers = (payload: string[]): Action => ({
   type: StateActions.SET_ADDED_ENGINEERS,
   payload,
@@ -46,6 +51,11 @@ export const setAssignedWorks = (payload: MongoDocument<AssignedWork>[]): Action
 
 export const removeAssignedWork = (payload: string): Action => ({
   type: StateActions.REMOVE_ASSIGNED_WORK,
+  payload,
+});
+
+export const addAssignedWork = (payload: MongoDocument<AssignedWork>): Action => ({
+  type: StateActions.ADD_ASSIGNED_WORK,
   payload,
 });
 
@@ -76,11 +86,6 @@ export const addEngineer = (payload: string): Action => ({
   payload,
 });
 
-export const addRemoveEngineerDayOff = (payload: Dayjs): Action => ({
-  type: StateActions.ADD_REMOVE_ENGINEER_DAY_OFF,
-  payload,
-});
-
 export const addWork = (payload: Work): Action => ({
   type: StateActions.ADD_WORK,
   payload,
@@ -88,16 +93,5 @@ export const addWork = (payload: Work): Action => ({
 
 export const assignWork = (payload: AssignedWork): Action => ({
   type: StateActions.ASSIGN_WORK,
-  payload,
-});
-
-// assigned work ID
-export const unAssignWork = (payload: string): Action => ({
-  type: StateActions.UNASSIGN_WORK,
-  payload,
-});
-
-export const updateEngineerDaysOff = (payload: { engineerId: string; days: Dayjs[] }): Action => ({
-  type: StateActions.UPDATE_ENGINEER_DAYS_OFF,
   payload,
 });

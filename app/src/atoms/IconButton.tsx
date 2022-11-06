@@ -17,11 +17,12 @@ interface Props {
   onClick: () => void;
   variant: keyof typeof VARIANTS;
   tooltip?: string;
+  disabled?: boolean;
 }
 
-export function IconButton({ onClick, tooltip, variant }: Props) {
+export function IconButton({ onClick, tooltip, variant, disabled }: Props) {
   const button = (
-    <MuiIconButton edge='end' aria-label='delete' onClick={onClick}>
+    <MuiIconButton edge='end' aria-label='delete' disabled={disabled} onClick={onClick}>
       {VARIANTS[variant]}
     </MuiIconButton>
   );

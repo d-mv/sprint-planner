@@ -26,7 +26,7 @@ export function AssignedWork({ workToRender }: Props) {
   function renderActions() {
     return (
       <div className={classes.actions}>
-        <IconButton variant='edit' onClick={handleUnassign} tooltip={TXT('edit')} />
+        <IconButton variant='edit' disabled={true} onClick={handleUnassign} tooltip={TXT('edit')} />
         <IconButton variant='delete' onClick={handleUnassign} tooltip={TXT('unassign')} />
       </div>
     );

@@ -2,7 +2,7 @@ import { compose } from 'ramda';
 
 import { Engineer, engineerDaysOffToDayjs } from '../entities';
 import { MongoDocument } from '../models';
-import { getMessage, setMessage, setEngineers, setIsLoading, useDispatch, useSelector } from '../state';
+import { getMessage, setMessage, setEngineers, setIsLoading, useDispatch, useSelector, updateEngineer } from '../state';
 import { query } from './http.adaptor';
 
 export function useEngineers() {
@@ -35,9 +35,24 @@ export function useEngineers() {
       .catch(err => handleGetNegative(err.message));
   }
 
-  function update() {
-    // eslint-disable-next-line no-console
-    console.log('update');
+  function handleUpdatePositive(data: Partial<MongoDocument<Engineer>>) {
+    compose(dispatch, updateEngineer)(data);
+    compose(dispatch, setIsLoading)(['update-engineer', false]);
+  }
+
+  function handleUpdateNegative(message: string) {
+    compose(dispatch, setMessage)(message);
+    compose(dispatch, setIsLoading)(['update-engineer', false]);
+  }
+
+  function update(data: Partial<MongoDocument<Engineer>>) {
+    compose(dispatch, setIsLoading)(['update-engineer', true]);
+
+    if (error) compose(dispatch, setMessage)('');
+
+    query<'OK'>('engineer', 'update', data)
+      .then(r => (r.isOK ? handleUpdatePositive(data) : handleUpdateNegative(r.message)))
+      .catch(err => handleUpdateNegative(err.message));
   }
 
   function remove() {
