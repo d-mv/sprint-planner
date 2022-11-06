@@ -1,12 +1,9 @@
-// import EditIcon from '@mui/icons-material/Edit';
-// import { IconButton } from '@mui/material';
 import clsx from 'clsx';
-import { compose } from 'ramda';
-import { IconButton } from '../../../atoms';
 
-// import {  Tooltip } from '../../../atoms';
+import { useAssignedWork } from '../../../adaptors';
+import { IconButton } from '../../../atoms';
 import { TEXT } from '../../../data';
-import { unAssignWork, useDispatch } from '../../../state';
+import { MongoDocument } from '../../../models';
 import { CONSTANTS } from '../../../theme';
 import { setupText } from '../../../tools';
 import { WorkToRender } from '../work.models';
@@ -16,16 +13,14 @@ import classes from './AssignedWork.module.scss';
 const TXT = setupText(TEXT)('work');
 
 interface Props {
-  workToRender: WorkToRender;
+  workToRender: MongoDocument<WorkToRender>;
 }
 
 export function AssignedWork({ workToRender }: Props) {
-  const dispatch = useDispatch();
-
-  const { work } = workToRender;
+  const { remove } = useAssignedWork();
 
   function handleUnassign() {
-    compose(dispatch, unAssignWork)(work._id);
+    remove(workToRender._id);
   }
 
   function renderActions() {
@@ -43,7 +38,7 @@ export function AssignedWork({ workToRender }: Props) {
       className={clsx('align-center w-100', classes.container)}
       style={{ height: CONSTANTS.daysLineHeight }}
     >
-      <WorkLine work={work}>{renderActions()}</WorkLine>
+      <WorkLine work={workToRender.work}>{renderActions()}</WorkLine>
     </div>
   );
 }

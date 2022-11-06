@@ -10,7 +10,10 @@ export const AssignedWorkController = makeMatch<(arg: ControllerRequest) => Prom
       return success(result);
     },
     delete: async ({ query, context }) => {
-      const result = await context.collections.assignedWork.deleteOne(query.payload);
+      const result = await context.collections.assignedWork.deleteOne({ _id: query.payload });
+
+      // eslint-disable-next-line no-console
+      console.log(result, query);
 
       if (result.deletedCount) return success('OK');
 

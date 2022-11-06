@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLogin } from '../adaptors';
 import { CONFIG } from '../config';
 
-import { Login, Main } from '../pages';
+import { Loading, Login, Main } from '../pages';
 import { getIsConnected, StateActions, useDispatch, useSelector } from '../state';
 import { ifTrue } from '../tools';
 
@@ -27,6 +27,7 @@ export function App() {
     <>
       {ifTrue(isConnected, renderMain)}
       {ifTrue(!isConnected, renderLogin)}
+      <Loading />
     </>
   );
 }

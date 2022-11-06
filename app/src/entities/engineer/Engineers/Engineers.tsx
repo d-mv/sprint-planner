@@ -1,7 +1,7 @@
 import { map } from 'ramda';
 
 import { Engineer as EngineerType } from '../engineer.models';
-import { getAddedEngineers, useSelector } from '../../../state';
+import { getAddedEngineers, getMessage, useSelector } from '../../../state';
 import { Engineer } from '../Engineer';
 import { AddOrCreateEngineer } from '../AddOrCreateEngineer';
 import classes from './Engineers.module.scss';
@@ -12,9 +12,12 @@ import { useEffect } from 'react';
 import { MongoDocument } from '../../../models';
 import { useAssignedWork } from '../../../adaptors/useAssignedWorks.hook';
 import { CONSTANTS } from '../../../theme';
+import { ErrorMessage } from '../../../atoms';
 
 export function Engineers() {
   const engineers = useSelector(getAddedEngineers);
+
+  const message = useSelector(getMessage);
 
   const { get } = useEngineers();
 
@@ -37,7 +40,9 @@ export function Engineers() {
 
   return (
     <div style={{ width: CONSTANTS.engineersWidth }}>
-      <div style={{ height: CONSTANTS.subHeaderHeight }} />
+      <div className='center' style={{ height: CONSTANTS.subHeaderHeight }}>
+        <ErrorMessage message={message} />
+      </div>
       {map(renderEngineer, engineers)}
       <div className='column w-100 border-top'>
         <AddOrCreateEngineer />

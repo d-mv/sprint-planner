@@ -1,0 +1,24 @@
+.container {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	backdrop-filter: blur(.9rem);
+	display: grid;
+	place-items: center;
+}
+
+.dialog {
+	background-color: #fff;
+	display: grid;
+	place-items: center;
+	padding: 1rem;
+	border-radius: 0.3rem;
+	border: var(--border);
+}
+
+.list {
+	display: flex;
+	flex-flow: column;
+}

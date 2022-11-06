@@ -1,13 +1,14 @@
 import { compose } from 'ramda';
+
 import { Work } from '../entities';
 import { MongoDocument } from '../models';
-import { getAuthError, setAuthError, setIsLoading, setWorks, useDispatch, useSelector } from '../state';
+import { getMessage, setMessage, setIsLoading, setWorks, useDispatch, useSelector } from '../state';
 import { query } from './http.adaptor';
 
 export function useWorks() {
   const dispatch = useDispatch();
 
-  const error = useSelector(getAuthError);
+  const error = useSelector(getMessage);
 
   function handleGetPositive(data: MongoDocument<Work>[]) {
     compose(dispatch, setWorks)(data);
@@ -15,7 +16,7 @@ export function useWorks() {
   }
 
   function handleGetNegative(message: string) {
-    compose(dispatch, setAuthError)(message);
+    compose(dispatch, setMessage)(message);
     compose(dispatch, setIsLoading)(['get-works', false]);
   }
 
@@ -27,7 +28,7 @@ export function useWorks() {
   function get() {
     compose(dispatch, setIsLoading)(['get-works', true]);
 
-    if (error) compose(dispatch, setAuthError)('');
+    if (error) compose(dispatch, setMessage)('');
 
     query<MongoDocument<Work>[]>('work', 'getAll')
       .then(r => (r.isOK ? handleGetPositive(r.payload) : handleGetNegative(r.message)))

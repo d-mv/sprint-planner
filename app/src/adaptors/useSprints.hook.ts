@@ -1,13 +1,14 @@
 import { compose } from 'ramda';
+
 import { Sprint, sprintDateToDayjs } from '../entities';
 import { MongoDocument } from '../models';
-import { getAuthError, setAuthError, setIsLoading, setSprints, useDispatch, useSelector } from '../state';
+import { getMessage, setMessage, setIsLoading, setSprints, useDispatch, useSelector } from '../state';
 import { query } from './http.adaptor';
 
 export function useSprints() {
   const dispatch = useDispatch();
 
-  const error = useSelector(getAuthError);
+  const error = useSelector(getMessage);
 
   function handleGetPositive(data: MongoDocument<Sprint>[]) {
     compose(dispatch, setSprints, sprintDateToDayjs)(data);
@@ -15,7 +16,7 @@ export function useSprints() {
   }
 
   function handleGetNegative(message: string) {
-    compose(dispatch, setAuthError)(message);
+    compose(dispatch, setMessage)(message);
     compose(dispatch, setIsLoading)(['get-sprint', false]);
   }
 
@@ -27,7 +28,7 @@ export function useSprints() {
   function get() {
     compose(dispatch, setIsLoading)(['get-sprint', true]);
 
-    if (error) compose(dispatch, setAuthError)('');
+    if (error) compose(dispatch, setMessage)('');
 
     query<MongoDocument<Sprint>[]>('sprint', 'getAll')
       .then(r => (r.isOK ? handleGetPositive(r.payload) : handleGetNegative(r.message)))

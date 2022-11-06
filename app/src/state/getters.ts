@@ -132,8 +132,10 @@ export const getWorkDaysLeft = memoizeOne(unassignedWorkDaysLeft);
 
 export const getAuth = (state: State) => state.auth;
 
-export const getAuthError = (state: State) => state.auth.error;
+export const getMessage = (state: State) => state.message;
 
 export const getIsConnected = (state: State) => state.auth.isConnected;
 
 export const getIsLoading = (state: State) => (key: string) => path([key], state.isLoading) ?? false;
+
+export const getAllIsLoading = (state: State) => state.isLoading;

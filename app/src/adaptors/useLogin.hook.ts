@@ -1,12 +1,12 @@
 import { compose } from 'ramda';
 
-import { getAuthError, setAuthError, setIsConnected, setIsLoading, useDispatch, useSelector } from '../state';
+import { getMessage, setMessage, setIsConnected, setIsLoading, useDispatch, useSelector } from '../state';
 import { query } from './http.adaptor';
 
 export function useLogin() {
   const dispatch = useDispatch();
 
-  const error = useSelector(getAuthError);
+  const error = useSelector(getMessage);
 
   function handlePositive() {
     compose(dispatch, setIsConnected)(true);
@@ -14,14 +14,14 @@ export function useLogin() {
   }
 
   function handleNegative(message: string) {
-    compose(dispatch, setAuthError)(message);
+    compose(dispatch, setMessage)(message);
     compose(dispatch, setIsLoading)(['login', false]);
   }
 
   function request(url: string) {
     compose(dispatch, setIsLoading)(['login', true]);
 
-    if (error) compose(dispatch, setAuthError)('');
+    if (error) compose(dispatch, setMessage)('');
 
     query<'OK'>('auth', 'connect', url)
       .then(r => (r.isOK ? handlePositive() : handleNegative(r.message)))

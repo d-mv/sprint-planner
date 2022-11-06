@@ -9,5 +9,6 @@ export const INITIAL_STATE: State = {
   addedEngineers: [],
   works: [],
   assignedWorks: [],
-  auth: { error: '', isConnected: false },
+  message: '',
+  auth: { isConnected: false },
 };

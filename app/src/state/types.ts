@@ -4,7 +4,7 @@ import { AssignedWork, Engineer, Sprint, Work } from '../entities';
 import { AnyValue, MongoDocument, RecordObject } from '../models';
 
 export enum StateActions {
-  SET_AUTH_ERROR = 'setAuthError',
+  SET_MESSAGE = 'setMessage',
   SET_IS_CONNECTED = 'setIsConnected',
   SET_IS_LOADING = 'setIsLoading',
   LOGIN = 'login',
@@ -13,6 +13,7 @@ export enum StateActions {
   SET_ENGINEERS = 'setEngineers',
   SET_ADDED_ENGINEERS = 'setAddedEngineers',
   SET_ASSIGNED_WORKS = 'setAssignedWorks',
+  REMOVE_ASSIGNED_WORK = 'removeAssignedWork',
   SET_WORKS = 'setWorks',
   // to revise
   ADD_SPRINT = 'addSprint',
@@ -40,13 +41,21 @@ export interface State {
   addedEngineers: string[];
   works: MongoDocument<Work>[];
   assignedWorks: MongoDocument<AssignedWork>[];
+  message: string;
   auth: {
-    // authString: string;
     isConnected: boolean;
-    error: string;
   };
 }
 
 export type Dispatch<T = unknown> = (action: Action<T>) => void;
 
 export type MappedReducerFns = Map<StateActions, (state: State, action: Action) => State>;
+
+export enum LoadingActions {
+  GET_ADDED_ENGINEERS = 'get-added-engineers',
+  GET_ASSIGNED_WORK = 'get-assigned-work',
+  GET_ENGINEERS = 'get-engineers',
+  GET_SPRINT = 'get-sprint',
+  GET_WORKS = 'get-works',
+  GET_LOGIN = 'login',
+}

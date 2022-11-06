@@ -9,8 +9,8 @@ export const setIsLoading = (payload: [key: string, value: boolean]): Action => 
   payload,
 });
 
-export const setAuthError = (payload: string): Action => ({
-  type: StateActions.SET_AUTH_ERROR,
+export const setMessage = (payload: string): Action => ({
+  type: StateActions.SET_MESSAGE,
   payload,
 });
 
@@ -39,8 +39,13 @@ export const setAddedEngineers = (payload: string[]): Action => ({
   payload,
 });
 
-export const setAssignedWork = (payload: MongoDocument<AssignedWork>[]): Action => ({
+export const setAssignedWorks = (payload: MongoDocument<AssignedWork>[]): Action => ({
   type: StateActions.SET_ASSIGNED_WORKS,
+  payload,
+});
+
+export const removeAssignedWork = (payload: string): Action => ({
+  type: StateActions.REMOVE_ASSIGNED_WORK,
   payload,
 });
 

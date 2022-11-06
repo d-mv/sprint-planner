@@ -6,8 +6,8 @@ import { Action, MappedReducerFns, StateActions, State } from './types';
 
 export const MAP: MappedReducerFns = new Map();
 
-MAP.set(StateActions.SET_AUTH_ERROR, (state: State, action: Action<string>) => {
-  return assoc('auth', assoc('error', action.payload ?? '', state.auth), state);
+MAP.set(StateActions.SET_MESSAGE, (state: State, action: Action<string>) => {
+  return assoc('message', action.payload ?? '', state);
 });
 MAP.set(StateActions.SET_IS_CONNECTED, (state: State, action: Action<boolean>) => {
   if (!action.payload) return state;
@@ -44,6 +44,11 @@ MAP.set(StateActions.SET_ASSIGNED_WORKS, (state: State, action: Action<MongoDocu
   if (!action.payload) return state;
 
   return { ...state, assignedWorks: action.payload };
+});
+MAP.set(StateActions.REMOVE_ASSIGNED_WORK, (state: State, action: Action<string>) => {
+  if (!action.payload) return state;
+
+  return { ...state, assignedWorks: state.assignedWorks.filter(work => work._id !== action.payload) };
 });
 
 MAP.set(StateActions.SET_WORKS, (state: State, action: Action<MongoDocument<Work>[]>) => {

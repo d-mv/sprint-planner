@@ -1,13 +1,14 @@
 import { compose } from 'ramda';
+
 import { Engineer, engineerDaysOffToDayjs } from '../entities';
 import { MongoDocument } from '../models';
-import { getAuthError, setAuthError, setEngineers, setIsLoading, useDispatch, useSelector } from '../state';
+import { getMessage, setMessage, setEngineers, setIsLoading, useDispatch, useSelector } from '../state';
 import { query } from './http.adaptor';
 
 export function useEngineers() {
   const dispatch = useDispatch();
 
-  const error = useSelector(getAuthError);
+  const error = useSelector(getMessage);
 
   function handleGetPositive(data: MongoDocument<Engineer<string>>[]) {
     compose(dispatch, setEngineers, engineerDaysOffToDayjs)(data);
@@ -15,7 +16,7 @@ export function useEngineers() {
   }
 
   function handleGetNegative(message: string) {
-    compose(dispatch, setAuthError)(message);
+    compose(dispatch, setMessage)(message);
     compose(dispatch, setIsLoading)(['get-engineers', false]);
   }
 
@@ -27,7 +28,7 @@ export function useEngineers() {
   function get() {
     compose(dispatch, setIsLoading)(['get-engineers', true]);
 
-    if (error) compose(dispatch, setAuthError)('');
+    if (error) compose(dispatch, setMessage)('');
 
     query<MongoDocument<Engineer<string>>[]>('engineer', 'getAll')
       .then(r => (r.isOK ? handleGetPositive(r.payload) : handleGetNegative(r.message)))

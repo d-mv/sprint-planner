@@ -2,19 +2,19 @@ import { map } from 'ramda';
 import { useEffect } from 'react';
 
 import { Sprint as SprintType } from '../sprint.models';
-import { getAuthError, getIsLoading, getSprints, useSelector } from '../../../state';
+import { getMessage, getIsLoading, getSprints, useSelector } from '../../../state';
 import { Sprint } from '../Sprint';
 import classes from './Sprints.module.scss';
 import { MongoDocument } from '../../../models';
 import { useSprints } from '../../../adaptors';
-import { ErrorMessage, Spinner } from '../../../atoms';
+import { Spinner } from '../../../atoms';
 import { SprintWorks } from '../SprintWorks';
 import clsx from 'clsx';
 
 export function Sprints() {
   const sprints = useSelector(getSprints);
 
-  const error = useSelector(getAuthError);
+  const error = useSelector(getMessage);
 
   const isLoading = useSelector(getIsLoading)('get-sprints');
 
@@ -30,7 +30,7 @@ export function Sprints() {
 
   if (isLoading) return <Spinner />;
 
-  if (error) return <ErrorMessage message={error} />;
+  if (error) return null;
 
   return (
     <div className={clsx('column', classes.container)}>

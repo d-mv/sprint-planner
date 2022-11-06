@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import { ErrorMessage, Tooltip } from '../../atoms';
 import classes from './Login.module.scss';
-import { getAuthError, getIsLoading, useSelector } from '../../state';
+import { getMessage, getIsLoading, useSelector } from '../../state';
 import { setupText } from '../../tools';
 import { useLogin } from '../../adaptors';
 import { TEXT } from '../../data';
@@ -18,7 +18,7 @@ export function Login() {
 
   const [value, setValue] = useState('');
 
-  const error = useSelector(getAuthError);
+  const error = useSelector(getMessage);
 
   const isLoading = useSelector(getIsLoading)('login');
 
