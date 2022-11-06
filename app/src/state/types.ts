@@ -10,6 +10,10 @@ export enum StateActions {
   LOGIN = 'login',
   BOOT = 'boot',
   SET_SPRINTS = 'setSprints',
+  SET_ENGINEERS = 'setEngineers',
+  SET_ADDED_ENGINEERS = 'setAddedEngineers',
+  SET_ASSIGNED_WORKS = 'setAssignedWorks',
+  SET_WORKS = 'setWorks',
   // to revise
   ADD_SPRINT = 'addSprint',
   ADD_REMOVE_DAY_OFF = 'addRemoveDayOff',
@@ -32,10 +36,10 @@ export interface State {
   isLoading: RecordObject<boolean>;
   sprints: MongoDocument<Sprint<Dayjs>>[];
   daysOff: Dayjs[];
-  engineers: Engineer[];
+  engineers: MongoDocument<Engineer>[];
   addedEngineers: string[];
-  works: Work[];
-  assignedWorks: AssignedWork[];
+  works: MongoDocument<Work>[];
+  assignedWorks: MongoDocument<AssignedWork>[];
   auth: {
     // authString: string;
     isConnected: boolean;

@@ -2,6 +2,7 @@ import { List, Typography } from '@mui/material';
 import { map } from 'ramda';
 
 import { Divider } from '../../atoms';
+import { MongoDocument } from '../../models';
 import { useSelector, getUnAssignedWorks } from '../../state';
 import { Work } from './work.models';
 import { WorkLine } from './WorkLine';
@@ -11,8 +12,8 @@ export function UnAssignedWorks() {
 
   if (!unAssignedWorks.length) return null;
 
-  function renderWork(work: Work) {
-    return <WorkLine key={work.id} work={work} />;
+  function renderWork(work: MongoDocument<Work>) {
+    return <WorkLine key={work._id} work={work} />;
   }
 
   return (

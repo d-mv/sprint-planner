@@ -28,6 +28,30 @@ MAP.set(StateActions.SET_SPRINTS, (state: State, action: Action<MongoDocument<Sp
   return { ...state, sprints: action.payload };
 });
 
+MAP.set(StateActions.SET_ENGINEERS, (state: State, action: Action<MongoDocument<Engineer>[]>) => {
+  if (!action.payload) return state;
+
+  return { ...state, engineers: action.payload };
+});
+
+MAP.set(StateActions.SET_ADDED_ENGINEERS, (state: State, action: Action<string[]>) => {
+  if (!action.payload) return state;
+
+  return { ...state, addedEngineers: action.payload };
+});
+
+MAP.set(StateActions.SET_ASSIGNED_WORKS, (state: State, action: Action<MongoDocument<AssignedWork>[]>) => {
+  if (!action.payload) return state;
+
+  return { ...state, assignedWorks: action.payload };
+});
+
+MAP.set(StateActions.SET_WORKS, (state: State, action: Action<MongoDocument<Work>[]>) => {
+  if (!action.payload) return state;
+
+  return { ...state, works: action.payload };
+});
+
 // to revise
 
 MAP.set(StateActions.ADD_SPRINT, (state: State, action: Action<MongoDocument<Sprint<Dayjs>>>) => {
@@ -51,11 +75,11 @@ MAP.set(StateActions.ADD_REMOVE_DAY_OFF, (state: State, action: Action<Dayjs>) =
   return assoc('daysOff', [...state.daysOff, action.payload], state);
 });
 
-MAP.set(StateActions.CREATE_ENGINEER, (state: State, action: Action<Engineer>) => {
-  if (!action.payload) return state;
+// MAP.set(StateActions.CREATE_ENGINEER, (state: State, action: Action<Engineer>) => {
+//   if (!action.payload) return state;
 
-  return assoc('engineers', [...state.engineers, action.payload], state);
-});
+//   return assoc('engineers', [...state.engineers, action.payload], state);
+// });
 
 MAP.set(StateActions.ADD_ENGINEER, (state: State, action: Action<string>) => {
   if (!action.payload) return state;
@@ -63,13 +87,13 @@ MAP.set(StateActions.ADD_ENGINEER, (state: State, action: Action<string>) => {
   return assoc('addedEngineers', [...state.addedEngineers, action.payload], state);
 });
 
-MAP.set(StateActions.ADD_WORK, (state: State, action: Action<Work>) => {
+MAP.set(StateActions.ADD_WORK, (state: State, action: Action<MongoDocument<Work>>) => {
   if (!action.payload) return state;
 
   return assoc('works', [...state.works, action.payload], state);
 });
 
-MAP.set(StateActions.ASSIGN_WORK, (state: State, action: Action<AssignedWork>) => {
+MAP.set(StateActions.ASSIGN_WORK, (state: State, action: Action<MongoDocument<AssignedWork>>) => {
   if (!action.payload) return state;
 
   return assoc('assignedWorks', [...state.assignedWorks, action.payload], state);
@@ -98,7 +122,7 @@ MAP.set(
     return assoc(
       'engineers',
       state.engineers.map(engineer => {
-        if (engineer.id === payload.engineerId) return assoc('daysOff', payload.days, engineer);
+        if (engineer._id === payload.engineerId) return assoc('daysOff', payload.days, engineer);
 
         return engineer;
       }),

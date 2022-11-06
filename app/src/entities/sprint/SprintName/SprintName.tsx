@@ -6,6 +6,7 @@ import classes from './SprintName.module.scss';
 interface Props {
   name: string;
 }
+
 export function SprintName({ name }: Props) {
   return (
     <div className={clsx('border center margin-center', classes.container)}>

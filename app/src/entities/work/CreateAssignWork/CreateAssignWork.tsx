@@ -16,28 +16,29 @@ interface Props {
   engineerId: string;
   onCancel: () => void;
 }
+
 export function CreateAssignWork({ engineerId, onCancel }: Props) {
   const [form, setForm] = useState<Work>({
-    id: nanoid(),
     jiraTicket: '',
     estimate: 0,
     title: '',
   });
+
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
-    if (isValid && (!form.jiraTicket || !form.title || !form.estimate))
-      setIsValid(false);
-    else if (!isValid && form.jiraTicket && form.title && form.estimate)
-      setIsValid(true);
+    if (isValid && (!form.jiraTicket || !form.title || !form.estimate)) setIsValid(false);
+    else if (!isValid && form.jiraTicket && form.title && form.estimate) setIsValid(true);
   }, [form.estimate, form.jiraTicket, form.title, isValid]);
 
-  const [start, setStart] = useState(dayjs());
+  const [startDate, setStartDate] = useState(dayjs());
+
   const dispatch = useDispatch();
 
   function handleChange(key: keyof typeof form) {
     return function change(e: ChangeEvent<HTMLInputElement>) {
       let value: string | number = e.currentTarget.value;
+
       // parseInt is safe, as input type is number and it's going to be whole
       // because of parseInt
       if (key === 'estimate') value = parseInt(value);
@@ -49,21 +50,22 @@ export function CreateAssignWork({ engineerId, onCancel }: Props) {
   function handleAssign() {
     // create work
     compose(dispatch, addWork)(form);
+
     // create assigned work
-    const assignedWork: AssignedWork = {
-      id: nanoid(),
-      workId: form.id,
-      engineerId,
-      start,
-    };
-    compose(dispatch, assignWork)(assignedWork);
+    // const assignedWork: AssignedWork = {
+    //   workId: form.id,
+    //   engineerId,
+    //   startDate,
+    // };
+
+    // compose(dispatch, assignWork)(assignedWork);
     onCancel();
   }
 
   function handleDateChange(e: ChangeEvent<HTMLInputElement>) {
     const value = dayjs(e.currentTarget.value);
 
-    setStart(value);
+    setStartDate(value);
   }
 
   return (
@@ -110,7 +112,7 @@ export function CreateAssignWork({ engineerId, onCancel }: Props) {
             className={classes.date}
             type='date'
             label={TXT('start')}
-            value={start.format('YYYY-M-DD')}
+            value={startDate.format('YYYY-M-DD')}
             sx={{ width: 220 }}
             InputLabelProps={{
               shrink: true,
@@ -119,12 +121,7 @@ export function CreateAssignWork({ engineerId, onCancel }: Props) {
           />
         </div>
         <div className={classes.actions}>
-          <Button
-            variant='contained'
-            size='small'
-            disabled={!isValid}
-            onClick={handleAssign}
-          >
+          <Button variant='contained' size='small' disabled={!isValid} onClick={handleAssign}>
             {TXT('createAssign')}
           </Button>
         </div>

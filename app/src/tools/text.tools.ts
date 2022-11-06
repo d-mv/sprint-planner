@@ -17,10 +17,6 @@ export function setupText(textData: RecordObject) {
   };
 }
 
-export function makeName(person: Person) {
-  return `${person.lastName}, ${person.firstName}`;
-}
-
 export function buildId(module: string, id: string) {
   return `${module}-${id}`;
 }

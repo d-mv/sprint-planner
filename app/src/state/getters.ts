@@ -4,7 +4,7 @@ import { omit, path, sum } from 'ramda';
 
 import { State } from '.';
 import { WorkToRender } from '../entities';
-import { Option } from '../models';
+import { MongoDocument, Option } from '../models';
 
 export const getSprints = (state: State) => state.sprints;
 
@@ -18,38 +18,59 @@ export const getIsDayOff = (state: State) => (day?: Option<Dayjs>) =>
 export const getEngineers = (state: State) => state.engineers;
 
 export const getEngineerById = (state: State) => (engineerId: string) =>
-  state.engineers.find(engineer => engineer.id === engineerId);
+  state.engineers.find(engineer => engineer._id === engineerId);
 
 export const getDaysOffForEngineer = (state: State) => (engineerId: string) =>
-  state.engineers.find(engineer => engineer.id === engineerId)?.daysOff ?? [];
+  state.engineers.find(engineer => engineer._id === engineerId)?.daysOff ?? [];
 
 export const getIsEngineerAdded = (state: State) => (engineerId: string) =>
-  Boolean(state.engineers.find(engineer => engineer.id === engineerId));
+  Boolean(state.engineers.find(engineer => engineer._id === engineerId));
 
-const addedEngineers = (state: State) => state.engineers.filter(engineer => state.addedEngineers.includes(engineer.id));
+const addedEngineers = (state: State) =>
+  state.engineers.filter(engineer => state.addedEngineers.includes(engineer._id));
 
 const notAddedEngineers = (state: State) =>
-  state.engineers.filter(engineer => !state.addedEngineers.includes(engineer.id));
+  state.engineers.filter(engineer => !state.addedEngineers.includes(engineer._id));
 
 export const getAddedEngineers = memoizeOne(addedEngineers);
 
 export const getNotAddedEngineers = memoizeOne(notAddedEngineers);
 
 export function getWorksForEngineer(state: State) {
-  return function call(engineerId: string): WorkToRender[] {
+  return function call(engineerId: string): MongoDocument<WorkToRender>[] {
     const assignedWorks = state.assignedWorks.filter(work => work.engineerId === engineerId);
 
     return assignedWorks.map(assignedWork => ({
       ...omit(['workId'], assignedWork),
-      work: state.works.find(work => work.id === assignedWork.workId)!,
+      work: state.works.find(work => work._id === assignedWork.workId)!,
     }));
+  };
+}
+
+export function getWorksForEngineerPerSprint(state: State) {
+  return function call(engineerId: string) {
+    return function call2(sprintId: string): WorkToRender[] {
+      const sprint = state.sprints.find(sprint => sprint._id === sprintId);
+
+      if (!sprint) return [];
+
+      const assignedWorks = state.assignedWorks.filter(
+        work => work.engineerId === engineerId && work.startDate.isBefore(sprint.endDate),
+      );
+
+      if (!assignedWorks.length) return [];
+
+      return assignedWorks.map(assignedWork => {
+        return { ...omit(['workId'], assignedWork), work: state.works.find(work => work._id === assignedWork.workId)! };
+      });
+    };
   };
 }
 
 function unAssignedWorks(state: State) {
   const assignedIds = state.assignedWorks.map(el => el.workId);
 
-  return state.works.filter(work => !assignedIds.includes(work.id));
+  return state.works.filter(work => !assignedIds.includes(work._id));
 }
 
 export const getUnAssignedWorks = memoizeOne(unAssignedWorks);
@@ -101,7 +122,7 @@ const unassignedWorkDaysLeft = (state: State) => (engineerId: string) => {
 
   const usedDays = state.assignedWorks
     .filter(assignedWork => assignedWork.engineerId === engineerId)
-    .map(assignedWork => state.works.find(work => work.id === assignedWork.workId)?.estimate ?? 0)
+    .map(assignedWork => state.works.find(work => work._id === assignedWork.workId)?.estimate ?? 0)
     .flat();
 
   return workDays - sum(usedDays);

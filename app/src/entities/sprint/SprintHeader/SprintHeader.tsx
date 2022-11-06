@@ -10,12 +10,15 @@ const TXT = setupText(TEXT)('sprint');
 
 export function SprintHeader() {
   const [isOpen, setIsOpen] = useState(false);
+
   function toggleIsOpen() {
-    setIsOpen((state) => !state);
+    setIsOpen(state => !state);
   }
+
   function handleClose() {
     setIsOpen(false);
   }
+
   return (
     <div className={classes.container}>
       <div className={classes.left}>

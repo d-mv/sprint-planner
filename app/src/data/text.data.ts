@@ -31,6 +31,7 @@ export const TEXT = {
       end: 'End',
     },
     unassign: 'Unassign',
+    edit: 'Edit',
   },
   days: {
     addDayOff: 'Add day off',

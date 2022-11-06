@@ -1,13 +1,13 @@
 import { State } from '.';
-import { assignedWork, dayOff, engineers, works } from './seed';
+import { dayOff } from './seed';
 
 export const INITIAL_STATE: State = {
   isLoading: {},
   sprints: [],
   daysOff: [dayOff],
-  engineers,
-  addedEngineers: ['xxxx', 'xxxx2', 'xxxx3'],
-  works,
-  assignedWorks: [assignedWork],
+  engineers: [],
+  addedEngineers: [],
+  works: [],
+  assignedWorks: [],
   auth: { error: '', isConnected: false },
 };

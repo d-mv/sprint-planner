@@ -17,6 +17,7 @@ import {
   EngineerCollection,
   WorkCollection,
   AssignedWorkCollection,
+  AppCollection,
 } from '../entities';
 
 export function apiRouter(
@@ -43,6 +44,7 @@ export function apiRouter(
             engineer: EngineerCollection,
             work: WorkCollection,
             assignedWork: AssignedWorkCollection,
+            app: AppCollection,
           },
           state: { set, get },
         },

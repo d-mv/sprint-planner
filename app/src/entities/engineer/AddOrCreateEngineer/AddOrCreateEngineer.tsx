@@ -13,22 +13,27 @@ const TXT = setupText(TEXT)('engineer');
 
 export function AddOrCreateEngineer() {
   const [isAddOpen, setIsAddOpen] = useState(false);
+
   const [isNewOpen, setIsNewOpen] = useState(false);
+
   const hasAddedEngineers = !!useSelector(getAddedEngineers).length;
 
   function toggle(item: 'add' | 'new') {
     return function call() {
       if (item === 'add') {
-        if (isNewOpen) setIsNewOpen((state) => !state);
-        setIsAddOpen((state) => !state);
+        if (isNewOpen) setIsNewOpen(state => !state);
+
+        setIsAddOpen(state => !state);
       } else {
-        if (isAddOpen) setIsAddOpen((state) => !state);
-        setIsNewOpen((state) => !state);
+        if (isAddOpen) setIsAddOpen(state => !state);
+
+        setIsNewOpen(state => !state);
       }
     };
   }
 
   const renderNewEngineer = () => <CreateEngineer onCancel={toggle('new')} />;
+
   const renderAddEngineer = () => <AddEngineer onCancel={toggle('add')} />;
 
   function renderForms() {
@@ -39,6 +44,7 @@ export function AddOrCreateEngineer() {
       </div>
     );
   }
+
   return (
     <div
       className={clsx(classes.container, 'border', {

@@ -1,5 +1,13 @@
 import { createTheme } from '@mui/material';
-import { blueGrey, orange } from '@mui/material/colors';
+import { blue, blueGrey } from '@mui/material/colors';
+
+export const CONSTANTS = {
+  daysLineHeight: '4rem',
+  engineerLineHeight: '5.5rem',
+  engineersWidth: '57rem',
+  subHeaderHeight: '6.5rem',
+  engineerLineColor: blue[50],
+};
 
 export const theme = createTheme({
   palette: {
@@ -10,7 +18,7 @@ export const theme = createTheme({
     },
   },
   typography: {
-    allVariants: { fontFamily: 'Roboto',color: blueGrey['800'] },
+    allVariants: { fontFamily: 'Roboto', color: blueGrey['800'] },
     h6: {
       fontSize: '1.6rem',
     },

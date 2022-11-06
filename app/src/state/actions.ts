@@ -29,6 +29,26 @@ export const setSprints = (payload: MongoDocument<Sprint<Dayjs>>[]): Action => (
   payload,
 });
 
+export const setEngineers = (payload: MongoDocument<Engineer>[]): Action => ({
+  type: StateActions.SET_ENGINEERS,
+  payload,
+});
+
+export const setAddedEngineers = (payload: string[]): Action => ({
+  type: StateActions.SET_ADDED_ENGINEERS,
+  payload,
+});
+
+export const setAssignedWork = (payload: MongoDocument<AssignedWork>[]): Action => ({
+  type: StateActions.SET_ASSIGNED_WORKS,
+  payload,
+});
+
+export const setWorks = (payload: MongoDocument<Work>[]): Action => ({
+  type: StateActions.SET_WORKS,
+  payload,
+});
+
 // to revise:
 
 export const addSprint = (payload: Sprint): Action => ({

@@ -1,15 +1,9 @@
-import {
-  Typography,
-  Button,
-  List,
-  ListItemText,
-  ListItem,
-} from '@mui/material';
+import { Typography, Button, List, ListItemText, ListItem } from '@mui/material';
 import { Dayjs } from 'dayjs';
 import { map } from 'ramda';
 import { useState } from 'react';
 
-import { DeleteButton, Message } from '../../../atoms';
+import { IconButton, Message } from '../../../atoms';
 import { TEXT } from '../../../data';
 import { ifTrue, setupText } from '../../../tools';
 import { AddDayOff } from '../AddDayOff';
@@ -21,28 +15,21 @@ interface Props {
   daysOff: Dayjs[];
   setDaysOff: (arg0: Dayjs[]) => void;
 }
+
 export function AddDaysOff({ daysOff, setDaysOff }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleIsOpen() {
-    setIsOpen((state) => !state);
+    setIsOpen(state => !state);
   }
 
-  const renderAddDayOff = () => (
-    <AddDayOff
-      daysOff={daysOff}
-      setDaysOff={setDaysOff}
-      onClose={toggleIsOpen}
-    />
-  );
+  const renderAddDayOff = () => <AddDayOff daysOff={daysOff} setDaysOff={setDaysOff} onClose={toggleIsOpen} />;
 
-  const renderMessage = () => (
-    <Message className='margin-center width-fit' message={TXT('noDaysOff')} />
-  );
+  const renderMessage = () => <Message className='margin-center width-fit' message={TXT('noDaysOff')} />;
 
   function handleDelete(day: Dayjs) {
     return function click() {
-      setDaysOff(daysOff.filter((d) => !d.isSame(day, 'date')));
+      setDaysOff(daysOff.filter(d => !d.isSame(day, 'date')));
     };
   }
 
@@ -51,14 +38,13 @@ export function AddDaysOff({ daysOff, setDaysOff }: Props) {
       <ListItem
         key={day.toISOString()}
         className={classes.item}
-        secondaryAction={
-          <DeleteButton tooltip={TXT('remove')} onClick={handleDelete(day)} />
-        }
+        secondaryAction={<IconButton variant='delete' tooltip={TXT('remove')} onClick={handleDelete(day)} />}
       >
         <ListItemText primary={day.format('MMM D').toString()} />
       </ListItem>
     );
   }
+
   return (
     <div className={classes.container}>
       <div className={classes.title}>

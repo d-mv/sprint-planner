@@ -1,5 +1,11 @@
 import { Mongoose } from 'mongoose';
-import { AssignedWorkCollection, EngineerCollection, SprintCollection, WorkCollection } from '../entities';
+import {
+  AppCollection,
+  AssignedWorkCollection,
+  EngineerCollection,
+  SprintCollection,
+  WorkCollection,
+} from '../entities';
 import { STATE } from '../entities/state/state';
 import { Query } from './query.models';
 
@@ -13,6 +19,7 @@ export interface Collections {
   engineer: typeof EngineerCollection;
   work: typeof WorkCollection;
   assignedWork: typeof AssignedWorkCollection;
+  app: typeof AppCollection;
 }
 
 export interface ControllerRequest<QueryPayload = AnyValue> {

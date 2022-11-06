@@ -1,5 +1,11 @@
-.container {
+.sprints {
 	display: flex;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	width: fit-content;
+}
+
+.container {
 	overflow-x: scroll;
 	overflow-y: hidden;
 	width: fit-content;

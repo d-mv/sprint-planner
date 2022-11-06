@@ -1,7 +1,13 @@
 import { faker } from '@faker-js/faker';
 import dayjs, { Dayjs } from 'dayjs';
 import { compose } from 'ramda';
-import { AssignedWorkCollection, EngineerCollection, SprintCollection, WorkCollection } from './entities';
+import {
+  AppCollection,
+  AssignedWorkCollection,
+  EngineerCollection,
+  SprintCollection,
+  WorkCollection,
+} from './entities';
 // import { DayType } from './entities/sprint/sprint.models';
 import { incomingSprintToDbFormat } from './entities/sprint/sprint.tools';
 import { buildArray, capitalize } from './tools';
@@ -34,6 +40,7 @@ export async function seed() {
   await EngineerCollection.deleteMany();
   await WorkCollection.deleteMany();
   await AssignedWorkCollection.deleteMany();
+  await AppCollection.deleteMany();
 
   // seed
 
@@ -67,6 +74,10 @@ export async function seed() {
 
     engineerIds.push(_id.toString());
   }
+
+  const addedEngineers = engineerIds.slice(0, 5);
+
+  await AppCollection.create({ addedEngineers });
 
   const workIds: string[] = [];
 

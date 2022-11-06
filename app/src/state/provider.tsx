@@ -20,9 +20,7 @@ export function StateProvider({ children }: Props) {
 
   return (
     <StateContext.Provider value={state}>
-      <DispatchContext.Provider value={dispatch}>
-        {children}
-      </DispatchContext.Provider>
+      <DispatchContext.Provider value={dispatch}>{children}</DispatchContext.Provider>
     </StateContext.Provider>
   );
 }

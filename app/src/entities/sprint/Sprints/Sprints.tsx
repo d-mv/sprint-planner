@@ -8,6 +8,8 @@ import classes from './Sprints.module.scss';
 import { MongoDocument } from '../../../models';
 import { useSprints } from '../../../adaptors';
 import { ErrorMessage, Spinner } from '../../../atoms';
+import { SprintWorks } from '../SprintWorks';
+import clsx from 'clsx';
 
 export function Sprints() {
   const sprints = useSelector(getSprints);
@@ -23,8 +25,6 @@ export function Sprints() {
   }, []);
 
   function renderSprint(sprint: MongoDocument<SprintType>) {
-    // eslint-disable-next-line no-console
-    console.log(sprint);
     return <Sprint key={sprint._id} sprint={sprint} />;
   }
 
@@ -32,5 +32,10 @@ export function Sprints() {
 
   if (error) return <ErrorMessage message={error} />;
 
-  return <div className={classes.container}>{map(renderSprint, sprints)}</div>;
+  return (
+    <div className={clsx('column', classes.container)}>
+      <div className={classes.sprints}>{map(renderSprint, sprints)}</div>
+      <SprintWorks />
+    </div>
+  );
 }

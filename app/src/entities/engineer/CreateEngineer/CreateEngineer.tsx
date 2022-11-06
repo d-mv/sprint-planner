@@ -17,11 +17,16 @@ const TXT = setupText(TEXT)('engineer');
 interface Props {
   onCancel: () => void;
 }
+
 export function CreateEngineer({ onCancel }: Props) {
   const [fName, setFName] = useState('');
+
   const [lName, setLName] = useState('');
+
   const [isValid, setIsValid] = useState(false);
+
   const [daysOff, setDaysOff] = useState<Dayjs[]>([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,10 +36,10 @@ export function CreateEngineer({ onCancel }: Props) {
 
   function handleCreate() {
     const engineer: EngineerType = {
-      id: nanoid(),
       person: { firstName: fName, lastName: lName },
       daysOff,
     };
+
     dispatch(createEngineer(engineer));
     onCancel();
   }
@@ -50,18 +55,8 @@ export function CreateEngineer({ onCancel }: Props) {
   return (
     <div className={classes.container}>
       <div className={classes.input}>
-        <TextField
-          id='standard-basic'
-          label='First Name'
-          variant='standard'
-          onChange={handleFistNameChange}
-        />
-        <TextField
-          id='standard-basic'
-          label='Last Name'
-          variant='standard'
-          onChange={handleLastNameChange}
-        />
+        <TextField id='standard-basic' label='First Name' variant='standard' onChange={handleFistNameChange} />
+        <TextField id='standard-basic' label='Last Name' variant='standard' onChange={handleLastNameChange} />
       </div>
       <AddDaysOff daysOff={daysOff} setDaysOff={setDaysOff} />
       <Divider noMargin width='50%' className={classes.divider} />

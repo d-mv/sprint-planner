@@ -11,6 +11,18 @@
   border: var(--border);
 }
 
+.border-top {
+  border-top: var(--border);
+}
+
+.border-bottom {
+  border-bottom: var(--border);
+}
+
+.border-right-none {
+  border-right: none;
+}
+
 .margin-center {
   margin: 0 auto !important;
 }
@@ -40,6 +52,11 @@
   margin-block-start: 1rem;
 }
 
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
 .txt-center {
   text-align: center;
 }
@@ -49,7 +66,11 @@
 }
 
 .w-100 {
-  width: 1005;
+  width: 100%;
+}
+
+.w-fit {
+  width: fit-content;
 }
 
 .m-h-1 {

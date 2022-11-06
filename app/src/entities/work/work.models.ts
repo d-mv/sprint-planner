@@ -1,25 +1,22 @@
 import { Dayjs } from 'dayjs';
 
+import { MongoDocument } from '../../models';
+
 export interface Work {
-  id: string;
   jiraTicket: string;
   jiraEpic?: string;
   estimate: number;
   title: string;
 }
 
-export interface AssignedWork {
-  id: string;
+export interface AssignedWork<Day = Dayjs> {
   workId: string;
   engineerId: string;
-  start: Dayjs;
-  // end: Dayjs;
+  startDate: Day;
 }
 
 export interface WorkToRender {
-  id: string;
-  work: Work;
+  work: MongoDocument<Work>;
   engineerId: string;
-  start: Dayjs;
-  // end: Dayjs;
+  startDate: Dayjs;
 }

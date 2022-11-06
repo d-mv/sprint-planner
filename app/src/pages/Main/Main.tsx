@@ -8,10 +8,9 @@ export function Main() {
     <div className={clsx('column', classes.container)}>
       <SprintHeader />
       <div className={clsx('line', classes.sprints)}>
-        <div className={classes['eng-header']}>left</div>
+        <Engineers />
         <Sprints />
       </div>
-      <Engineers />
     </div>
   );
 }
