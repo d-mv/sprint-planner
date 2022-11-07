@@ -1,5 +1,6 @@
 import { useTheme } from '@emotion/react';
 import { Collapse, Typography } from '@mui/material';
+import clsx from 'clsx';
 import { map, path } from 'ramda';
 
 import { getAllIsLoading, LoadingActions, useSelector } from '../../state';
@@ -35,8 +36,8 @@ export function Loading() {
 
   return (
     <Collapse orientation='vertical' in={Boolean(filtered.length)}>
-      <div className={classes.container}>
-        <div className={classes.dialog} style={{ boxShadow: path(['shadows', 9], theme) }}>
+      <div className={clsx('center', classes.container)}>
+        <div className={clsx('border center', classes.dialog)} style={{ boxShadow: path(['shadows', 9], theme) }}>
           <Typography variant='h5' fontWeight={600} className='m-vertical'>
             Loading:
           </Typography>

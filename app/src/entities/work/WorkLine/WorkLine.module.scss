@@ -1,11 +1,7 @@
 .container {
 	height: 4rem;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
 	padding-inline-start: 1rem;
 	padding-inline-end: .5rem;
-	width: 100%;
 
 	&:hover {
 		background-color: rgba(0, 0, 0, 0.04);
@@ -23,6 +19,5 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		max-width: 100%;
-		width: 100%;
 	}
 }

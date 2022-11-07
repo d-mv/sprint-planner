@@ -61,9 +61,9 @@ export function Login() {
   }
 
   return (
-    <div id='login-page' className={classes.container}>
-      <div className={clsx('column', classes.center)}>
-        <div className={classes['input-block']}>
+    <div id='login-page' className='center w-100 h-100'>
+      <div className={clsx('column align-center', classes.center)}>
+        <div className='line w-100'>
           <Typography variant='body1' className={classes.title}>
             {TXT('label')}
           </Typography>
@@ -77,8 +77,8 @@ export function Login() {
             endAdornment={renderToggler()}
           />
         </div>
-        <div className={classes.message}>{renderMessage()}</div>
-        <div className={classes.button}>
+        <div className={clsx('center m-b-start-1', classes.message)}>{renderMessage()}</div>
+        <div className='padding-1'>
           <Button variant='contained' disabled={!value || isLoading} color='primary' onClick={handleSubmit}>
             {TXT('enter')}
           </Button>

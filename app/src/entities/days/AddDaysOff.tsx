@@ -3,11 +3,10 @@ import { Dayjs } from 'dayjs';
 import { map } from 'ramda';
 import { useState } from 'react';
 
-import { IconButton, Message } from '../../../atoms';
-import { TEXT } from '../../../data';
-import { ifTrue, setupText } from '../../../tools';
-import { AddDayOff } from '../AddDayOff';
-import classes from './AddDaysOff.module.scss';
+import { IconButton, Message } from '../../atoms';
+import { TEXT } from '../../data';
+import { ifTrue, setupText } from '../../tools';
+import { AddDayOff } from './AddDayOff';
 
 const TXT = setupText(TEXT)('days');
 
@@ -37,7 +36,7 @@ export function AddDaysOff({ daysOff, setDaysOff }: Props) {
     return (
       <ListItem
         key={day.toISOString()}
-        className={classes.item}
+        style={{ width: '13rem' }}
         secondaryAction={<IconButton variant='delete' tooltip={TXT('remove')} onClick={handleDelete(day)} />}
       >
         <ListItemText primary={day.format('MMM D').toString()} />
@@ -46,14 +45,14 @@ export function AddDaysOff({ daysOff, setDaysOff }: Props) {
   }
 
   return (
-    <div className={classes.container}>
-      <div className={classes.title}>
+    <div className='w-auto'>
+      <div className='line s-between align-center' style={{ padding: '1rem 0 0 0' }}>
         <Typography variant='h6'>{TXT('daysOff')}</Typography>
         <Button variant='contained' size='small' onClick={toggleIsOpen}>
           {ifTrue(isOpen, TXT('cancel'), TXT('addDayOff'))}
         </Button>
       </div>
-      <List className={classes.days}>
+      <List className='column'>
         {map(renderDay, daysOff)}
         {ifTrue(!daysOff.length, renderMessage)}
         {ifTrue(isOpen, renderAddDayOff)}

@@ -1,4 +1,6 @@
 import { Button, TextField, Typography } from '@mui/material';
+import { compose } from 'ramda';
+import clsx from 'clsx';
 import dayjs from 'dayjs';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
@@ -10,9 +12,7 @@ import { AnyValue } from '../../../models';
 import './calendarOverride.css';
 import './inputOverride.css';
 import { addSprint, useDispatch } from '../../../state';
-import { buildSprintDays } from '../../days/days.tools';
 import { Sprint } from '../sprint.models';
-import { compose } from 'ramda';
 
 interface Props {
   onClose: () => void;
@@ -66,15 +66,15 @@ export function AddSprint({ onClose }: Props) {
   }
 
   return (
-    <div className={classes.container}>
-      <div className={classes.block}>
-        <Typography variant='body1' className={classes.label}>
+    <div className={clsx('align-f-end', classes.container)}>
+      <div className={clsx('align-f-end m-end-1', classes.block)}>
+        <Typography variant='body1' className='m-end-1'>
           Name
         </Typography>
         <TextField id='standard-basic' variant='standard' required={true} onChange={handleNameChange} />
       </div>
-      <div className={classes.block}>
-        <Typography variant='body1' className={classes.label}>
+      <div className='m-end-1'>
+        <Typography variant='body1' className='m-end-1'>
           Start/end dates
         </Typography>
         <DateRangePicker
@@ -87,7 +87,7 @@ export function AddSprint({ onClose }: Props) {
           value={dates}
         />
       </div>
-      <div className={classes.block}>
+      <div className='m-end-1'>
         <Button disabled={!isValid} variant='contained' onClick={handleSubmit}>
           Submit
         </Button>

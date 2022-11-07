@@ -122,7 +122,7 @@ export function CreateAssignWork({ onCancel }: Props) {
             onChange={handleDateChange}
           />
         </div>
-        <div className={classes.actions}>
+        <div className={clsx('center', classes.actions)}>
           <Button variant='contained' size='small' disabled={!isValid} onClick={handleAssign}>
             {TXT('createAssign')}
           </Button>

@@ -1,23 +1,9 @@
 .container {
-	display: flex;
 	justify-content: flex-start;
-	align-items: flex-end;
-
-	.block {
-		margin-inline-end: 1rem;
-		display: flex;
-		align-items: flex-end;
-	}
-
-	.label {
-		margin-inline-end: 1rem;
-	}
 
 	.picker {
 		* {
-			font-family: Roboto, Helvetic, Arial, sans-serif;
-			font-weight: 400;
-			font-size: 1.6rem;
+			font: 400 1.6rem Roboto, Helvetic, Arial, sans-serif;
 		}
 	}
 }

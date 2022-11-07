@@ -1,14 +1,8 @@
-.container {
-	height: 100%;
-	width: 100%;
+.sprints {
+	overflow: scroll;
+}
 
-	.sprints {
-		width: 100%;
-		overflow: scroll;
-	}
-
-	.eng-header {
-		height: 6.5rem;
-		min-width: 55rem;
-	}
+.eng-header {
+	height: 6.5rem;
+	min-width: 55rem;
 }

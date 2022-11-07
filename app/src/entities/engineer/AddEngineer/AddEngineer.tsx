@@ -10,6 +10,7 @@ import classes from './AddEngineer.module.scss';
 import { Message } from '../../../atoms';
 import { MongoDocument } from '../../../models';
 import { makeName } from '../engineer.tools';
+import clsx from 'clsx';
 
 const TXT = setupText(TEXT)('engineer');
 
@@ -45,7 +46,7 @@ export function AddEngineer({ onCancel }: Props) {
 
   function renderSelector() {
     return (
-      <Select className={classes.selector} value={selected} onChange={handleChange}>
+      <Select className='w-100' value={selected} onChange={handleChange}>
         {map(renderEngineerName, engineers)}
       </Select>
     );
@@ -53,7 +54,7 @@ export function AddEngineer({ onCancel }: Props) {
 
   function renderActions() {
     return (
-      <div className={classes.action}>
+      <div className={clsx('center', classes.action)}>
         <Button variant='contained' disabled={isDisabled} size='small' onClick={handleAdd}>
           {TXT('addSelected')}
         </Button>
@@ -64,7 +65,7 @@ export function AddEngineer({ onCancel }: Props) {
   const renderMessage = () => <Message className={classes.message} message={TXT('noAdd')} />;
 
   return (
-    <div className={classes.container}>
+    <div className='line s-between padding-1'>
       {ifTrue(engineers.length, renderSelector)}
       {ifTrue(!engineers.length, renderMessage)}
       {ifTrue(engineers.length, renderActions)}

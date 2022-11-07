@@ -1,6 +1,5 @@
 .container {
 	height: 5rem;
-	padding: 1rem;
 	display: grid;
 	grid-template-columns: 12rem auto;
 	grid-template-areas: "left right";
@@ -8,15 +7,11 @@
 
 .left {
 	grid-area: left;
-	display: flex;
 	justify-content: flex-start;
-	align-items: center;
 }
 
 .right {
 	grid-area: right;
-	display: flex;
 	justify-content: flex-start;
-	align-items: center;
 	padding-inline-start: 1rem;
 }

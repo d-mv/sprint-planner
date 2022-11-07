@@ -11,6 +11,7 @@ import { setupText } from '../../../tools';
 import { createEngineer, useDispatch } from '../../../state';
 import { Divider } from '../../../atoms';
 import { AddDaysOff } from '../../days';
+import clsx from 'clsx';
 
 const TXT = setupText(TEXT)('engineer');
 
@@ -53,14 +54,14 @@ export function CreateEngineer({ onCancel }: Props) {
   }
 
   return (
-    <div className={classes.container}>
-      <div className={classes.input}>
+    <div className='column border padding-1'>
+      <div className={clsx('line s-between', classes.input)}>
         <TextField id='standard-basic' label='First Name' variant='standard' onChange={handleFistNameChange} />
         <TextField id='standard-basic' label='Last Name' variant='standard' onChange={handleLastNameChange} />
       </div>
       <AddDaysOff daysOff={daysOff} setDaysOff={setDaysOff} />
-      <Divider noMargin width='50%' className={classes.divider} />
-      <div className={classes.actions}>
+      <Divider noMargin width='50%' className='m-vertical' />
+      <div className={clsx('line w-100', classes.actions)}>
         <Button variant='contained' disabled={!isValid} onClick={handleCreate}>
           {TXT('create')}
         </Button>

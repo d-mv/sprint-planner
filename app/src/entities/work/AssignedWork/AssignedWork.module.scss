@@ -1,15 +1,7 @@
 .container {
-	// display: flex;
-	// height: 4rem;
-	// align-items: center;
 
 	&:hover .actions {
 		display: flex;
-	}
-
-	.left {
-		width: 55rem;
-		border-right: var(--border);
 	}
 
 	.actions {

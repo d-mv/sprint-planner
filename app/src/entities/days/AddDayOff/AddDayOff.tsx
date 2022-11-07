@@ -1,4 +1,5 @@
 import { Button, ListItem, TextField } from '@mui/material';
+import clsx from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
 import { ChangeEvent, useState } from 'react';
 
@@ -13,6 +14,7 @@ interface Props {
   setDaysOff: (arg0: Dayjs[]) => void;
   onClose: () => void;
 }
+
 export function AddDayOff({ daysOff, setDaysOff, onClose }: Props) {
   const [day, setDay] = useState('');
 
@@ -23,15 +25,18 @@ export function AddDayOff({ daysOff, setDaysOff, onClose }: Props) {
   function handleAddDay() {
     const date = dayjs(day);
 
-    const isPresent = daysOff.find((d) => d.isSame(date,'date'));
+    const isPresent = daysOff.find(d => d.isSame(date, 'date'));
+
     if (!isPresent) setDaysOff([...daysOff, date]);
+
     onClose();
   }
+
   return (
-    <ListItem className={classes.container}>
+    <ListItem className='line s-between'>
       <TextField
         id='date'
-        className={classes.date}
+        className='w-auto'
         type='date'
         defaultValue={dayjs().format('YYYY-M-DD')}
         sx={{ width: 220 }}
@@ -40,13 +45,8 @@ export function AddDayOff({ daysOff, setDaysOff, onClose }: Props) {
         }}
         onChange={handleDateChange}
       />
-      <div className={classes.actions}>
-        <Button
-          variant='contained'
-          disabled={!day}
-          size='small'
-          onClick={handleAddDay}
-        >
+      <div className={clsx('h-fit w-fit', classes.actions)}>
+        <Button variant='contained' disabled={!day} size='small' onClick={handleAddDay}>
           {TXT('addDay')}
         </Button>
       </div>

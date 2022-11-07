@@ -1,4 +1,5 @@
 import Button from '@mui/material/Button';
+import clsx from 'clsx';
 import { useState } from 'react';
 
 import { TEXT } from '../../../data';
@@ -20,13 +21,13 @@ export function SprintHeader() {
   }
 
   return (
-    <div className={classes.container}>
-      <div className={classes.left}>
+    <div className={clsx('padding-1', classes.container)}>
+      <div className={clsx('line align-center', classes.left)}>
         <Button variant='contained' onClick={toggleIsOpen}>
           {ifTrue(isOpen, TXT('cancelAddSprint'), TXT('addSprint'))}
         </Button>
       </div>
-      <div className={classes.right}>
+      <div className={clsx('line align-center', classes.right)}>
         {ifTrue(isOpen, () => (
           <AddSprint onClose={handleClose} />
         ))}

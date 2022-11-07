@@ -15,7 +15,7 @@ export function WorkLine({ children, className }: PropsWithChildren<Props>) {
   const { jiraTicket, title } = useContextSelector(WorkContext, c => c.work);
 
   const renderDescription = () => (
-    <Typography variant='body1' className={classes.description}>
+    <Typography variant='body1' className={clsx('w-100', classes.description)}>
       {title}
     </Typography>
   );
@@ -27,7 +27,7 @@ export function WorkLine({ children, className }: PropsWithChildren<Props>) {
   }
 
   return (
-    <div className={clsx(classes.container, className)}>
+    <div className={clsx('line s-between align-center w-100', classes.container, className)}>
       <Typography variant='body1' fontWeight={600}>
         <a href={`https://jira.healthcareit.net/browse/${jiraTicket}`} target='_blank' rel='noreferrer'>
           {jiraTicket}

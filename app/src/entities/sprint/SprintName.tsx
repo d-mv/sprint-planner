@@ -1,7 +1,4 @@
 import { Typography } from '@mui/material';
-import clsx from 'clsx';
-
-import classes from './SprintName.module.scss';
 
 interface Props {
   name: string;
@@ -9,7 +6,7 @@ interface Props {
 
 export function SprintName({ name }: Props) {
   return (
-    <div className={clsx('border center margin-center', classes.container)}>
+    <div className='border center margin-center border-bottom-w-0 w-100' style={{ padding: '.5rem 0' }}>
       <Typography variant='body1'>{name}</Typography>
     </div>
   );

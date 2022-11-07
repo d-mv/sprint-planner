@@ -2,12 +2,11 @@ import { Button } from '@mui/material';
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import { TEXT } from '../../../data';
-import { getAddedEngineers, useSelector } from '../../../state';
-import { ifTrue, setupText } from '../../../tools';
-import { AddEngineer } from '../AddEngineer';
-import { CreateEngineer } from '../CreateEngineer';
-import classes from './AddOrCreateEngineer.module.scss';
+import { TEXT } from '../../data';
+import { getAddedEngineers, useSelector } from '../../state';
+import { ifTrue, setupText } from '../../tools';
+import { AddEngineer } from './AddEngineer';
+import { CreateEngineer } from './CreateEngineer';
 
 const TXT = setupText(TEXT)('engineer');
 
@@ -38,7 +37,7 @@ export function AddOrCreateEngineer() {
 
   function renderForms() {
     return (
-      <div className={classes.form}>
+      <div className='border-bottom'>
         {ifTrue(isNewOpen, renderNewEngineer)}
         {ifTrue(isAddOpen, renderAddEngineer)}
       </div>
@@ -47,12 +46,12 @@ export function AddOrCreateEngineer() {
 
   return (
     <div
-      className={clsx(classes.container, 'border', {
-        [classes['border-top']]: hasAddedEngineers,
+      className={clsx('border column', {
+        ['border-top-w-0']: hasAddedEngineers,
       })}
     >
       {ifTrue(isNewOpen || isAddOpen, renderForms)}
-      <div className={classes.actions}>
+      <div className='line s-around w-100 padding-1'>
         <Button variant='contained' onClick={toggle('add')}>
           {ifTrue(isAddOpen, TXT('cancel'), TXT('add'))}
         </Button>
