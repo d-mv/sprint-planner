@@ -9,3 +9,5 @@ export * from './date.tools';
 export * from './env.tools';
 
 export * from './object.tools';
+
+export * from './type.tools';

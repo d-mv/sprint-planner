@@ -78,6 +78,12 @@ MAP.set(StateActions.SET_WORKS, (state: State, action: Action<MongoDocument<Work
   return { ...state, works: action.payload };
 });
 
+MAP.set(StateActions.ADD_WORK, (state: State, action: Action<MongoDocument<Work>>) => {
+  if (!action.payload) return state;
+
+  return assoc('works', [...state.works, action.payload], state);
+});
+
 // to revise
 
 MAP.set(StateActions.ADD_SPRINT, (state: State, action: Action<MongoDocument<Sprint<Dayjs>>>) => {
@@ -112,13 +118,6 @@ MAP.set(StateActions.ADD_ENGINEER, (state: State, action: Action<string>) => {
 
   return assoc('addedEngineers', [...state.addedEngineers, action.payload], state);
 });
-
-MAP.set(StateActions.ADD_WORK, (state: State, action: Action<MongoDocument<Work>>) => {
-  if (!action.payload) return state;
-
-  return assoc('works', [...state.works, action.payload], state);
-});
-
 MAP.set(StateActions.ASSIGN_WORK, (state: State, action: Action<MongoDocument<AssignedWork>>) => {
   if (!action.payload) return state;
 

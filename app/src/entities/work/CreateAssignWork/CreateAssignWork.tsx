@@ -1,28 +1,32 @@
 import { Button, TextField } from '@mui/material';
+import clsx from 'clsx';
 import dayjs from 'dayjs';
-import { nanoid } from 'nanoid';
-import { compose } from 'ramda';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
+import { useWorks } from '../../../adaptors';
 import { TEXT } from '../../../data';
-import { addWork, assignWork, useDispatch } from '../../../state';
 import { setupText } from '../../../tools';
-import { AssignedWork, Work } from '../work.models';
+import { EngineerContext } from '../../engineer/engineer.contexts';
+import { Work } from '../work.models';
 import classes from './CreateAssignWork.module.scss';
 
 const TXT = setupText(TEXT)(['work', 'form']);
 
+const defaultForm: Work = {
+  jiraTicket: '',
+  estimate: 0,
+  title: '',
+};
+
 interface Props {
-  engineerId: string;
   onCancel: () => void;
 }
 
-export function CreateAssignWork({ engineerId, onCancel }: Props) {
-  const [form, setForm] = useState<Work>({
-    jiraTicket: '',
-    estimate: 0,
-    title: '',
-  });
+export function CreateAssignWork({ onCancel }: Props) {
+  const engineerId = useContextSelector(EngineerContext, c => c.engineer._id);
+
+  const [form, setForm] = useState<Work>(defaultForm);
 
   const [isValid, setIsValid] = useState(false);
 
@@ -33,7 +37,7 @@ export function CreateAssignWork({ engineerId, onCancel }: Props) {
 
   const [startDate, setStartDate] = useState(dayjs());
 
-  const dispatch = useDispatch();
+  const { add } = useWorks();
 
   function handleChange(key: keyof typeof form) {
     return function change(e: ChangeEvent<HTMLInputElement>) {
@@ -47,19 +51,15 @@ export function CreateAssignWork({ engineerId, onCancel }: Props) {
     };
   }
 
-  function handleAssign() {
-    // create work
-    compose(dispatch, addWork)(form);
-
-    // create assigned work
-    // const assignedWork: AssignedWork = {
-    //   workId: form.id,
-    //   engineerId,
-    //   startDate,
-    // };
-
-    // compose(dispatch, assignWork)(assignedWork);
+  function handleCancel() {
+    setForm(defaultForm);
     onCancel();
+  }
+
+  function handleAssign() {
+    add(form, { engineerId, startDate: startDate.toString() });
+
+    handleCancel();
   }
 
   function handleDateChange(e: ChangeEvent<HTMLInputElement>) {
@@ -69,7 +69,7 @@ export function CreateAssignWork({ engineerId, onCancel }: Props) {
   }
 
   return (
-    <div className={classes.container}>
+    <div className={clsx('padding-1', classes.container)}>
       <div className={classes.inputs}>
         <div className='line s-between'>
           <TextField
@@ -100,6 +100,7 @@ export function CreateAssignWork({ engineerId, onCancel }: Props) {
           <TextField
             className={classes['input-item']}
             label={TXT('est')}
+            required
             variant='standard'
             type='number'
             value={form.estimate}
@@ -109,6 +110,7 @@ export function CreateAssignWork({ engineerId, onCancel }: Props) {
         <div className='line s-between m-b-start-1'>
           <TextField
             id='date'
+            required
             className={classes.date}
             type='date'
             label={TXT('start')}

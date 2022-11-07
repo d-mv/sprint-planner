@@ -1,17 +1,16 @@
 import { map } from 'ramda';
+import { useContextSelector } from 'use-context-selector';
 import { Spinner } from '../../atoms';
 import { MongoDocument } from '../../models';
 
 import { getIsLoading, getWorksForEngineer, useSelector } from '../../state';
-import { WorkToRender } from '../work';
+import { WorkToRender, WorkContext } from '../work';
 import { AssignedWork } from '../work/AssignedWork';
-import { Engineer } from './engineer.models';
+import { EngineerContext } from './engineer.contexts';
 
-interface Props {
-  engineer: MongoDocument<Engineer>;
-}
+export function EngineerWorks() {
+  const engineer = useContextSelector(EngineerContext, c => c.engineer);
 
-export function EngineerWorks({ engineer }: Props) {
   const works = useSelector(getWorksForEngineer)(engineer._id);
 
   const isLoading = useSelector(getIsLoading)('get-works');
@@ -23,7 +22,11 @@ export function EngineerWorks({ engineer }: Props) {
   function renderWork(work: MongoDocument<WorkToRender>) {
     if (!work.work) return null;
 
-    return <AssignedWork key={work._id} workToRender={work} />;
+    return (
+      <WorkContext.Provider key={work._id} value={{ work: work.work }}>
+        <AssignedWork />
+      </WorkContext.Provider>
+    );
   }
 
   if (isLoading || isLoadingAssigned) return <Spinner />;

@@ -73,6 +73,10 @@
   width: fit-content;
 }
 
+.h-fit {
+  height: fit-content;
+}
+
 .m-h-1 {
   margin: 0 1rem;
 }

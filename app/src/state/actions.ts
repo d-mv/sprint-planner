@@ -64,6 +64,11 @@ export const setWorks = (payload: MongoDocument<Work>[]): Action => ({
   payload,
 });
 
+export const addWork = (payload: MongoDocument<Work>): Action => ({
+  type: StateActions.ADD_WORK,
+  payload,
+});
+
 // to revise:
 
 export const addSprint = (payload: Sprint): Action => ({
@@ -83,11 +88,6 @@ export const createEngineer = (payload: Engineer): Action => ({
 
 export const addEngineer = (payload: string): Action => ({
   type: StateActions.ADD_ENGINEER,
-  payload,
-});
-
-export const addWork = (payload: Work): Action => ({
-  type: StateActions.ADD_WORK,
   payload,
 });
 

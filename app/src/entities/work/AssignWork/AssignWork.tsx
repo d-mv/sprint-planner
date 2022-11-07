@@ -1,31 +1,35 @@
 import { Button, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
-import { compose, map } from 'ramda';
+import { map } from 'ramda';
 import { ChangeEvent, useState } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
+import { useAssignedWork } from '../../../adaptors';
 import { TEXT } from '../../../data';
 import { MongoDocument } from '../../../models';
-import { assignWork, getUnAssignedWorks, useDispatch, useSelector } from '../../../state';
+import { getUnAssignedWorks, useSelector } from '../../../state';
 import { setupText } from '../../../tools';
+import { EngineerContext } from '../../engineer/engineer.contexts';
 import { AssignedWork, Work } from '../work.models';
 import classes from './AssignWork.module.scss';
 
 const TXT = setupText(TEXT)(['work', 'form']);
 
 interface Props {
-  engineerId: string;
   onCancel: () => void;
 }
 
-export function AssignWork({ engineerId, onCancel }: Props) {
+export function AssignWork({ onCancel }: Props) {
+  const engineerId = useContextSelector(EngineerContext, c => c.engineer._id);
+
   const unassignedWorks = useSelector(getUnAssignedWorks);
 
   const [selected, setSelected] = useState(unassignedWorks[0]._id ?? '');
 
   const [startDate, setStartDate] = useState(dayjs());
 
-  const dispatch = useDispatch();
+  const { add } = useAssignedWork();
 
   function handleAssign() {
     const assignedWork: AssignedWork = {
@@ -34,7 +38,8 @@ export function AssignWork({ engineerId, onCancel }: Props) {
       startDate,
     };
 
-    compose(dispatch, assignWork)(assignedWork);
+    add(assignedWork);
+
     onCancel();
   }
 

@@ -1,22 +1,23 @@
 import { Button } from '@mui/material';
 import { Dayjs } from 'dayjs';
 import { useState } from 'react';
-import { useEngineers } from '../../adaptors';
+import { useContextSelector } from 'use-context-selector';
 
+import { useEngineers } from '../../adaptors';
 import { TEXT } from '../../data';
-import { MongoDocument } from '../../models';
 import { setupText } from '../../tools';
 import { AddDaysOff } from '../days';
-import { Engineer } from './engineer.models';
+import { EngineerContext } from './engineer.contexts';
 
 const TXT = setupText(TEXT)('engineer');
 
 interface Props {
-  engineer: MongoDocument<Engineer>;
   onClose: () => void;
 }
 
-export function EngineerDaysOff({ engineer, onClose }: Props) {
+export function EngineerDaysOff({ onClose }: Props) {
+  const engineer = useContextSelector(EngineerContext, c => c.engineer);
+
   const [daysOff, setDaysOff] = useState<Dayjs[]>(engineer.daysOff);
 
   const [isDaysOffUpdated, setDaysOffUpdated] = useState(false);

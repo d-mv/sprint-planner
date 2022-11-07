@@ -6,7 +6,7 @@ export * from './Spacer';
 
 export * from './Tooltip';
 
-// export * from './DeleteButton';
+export * from './LoadingIndication';
 
 export * from './CountOfCount';
 

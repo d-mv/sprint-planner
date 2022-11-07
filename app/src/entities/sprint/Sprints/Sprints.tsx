@@ -7,9 +7,10 @@ import { Sprint } from '../Sprint';
 import classes from './Sprints.module.scss';
 import { MongoDocument } from '../../../models';
 import { useSprints } from '../../../adaptors';
-import { Spinner } from '../../../atoms';
+import { Spacer, Spinner } from '../../../atoms';
 import { SprintWorks } from '../SprintWorks';
 import clsx from 'clsx';
+import { UnAssignedWorks } from '../../work';
 
 export function Sprints() {
   const sprints = useSelector(getSprints);
@@ -33,9 +34,11 @@ export function Sprints() {
   if (error) return null;
 
   return (
-    <div className={clsx('column', classes.container)}>
-      <div className={classes.sprints}>{map(renderSprint, sprints)}</div>
+    <div className={clsx('column h-fit w-fit', classes.container)}>
+      <div className={clsx('line w-fit', classes.sprints)}>{map(renderSprint, sprints)}</div>
       <SprintWorks />
+      <Spacer vertical style={{ height: '2rem' }} />
+      <UnAssignedWorks />
     </div>
   );
 }

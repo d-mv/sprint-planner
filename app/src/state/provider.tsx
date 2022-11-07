@@ -8,7 +8,11 @@ import { Option } from '../models';
 
 const StateContext = createContext<Option<State>>(undefined);
 
+StateContext.displayName = 'StateContext';
+
 const DispatchContext = createContext<Option<Dispatch>>(undefined);
+
+DispatchContext.displayName = 'DispatchContext';
 
 interface Props {
   children: React.ReactNode;

@@ -5,6 +5,7 @@ interface Props {
   message: string;
   children: ReactElement;
 }
+
 export function Tooltip({ message, children }: Props) {
   return (
     <MuiTooltip

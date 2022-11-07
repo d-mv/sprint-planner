@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { Dayjs } from 'dayjs';
 import { MouseEvent } from 'react';
-import { MongoDocument } from '../../../models';
 
+import { MongoDocument } from '../../../models';
 import { getIsDayOff, useSelector } from '../../../state';
 import { buildId } from '../../../tools';
 import { DayType } from '../days.models';

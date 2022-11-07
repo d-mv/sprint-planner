@@ -17,12 +17,12 @@ export enum StateActions {
   REMOVE_ASSIGNED_WORK = 'removeAssignedWork',
   ADD_ASSIGNED_WORK = 'addAssignedWork',
   SET_WORKS = 'setWorks',
+  ADD_WORK = 'addWork',
   // to revise
   ADD_SPRINT = 'addSprint',
   ADD_REMOVE_DAY_OFF = 'addRemoveDayOff',
   CREATE_ENGINEER = 'createEngineer',
   ADD_ENGINEER = 'addEngineer',
-  ADD_WORK = 'addWork',
   ASSIGN_WORK = 'assignWork',
 }
 

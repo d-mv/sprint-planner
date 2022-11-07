@@ -1,22 +1,20 @@
 import clsx from 'clsx';
+import { useContextSelector } from 'use-context-selector';
 
 import { useAssignedWork } from '../../../adaptors';
 import { IconButton } from '../../../atoms';
 import { TEXT } from '../../../data';
-import { MongoDocument } from '../../../models';
 import { CONSTANTS } from '../../../theme';
 import { setupText } from '../../../tools';
-import { WorkToRender } from '../work.models';
+import { WorkContext } from '../work.contexts';
 import { WorkLine } from '../WorkLine';
 import classes from './AssignedWork.module.scss';
 
 const TXT = setupText(TEXT)('work');
 
-interface Props {
-  workToRender: MongoDocument<WorkToRender>;
-}
+export function AssignedWork() {
+  const workToRender = useContextSelector(WorkContext, c => c.work);
 
-export function AssignedWork({ workToRender }: Props) {
   const { remove } = useAssignedWork();
 
   function handleUnassign() {
@@ -38,7 +36,7 @@ export function AssignedWork({ workToRender }: Props) {
       className={clsx('align-center w-100', classes.container)}
       style={{ height: CONSTANTS.daysLineHeight }}
     >
-      <WorkLine work={workToRender.work}>{renderActions()}</WorkLine>
+      <WorkLine>{renderActions()}</WorkLine>
     </div>
   );
 }

@@ -4,6 +4,7 @@ interface Props {
   onChange: () => void;
   isChecked: boolean;
 }
+
 export function DayPopup({ onChange, isChecked }: Props) {
   return (
     <div className='padding-1'>

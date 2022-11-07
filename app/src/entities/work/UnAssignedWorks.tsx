@@ -4,6 +4,7 @@ import { map } from 'ramda';
 import { Divider } from '../../atoms';
 import { MongoDocument } from '../../models';
 import { useSelector, getUnAssignedWorks } from '../../state';
+import { WorkContext } from './work.contexts';
 import { Work } from './work.models';
 import { WorkLine } from './WorkLine';
 
@@ -13,7 +14,11 @@ export function UnAssignedWorks() {
   if (!unAssignedWorks.length) return null;
 
   function renderWork(work: MongoDocument<Work>) {
-    return <WorkLine key={work._id} work={work} />;
+    return (
+      <WorkContext.Provider key={work._id} value={{ work }}>
+        <WorkLine />
+      </WorkContext.Provider>
+    );
   }
 
   return (

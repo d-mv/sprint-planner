@@ -1,15 +1,15 @@
 import { Button, Collapse, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { useState } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
 import { CountOfCount, Message } from '../../../atoms';
 import { TEXT } from '../../../data';
-import { MongoDocument } from '../../../models';
 import { getUnAssignedWorksQty, getWorkDaysLeft, getWorkDaysPerEngineer, useSelector } from '../../../state';
 import { CONSTANTS } from '../../../theme';
 import { ifTrue, setupText } from '../../../tools';
 import { AssignWork, CreateAssignWork } from '../../work';
-import { Engineer as EngineerType } from '../engineer.models';
+import { EngineerContext } from '../engineer.contexts';
 import { makeName } from '../engineer.tools';
 import { EngineerDaysOff } from '../EngineerDaysOff';
 import { EngineerWorks } from '../EngineerWorks';
@@ -17,11 +17,9 @@ import classes from './Engineer.module.scss';
 
 const TXT = setupText(TEXT)('engineer');
 
-interface Props {
-  engineer: MongoDocument<EngineerType>;
-}
+export function Engineer() {
+  const engineer = useContextSelector(EngineerContext, c => c.engineer);
 
-export function Engineer({ engineer }: Props) {
   const unassignedWorksQty = useSelector(getUnAssignedWorksQty);
 
   const workDays = useSelector(getWorkDaysPerEngineer)(engineer._id);
@@ -61,17 +59,17 @@ export function Engineer({ engineer }: Props) {
   }
 
   function renderCreate() {
-    return <CreateAssignWork engineerId={engineer._id} onCancel={toggle('create')} />;
+    return <CreateAssignWork onCancel={toggle('create')} />;
   }
 
   function renderAssign() {
     if (!unassignedWorksQty) return <Message className='txt-center' message={TXT('noUnAssigned')} />;
 
-    return <AssignWork engineerId={engineer._id} onCancel={toggle('assign')} />;
+    return <AssignWork onCancel={toggle('assign')} />;
   }
 
   function renderDaysOff() {
-    return <EngineerDaysOff engineer={engineer} onClose={closeDaysOff} />;
+    return <EngineerDaysOff onClose={closeDaysOff} />;
   }
 
   function renderActions() {
@@ -120,7 +118,7 @@ export function Engineer({ engineer }: Props) {
           {renderDaysOff()}
         </Collapse>
       </div>
-      <EngineerWorks engineer={engineer} />
+      <EngineerWorks />
     </div>
   );
 }

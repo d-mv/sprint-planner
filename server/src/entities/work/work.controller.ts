@@ -5,9 +5,27 @@ import { makeMatch } from '../../tools';
 export const WorkController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
   {
     add: async ({ query, context }) => {
-      const result = await context.collections.work.create(query.payload);
+      if (!query.payload) return failure('Nothing to create', 400);
 
-      return success(result);
+      if ('assign' in query.payload && 'engineerId' in query.payload.assign && 'startDate' in query.payload.assign) {
+        const { work, assign } = query.payload;
+
+        if (!work) return failure('Nothing to create', 400);
+
+        const result = await context.collections.work.create(work);
+
+        const assignResult = await context.collections.assignedWork.create({
+          workId: result._id.toString(),
+          engineerId: assign.engineerId,
+          startDate: assign.startDate,
+        });
+
+        return success({ work: result, assignedWork: assignResult });
+      } else {
+        const result = await context.collections.work.create(query.payload);
+
+        return success(result);
+      }
     },
     delete: async ({ query, context }) => {
       const result = await context.collections.work.deleteOne(query.payload);
