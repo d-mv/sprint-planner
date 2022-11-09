@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { blueGrey, indigo, pink, red } from '@mui/material/colors';
 import clsx from 'clsx';
 import { Dayjs } from 'dayjs';
@@ -17,6 +17,8 @@ interface Props {
 }
 
 export function Day({ day, onClick, withDate }: Props) {
+  const theme = useTheme();
+
   const isDayOff = useSelector(getIsDayOff);
 
   const { date, month, isWeekend, isOff, isWork } = day;
@@ -27,26 +29,32 @@ export function Day({ day, onClick, withDate }: Props) {
     if (onClick) onClick(date)(e);
   }
 
-  function renderDate() {
-    return <Typography variant='subtitle1'>{`${month}/${date.date().toString()}`}</Typography>;
-  }
-
   function getColor(): CSSProperties {
     let backgroundColor = '#fff';
-    let color = '#fff';
+    let color = theme.palette.text.primary;
 
-    if (isCommonOff) backgroundColor = pink[500];
-
-    if (isOff) backgroundColor = red[500];
-
-    if (isWeekend) {
-      backgroundColor = pink[100];
-      color = blueGrey[800];
+    if (isCommonOff) {
+      backgroundColor = pink[500];
+      color = '#fff';
     }
 
-    if (isWork) backgroundColor = indigo[500];
+    if (isOff) {
+      backgroundColor = red[500];
+      color = '#fff';
+    }
+
+    if (isWeekend) backgroundColor = pink[100];
+
+    if (isWork) {
+      backgroundColor = indigo[500];
+      color = '#fff';
+    }
 
     return { color, backgroundColor };
+  }
+
+  function renderDate() {
+    return <Typography variant='subtitle1' color={getColor().color}>{`${month}/${date.date().toString()}`}</Typography>;
   }
 
   return (
