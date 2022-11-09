@@ -8,8 +8,8 @@ import { ErrorMessage, Tooltip } from '../../atoms';
 import classes from './Login.module.scss';
 import { getMessage, getIsLoading, useSelector } from '../../state';
 import { setupText } from '../../tools';
-import { useLogin } from '../../adaptors';
 import { TEXT } from '../../data';
+import { useLogin } from '../../entities';
 
 const TXT = setupText(TEXT)('login');
 

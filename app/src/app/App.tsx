@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useLogin } from '../adaptors';
-import { CONFIG } from '../config';
 
+import { CONFIG } from '../config';
+import { useLogin } from '../entities';
 import { Loading, Login, Main } from '../pages';
 import { getIsConnected, StateActions, useDispatch, useSelector } from '../state';
 import { ifTrue } from '../tools';

@@ -15,8 +15,6 @@ interface Props {
 }
 
 export function Days({ sprint }: Props) {
-  // const days = buildSprintDays(sprint);
-
   const [day, setDay] = useState<Option<Dayjs>>(null);
 
   const dispatch = useDispatch();
@@ -47,7 +45,7 @@ export function Days({ sprint }: Props) {
   }
 
   function renderCell(day: MongoDocument<DayType>) {
-    return <Day key={day._id} day={day} onClick={handleClick} />;
+    return <Day withDate key={day._id} day={day} onClick={handleClick} />;
   }
 
   return (

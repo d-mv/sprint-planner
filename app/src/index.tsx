@@ -8,10 +8,12 @@ import './classes.css';
 
 import { App } from './app';
 import reportWebVitals from './reportWebVitals';
-import { StateProvider } from './state';
+import { getMessage, StateProvider } from './state';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './theme';
+import { AppContext } from './entities';
+import { query } from './adaptors';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -20,7 +22,9 @@ root.render(
     <StateProvider>
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <App />
+        <AppContext.Provider value={{ query, getMessage }}>
+          <App />
+        </AppContext.Provider>
       </ThemeProvider>
     </StateProvider>
   </React.StrictMode>,

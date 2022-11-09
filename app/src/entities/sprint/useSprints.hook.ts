@@ -1,11 +1,13 @@
-import { compose } from 'ramda';
+import { compose, pick } from 'ramda';
+import { useContextSelector } from 'use-context-selector';
 
-import { Sprint, sprintDateToDayjs } from '../entities';
-import { MongoDocument } from '../models';
-import { getMessage, setMessage, setIsLoading, setSprints, useDispatch, useSelector } from '../state';
-import { query } from './http.adaptor';
+import { AppContext, Sprint, sprintDateToDayjs } from '..';
+import { MongoDocument } from '../../models';
+import { setMessage, setIsLoading, setSprints, useDispatch, useSelector } from '../../state';
 
 export function useSprints() {
+  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+
   const dispatch = useDispatch();
 
   const error = useSelector(getMessage);

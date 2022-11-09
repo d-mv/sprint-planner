@@ -1,9 +1,12 @@
-import { compose } from 'ramda';
+import { compose, pick } from 'ramda';
+import { useContextSelector } from 'use-context-selector';
+import { AppContext } from '..';
 
-import { getMessage, setAddedEngineers, setIsLoading, setMessage, useDispatch, useSelector } from '../state';
-import { query } from './http.adaptor';
+import { setAddedEngineers, setIsLoading, setMessage, useDispatch, useSelector } from '../../state';
 
 export function useApp() {
+  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+
   const dispatch = useDispatch();
 
   const error = useSelector(getMessage);

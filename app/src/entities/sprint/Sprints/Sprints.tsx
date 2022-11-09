@@ -3,14 +3,15 @@ import { useEffect } from 'react';
 
 import { Sprint as SprintType } from '../sprint.models';
 import { getMessage, getIsLoading, getSprints, useSelector } from '../../../state';
-import { Sprint } from '../Sprint';
+
 import classes from './Sprints.module.scss';
 import { MongoDocument } from '../../../models';
-import { useSprints } from '../../../adaptors';
 import { Spacer, Spinner } from '../../../atoms';
 import { SprintWorks } from '../SprintWorks';
 import clsx from 'clsx';
 import { UnAssignedWorks } from '../../work';
+import { useSprints } from '../useSprints.hook';
+import { Sprint } from '../Sprint/Sprint';
 
 export function Sprints() {
   const sprints = useSelector(getSprints);

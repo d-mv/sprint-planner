@@ -7,3 +7,5 @@ export * from './work';
 export * from './days';
 
 export * from './result';
+
+export * from './app';

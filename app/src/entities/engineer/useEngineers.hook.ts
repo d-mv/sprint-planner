@@ -1,11 +1,13 @@
-import { compose } from 'ramda';
+import { compose, pick } from 'ramda';
 
-import { Engineer, engineerDaysOffToDayjs } from '../entities';
-import { MongoDocument } from '../models';
-import { getMessage, setMessage, setEngineers, setIsLoading, useDispatch, useSelector, updateEngineer } from '../state';
-import { query } from './http.adaptor';
+import { AppContext, Engineer, engineerDaysOffToDayjs } from '..';
+import { MongoDocument } from '../../models';
+import { setMessage, setEngineers, setIsLoading, useDispatch, useSelector, updateEngineer } from '../../state';
+import { useContextSelector } from 'use-context-selector';
 
 export function useEngineers() {
+  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+
   const dispatch = useDispatch();
 
   const error = useSelector(getMessage);

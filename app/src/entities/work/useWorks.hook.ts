@@ -1,20 +1,13 @@
-import { compose } from 'ramda';
+import { compose, pick } from 'ramda';
+import { useContextSelector } from 'use-context-selector';
 
-import { AssignedWork, assignedWorkDayToDayjs, Work } from '../entities';
-import { MongoDocument } from '../models';
-import {
-  getMessage,
-  setMessage,
-  setIsLoading,
-  setWorks,
-  useDispatch,
-  useSelector,
-  addWork,
-  addAssignedWork,
-} from '../state';
-import { query } from './http.adaptor';
+import { AppContext, AssignedWork, assignedWorkDayToDayjs, Work } from '..';
+import { MongoDocument } from '../../models';
+import { setMessage, setIsLoading, setWorks, useDispatch, useSelector, addWork, addAssignedWork } from '../../state';
 
 export function useWorks() {
+  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+
   const dispatch = useDispatch();
 
   const error = useSelector(getMessage);

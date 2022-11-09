@@ -5,12 +5,12 @@ import { map } from 'ramda';
 import { ChangeEvent, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { useAssignedWork } from '../../../adaptors';
 import { TEXT } from '../../../data';
 import { MongoDocument } from '../../../models';
 import { getUnAssignedWorks, useSelector } from '../../../state';
 import { setupText } from '../../../tools';
 import { EngineerContext } from '../../engineer/engineer.contexts';
+import { useAssignedWork } from '../useAssignedWorks.hook';
 import { AssignedWork, Work } from '../work.models';
 import classes from './AssignWork.module.scss';
 

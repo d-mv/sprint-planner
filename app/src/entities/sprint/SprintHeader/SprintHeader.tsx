@@ -21,7 +21,7 @@ export function SprintHeader() {
   }
 
   return (
-    <div className={clsx('padding-1', classes.container)}>
+    <div id='sprint-header' className={clsx('padding-1', classes.container)}>
       <div className={clsx('line align-center', classes.left)}>
         <Button variant='contained' onClick={toggleIsOpen}>
           {ifTrue(isOpen, TXT('cancelAddSprint'), TXT('addSprint'))}

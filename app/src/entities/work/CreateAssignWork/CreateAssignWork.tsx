@@ -4,10 +4,10 @@ import dayjs from 'dayjs';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { useWorks } from '../../../adaptors';
 import { TEXT } from '../../../data';
 import { setupText } from '../../../tools';
 import { EngineerContext } from '../../engineer/engineer.contexts';
+import { useWorks } from '../useWorks.hook';
 import { Work } from '../work.models';
 import classes from './CreateAssignWork.module.scss';
 

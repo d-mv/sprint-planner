@@ -3,11 +3,11 @@ import { Dayjs } from 'dayjs';
 import { useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { useEngineers } from '../../adaptors';
 import { TEXT } from '../../data';
 import { setupText } from '../../tools';
 import { AddDaysOff } from '../days';
 import { EngineerContext } from './engineer.contexts';
+import { useEngineers } from './useEngineers.hook';
 
 const TXT = setupText(TEXT)('engineer');
 

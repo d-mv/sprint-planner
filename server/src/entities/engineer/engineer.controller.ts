@@ -21,7 +21,9 @@ export const EngineerController = makeMatch<(arg: ControllerRequest) => Promised
 
       if (!item) return failure('Missing data', 400);
 
-      const result = await context.collections.engineer.updateOne(query.payload);
+      const { _id, daysOff } = item;
+
+      const result = await context.collections.engineer.updateOne({ _id }, { daysOff });
 
       if (result.modifiedCount) return success('OK');
 

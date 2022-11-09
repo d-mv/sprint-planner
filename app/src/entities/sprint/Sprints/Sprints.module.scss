@@ -2,6 +2,10 @@
 	overflow-x: scroll;
 	overflow-y: hidden;
 
+	section + section {
+		border-left: none;
+	}
+
 }
 
 .container {

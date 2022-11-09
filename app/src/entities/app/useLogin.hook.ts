@@ -1,9 +1,12 @@
-import { compose } from 'ramda';
+import { compose, pick } from 'ramda';
+import { useContextSelector } from 'use-context-selector';
 
-import { getMessage, setMessage, setIsConnected, setIsLoading, useDispatch, useSelector } from '../state';
-import { query } from './http.adaptor';
+import { setMessage, setIsConnected, setIsLoading, useDispatch, useSelector } from '../../state';
+import { AppContext } from './app.contexts';
 
 export function useLogin() {
+  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+
   const dispatch = useDispatch();
 
   const error = useSelector(getMessage);

@@ -1,8 +1,13 @@
-.container {
-	display: flex;
-	flex-flow: column;
-}
+.list {
+	button {
+		border-bottom: none;
 
-.header {
-	height: 6.5rem;
+		&:first-of-type {
+			border-left: none
+		}
+
+		&:last-of-type {
+			border-right: none
+		}
+	}
 }

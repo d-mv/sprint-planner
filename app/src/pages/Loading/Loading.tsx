@@ -1,7 +1,7 @@
 import { useTheme } from '@emotion/react';
 import { Collapse, Typography } from '@mui/material';
 import clsx from 'clsx';
-import { map, path } from 'ramda';
+import { path } from 'ramda';
 
 import { getAllIsLoading, LoadingActions, useSelector } from '../../state';
 import { makeMatch } from '../../tools';
@@ -14,7 +14,7 @@ const MESSAGES = makeMatch(
     [LoadingActions.GET_ENGINEERS]: 'engineers',
     [LoadingActions.GET_SPRINT]: 'sprints',
     [LoadingActions.GET_WORKS]: 'works',
-    [LoadingActions.GET_LOGIN]: 'accessing DB',
+    [LoadingActions.GET_LOGIN]: 'DB',
   },
   '',
 );
@@ -24,24 +24,17 @@ export function Loading() {
 
   const isLoading = useSelector(getAllIsLoading);
 
-  const filtered = Object.entries(isLoading)
-    .filter(el => Boolean(el[1]))
-    .map(el => MESSAGES[el[0]]);
+  const item = Object.entries(isLoading).filter(el => Boolean(el[1]))[0];
 
-  function renderElement(s: string) {
-    return <Typography variant='body1' key={s}>{`- ${s}...`}</Typography>;
-  }
+  const filtered = item ? MESSAGES[item[0]] : '';
 
-  if (!filtered.length || (filtered.length === 1 && filtered[0] === '')) return null;
+  if (!filtered) return null;
 
   return (
-    <Collapse orientation='vertical' in={Boolean(filtered.length)}>
+    <Collapse orientation='vertical' in={Boolean(filtered)}>
       <div className={clsx('center', classes.container)}>
         <div className={clsx('border center', classes.dialog)} style={{ boxShadow: path(['shadows', 9], theme) }}>
-          <Typography variant='h5' fontWeight={600} className='m-vertical'>
-            Loading:
-          </Typography>
-          <div className={classes.list}>{map(renderElement, filtered)}</div>
+          <Typography variant='body1'>{`Loading${filtered ? ' ' + filtered : ''}...`}</Typography>
         </div>
       </div>
     </Collapse>

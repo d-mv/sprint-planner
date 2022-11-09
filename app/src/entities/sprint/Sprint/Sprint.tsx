@@ -1,8 +1,8 @@
 import { Sprint as SprintType } from '../sprint.models';
 import { Days } from '../../days';
 import { SprintName } from '../SprintName';
-import classes from './Sprint.module.scss';
 import { MongoDocument } from '../../../models';
+import classes from './Sprint.module.scss';
 
 interface Props {
   sprint: MongoDocument<SprintType>;
@@ -10,11 +10,11 @@ interface Props {
 
 export function Sprint({ sprint }: Props) {
   return (
-    <div className={classes.container}>
-      <div className={classes.header}>
+    <section id='sprint' className='column border' style={{ borderBottom: 'none' }}>
+      <div id='sprint__header' className={classes.list}>
         <SprintName name={sprint.name} />
         <Days sprint={sprint} />
       </div>
-    </div>
+    </section>
   );
 }

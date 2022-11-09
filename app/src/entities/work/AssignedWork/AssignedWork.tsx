@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import { useContextSelector } from 'use-context-selector';
 
-import { useAssignedWork } from '../../../adaptors';
 import { IconButton } from '../../../atoms';
 import { TEXT } from '../../../data';
 import { CONSTANTS } from '../../../theme';
 import { setupText } from '../../../tools';
+import { useAssignedWork } from '../useAssignedWorks.hook';
 import { WorkContext } from '../work.contexts';
 import { WorkLine } from '../WorkLine';
 import classes from './AssignedWork.module.scss';
