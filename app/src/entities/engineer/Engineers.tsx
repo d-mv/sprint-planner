@@ -10,9 +10,10 @@ import { useAssignedWork } from '../work/useAssignedWorks.hook';
 import { CONSTANTS } from '../../theme';
 import { ErrorMessage } from '../../atoms';
 import { EngineerContext } from './engineer.contexts';
-import { useApp } from '../app';
+import { ColorLegend, useApp } from '../app';
 import { useEngineers } from './useEngineers.hook';
 import { useWorks } from '../work';
+import { ifTrue } from '../../tools';
 
 export function Engineers() {
   const addedEngineers = useSelector(getAddedEngineers);
@@ -42,10 +43,14 @@ export function Engineers() {
     );
   }
 
+  const renderMessage = () => <ErrorMessage message={message} />;
+
+  const renderLegend = () => <ColorLegend />;
+
   return (
-    <div style={{ width: CONSTANTS.engineersWidth }}>
-      <div className='center padding-1' style={{ height: CONSTANTS.subHeaderHeight }}>
-        <ErrorMessage message={message} />
+    <div id='engineers' style={{ width: CONSTANTS.engineersWidth }}>
+      <div id='header' className='center padding-1' style={{ height: CONSTANTS.subHeaderHeight }}>
+        {ifTrue(Boolean(message), renderMessage, renderLegend)}
       </div>
       {map(renderEngineer, addedEngineers)}
       <div className='column w-100 border-top'>

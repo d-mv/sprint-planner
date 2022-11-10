@@ -11,10 +11,10 @@ export function Main() {
         <SprintHeader />
         <LoadingIndication />
       </div>
-      <div className={clsx('line w-100', classes.sprints)}>
+      <main className={clsx('line w-100', classes.sprints)}>
         <Engineers />
         <Sprints />
-      </div>
+      </main>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import memoizeOne from 'memoize-one';
 import { omit, path, sum } from 'ramda';
 
@@ -7,6 +7,10 @@ import { WorkToRender } from '../entities';
 import { MongoDocument, Option } from '../models';
 
 export const getSprints = (state: State) => state.sprints;
+
+const currentSprint = (state: State) => state.sprints.find(sprint => dayjs().isBefore(sprint.endDate.add(1, 'day')));
+
+export const getCurrentSprint = memoizeOne(currentSprint);
 
 export const getItemsLength = memoizeOne(getSprints);
 
@@ -127,6 +131,8 @@ const unassignedWorkDaysLeft = (state: State) => (engineerId: string) => {
 
   return workDays - sum(usedDays);
 };
+
+export const getWorkById = (state: State) => (workId: string) => state.works.find(work => work._id === workId);
 
 export const getWorkDaysLeft = memoizeOne(unassignedWorkDaysLeft);
 

@@ -32,6 +32,7 @@ export const TEXT = {
     },
     unassign: 'Unassign',
     edit: 'Edit',
+    nextSprint: 'Work will be finished in next sprint',
   },
   days: {
     addDayOff: 'Add day off',

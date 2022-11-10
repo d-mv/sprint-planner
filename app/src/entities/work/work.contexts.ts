@@ -3,10 +3,11 @@ import { createContext } from 'use-context-selector';
 
 import { MongoDocument } from '../../models';
 import { as } from '../../tools';
-import { Work } from './work.models';
+import { Work, WorkToRender } from './work.models';
 
 export interface WorkContextType {
   work: MongoDocument<Work>;
+  assigned?: Omit<MongoDocument<WorkToRender>, 'work'>;
 }
 
 export const WorkContext = compose(createContext<WorkContextType>, as<WorkContextType>)({});

@@ -7,6 +7,12 @@
   place-items: center;
 }
 
+.center-f {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .border {
   border: var(--border);
 }

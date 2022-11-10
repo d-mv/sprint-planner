@@ -1,13 +1,14 @@
+import { compose, map } from 'ramda';
 import { failure, success, Result, PromisedResult } from '..';
 import { ControllerRequest } from '../../models';
-import { makeMatch } from '../../tools';
+import { makeMatch, sortDaysOff } from '../../tools';
 
 export const EngineerController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
   {
     add: async ({ query, context }) => {
       const result = await context.collections.engineer.create(query.payload);
 
-      return success(result);
+      return compose(success, sortDaysOff)(result);
     },
     delete: async ({ query, context }) => {
       const result = await context.collections.engineer.deleteOne(query.payload);
@@ -32,7 +33,7 @@ export const EngineerController = makeMatch<(arg: ControllerRequest) => Promised
     getAll: async ({ context }) => {
       const result = await context.collections.engineer.find({});
 
-      return success(result);
+      return compose(success, map(sortDaysOff))(result);
     },
   },
   () => failure('EngineerController action is not found', 400),

@@ -1,0 +1,17 @@
+.container {
+	display: flex;
+	height: 100%;
+	width: 100%
+}
+
+
+.item {
+	width: 100%;
+	padding-inline-start: 2rem;
+
+	span {
+		height: 2rem;
+		width: 3rem;
+		margin-inline-end: 1rem;
+	}
+}

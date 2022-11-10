@@ -12,7 +12,7 @@ export function Sprint({ sprint }: Props) {
   return (
     <section id='sprint' className='column border' style={{ borderBottom: 'none' }}>
       <div id='sprint__header' className={classes.list}>
-        <SprintName name={sprint.name} />
+        <SprintName sprint={sprint} />
         <Days sprint={sprint} />
       </div>
     </section>

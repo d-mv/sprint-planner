@@ -1,4 +1,4 @@
-import { map } from 'ramda';
+import { map, omit } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 import { Spinner } from '../../atoms';
 import { MongoDocument } from '../../models';
@@ -15,6 +15,9 @@ export function EngineerWorks() {
 
   const isLoading = useSelector(getIsLoading)('get-works');
 
+  // eslint-disable-next-line no-console
+  console.log(works);
+
   const isLoadingAssigned = useSelector(getIsLoading)('get-assigned-work');
 
   if (!works.length) return null;
@@ -23,7 +26,7 @@ export function EngineerWorks() {
     if (!work.work) return null;
 
     return (
-      <WorkContext.Provider key={work._id} value={{ work: work.work }}>
+      <WorkContext.Provider key={work._id} value={{ assigned: omit(['work'], work), work: work.work }}>
         <AssignedWork />
       </WorkContext.Provider>
     );

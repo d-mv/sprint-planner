@@ -13,10 +13,14 @@ export function CountOfCount({ total, left, tooltip }: Props) {
 
   const isEmpty = !left;
 
+  const isOverUse = left < 0;
+
   function getColor() {
     if (isComplete) return 'success';
 
-    if (isEmpty) return 'error';
+    if (isOverUse) return 'warning';
+
+    if (isEmpty) return 'info';
 
     return 'secondary';
   }

@@ -1,7 +1,8 @@
-import dayjs from 'dayjs';
-import { useSelector, getSprintDays, getIsDayOff } from '../../state';
+import dayjs, { Dayjs } from 'dayjs';
+import { useContextSelector } from 'use-context-selector';
+import { useSelector, getSprintDays, getIsDayOff, getCurrentSprint, getWorkById } from '../../state';
 import { Engineer } from '../engineer';
-import { WorkToRender } from '../work';
+import { WorkContext, WorkToRender } from '../work';
 
 export interface UseWorkDaysProps {
   workToRender: WorkToRender;
@@ -59,4 +60,32 @@ export function useWorkDays({ workToRender, engineer }: UseWorkDaysProps) {
   });
 
   return { days: result, lastDay, isOverSprint };
+}
+
+export function useWorkIsOverSprint() {
+  const { work, assigned } = useContextSelector(WorkContext, c => c);
+
+  const sprint = useSelector(getCurrentSprint);
+
+  if (!assigned || !sprint) return false;
+
+  const endDate = assigned.startDate.add(work.estimate, 'days');
+
+  return endDate.isAfter(sprint.endDate);
+}
+
+export function useUnassignedWorkIsOverSprint() {
+  const sprint = useSelector(getCurrentSprint);
+
+  const getter = useSelector(getWorkById);
+
+  return function call(startDate: Dayjs, workId: string) {
+    const work = getter(workId);
+
+    if (!work || !sprint) return false;
+
+    const endDate = startDate.add(work.estimate, 'days');
+
+    return endDate.isAfter(sprint.endDate);
+  };
 }

@@ -1,7 +1,8 @@
 import { Typography, useTheme } from '@mui/material';
-import { blueGrey, indigo, pink, red } from '@mui/material/colors';
+import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
+import { grey, indigo, pink, red } from '@mui/material/colors';
 import clsx from 'clsx';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { CSSProperties, MouseEvent } from 'react';
 
 import { MongoDocument } from '../../../models';
@@ -25,36 +26,47 @@ export function Day({ day, onClick, withDate }: Props) {
 
   const isCommonOff = isDayOff(date);
 
+  const isToday = day.date.isSame(dayjs(), 'date');
+
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     if (onClick) onClick(date)(e);
   }
 
   function getColor(): CSSProperties {
-    let backgroundColor = '#fff';
-    let color = theme.palette.text.primary;
+    const style: CSSProperties = {
+      backgroundColor: '#fff',
+      color: theme.palette.text.primary,
+      border: 'var(--border)',
+    };
 
     if (isCommonOff) {
-      backgroundColor = pink[500];
-      color = '#fff';
+      style.backgroundColor = pink[500];
+      style.color = '#fff';
     }
 
     if (isOff) {
-      backgroundColor = red[500];
-      color = '#fff';
+      style.backgroundColor = pink[100];
+      // color = '#fff';
     }
 
-    if (isWeekend) backgroundColor = pink[100];
+    if (isWeekend) style.backgroundColor = grey[100];
 
     if (isWork) {
-      backgroundColor = indigo[500];
-      color = '#fff';
+      style.backgroundColor = indigo[500];
+      style.color = '#fff';
     }
 
-    return { color, backgroundColor };
+    if (isToday) style.borderColor = red[500];
+
+    return style;
   }
 
   function renderDate() {
     return <Typography variant='subtitle1' color={getColor().color}>{`${month}/${date.date().toString()}`}</Typography>;
+  }
+
+  function renderTodayIcon() {
+    return <TodayOutlinedIcon />;
   }
 
   return (
@@ -63,10 +75,11 @@ export function Day({ day, onClick, withDate }: Props) {
       id={buildId('day', day._id)}
       onClick={handleClick}
       disabled={!onClick}
-      className={clsx('border center', classes['header-cell'])}
+      className={clsx('center', classes['header-cell'])}
       style={getColor()}
     >
       {ifTrue(withDate, renderDate)}
+      {ifTrue(!withDate && isToday, renderTodayIcon)}
     </button>
   );
 }

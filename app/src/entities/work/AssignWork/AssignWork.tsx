@@ -2,16 +2,18 @@ import { Button, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/mat
 import clsx from 'clsx';
 import dayjs from 'dayjs';
 import { map } from 'ramda';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { TEXT } from '../../../data';
 import { MongoDocument } from '../../../models';
 import { getUnAssignedWorks, useSelector } from '../../../state';
-import { setupText } from '../../../tools';
+import { ifTrue, setupText } from '../../../tools';
+import { useUnassignedWorkIsOverSprint } from '../../days';
 import { EngineerContext } from '../../engineer/engineer.contexts';
 import { useAssignedWork } from '../useAssignedWorks.hook';
 import { AssignedWork, Work } from '../work.models';
+import { WorkNextSprintMessage } from '../WorkNextSprintMessage';
 import classes from './AssignWork.module.scss';
 
 const TXT = setupText(TEXT)(['work', 'form']);
@@ -30,6 +32,14 @@ export function AssignWork({ onCancel }: Props) {
   const [startDate, setStartDate] = useState(dayjs());
 
   const { add } = useAssignedWork();
+
+  const [isOverSprint, setIsOverSprint] = useState(false);
+
+  const checkIfIsOverSprint = useUnassignedWorkIsOverSprint();
+
+  useEffect(() => {
+    setIsOverSprint(checkIfIsOverSprint(startDate, selected));
+  }, [selected, startDate]);
 
   function handleAssign() {
     const assignedWork: AssignedWork = {
@@ -83,9 +93,17 @@ export function AssignWork({ onCancel }: Props) {
             }}
             onChange={handleDateChange}
           />
+          {ifTrue(isOverSprint, () => (
+            <WorkNextSprintMessage />
+          ))}
         </div>
         <div className={clsx('center', classes.actions)}>
-          <Button variant='contained' size='small' onClick={handleAssign}>
+          <Button
+            variant='contained'
+            size='small'
+            onClick={handleAssign}
+            disabled={!selected || startDate.isSame(dayjs(), 'day')}
+          >
             {TXT('assign')}
           </Button>
         </div>

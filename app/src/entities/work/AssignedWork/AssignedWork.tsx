@@ -13,12 +13,12 @@ import classes from './AssignedWork.module.scss';
 const TXT = setupText(TEXT)('work');
 
 export function AssignedWork() {
-  const workToRender = useContextSelector(WorkContext, c => c.work);
+  const { assigned } = useContextSelector(WorkContext, c => c);
 
   const { remove } = useAssignedWork();
 
   function handleUnassign() {
-    remove(workToRender._id);
+    if (assigned) remove(assigned._id);
   }
 
   function renderActions() {
