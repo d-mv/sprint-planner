@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { MongoDocument } from '../../models';
-import { checkIfBetween, getWorkingDaysDiff } from '../days';
+import { checkIfBetween, getWorkingDaysDiff } from '../../shared';
 import { Sprint } from './sprint.models';
 
 interface Props {

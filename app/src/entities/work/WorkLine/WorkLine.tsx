@@ -28,7 +28,12 @@ export function WorkLine({ children, className }: PropsWithChildren<Props>) {
   );
 
   function renderWithTooltip() {
-    if (title.length > 60) return <Tooltip message={title}>{renderDescription()}</Tooltip>;
+    if (title.length > 60)
+      return (
+        <Tooltip message={title} withoutWrapper>
+          {renderDescription()}
+        </Tooltip>
+      );
 
     return renderDescription();
   }

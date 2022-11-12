@@ -1,12 +1,18 @@
 import { Tooltip as MuiTooltip, Typography } from '@mui/material';
 import { ReactElement } from 'react';
+import { ifTrue } from '../tools';
 
 interface Props {
   message: string;
   children: ReactElement;
+  withoutWrapper?: boolean;
 }
 
-export function Tooltip({ message, children }: Props) {
+export function Tooltip({ message, children, withoutWrapper }: Props) {
+  const renderWithWrapper = () => <span>{children}</span>;
+
+  const renderWithoutWrapper = () => children;
+
   return (
     <MuiTooltip
       title={
@@ -15,7 +21,7 @@ export function Tooltip({ message, children }: Props) {
         </Typography>
       }
     >
-      {children}
+      {ifTrue(withoutWrapper, renderWithoutWrapper, renderWithWrapper)}
     </MuiTooltip>
   );
 }

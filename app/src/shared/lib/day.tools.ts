@@ -1,11 +1,8 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import durationPlugin from 'dayjs/plugin/duration';
-import { compose, map } from 'ramda';
 
-import { buildArray } from '../../tools';
-import { Sprint } from '../sprint';
-import { DayType } from './days.models';
+import { buildArray } from './array.tools';
 
 dayjs.extend(isBetween);
 dayjs.extend(durationPlugin);
@@ -20,22 +17,6 @@ export function checkIfWeekend(date: Dayjs): boolean {
 
 export function checkIfBetween(day: Dayjs, start: Dayjs, end: Dayjs) {
   return day.isBetween(start, end, 'days');
-}
-
-export function buildSprintDays(sprint: Sprint): DayType[] {
-  function mapperFn(n: number): DayType {
-    const date = sprint.startDate.add(n, 'days');
-
-    const month = parseInt(date.month().toString()) + 1;
-
-    return {
-      date,
-      month,
-      isWeekend: checkIfWeekend(date),
-    };
-  }
-
-  return compose(map(mapperFn), buildArray, duration)(sprint.startDate, sprint.endDate);
 }
 
 export function getWorkingDaysDiff(from: Dayjs, till: Dayjs): number {

@@ -1,5 +1,4 @@
 import { path } from 'ramda';
-import { Person } from '../entities';
 
 import { RecordObject } from '../models';
 
@@ -36,4 +35,22 @@ export function fromTemplate(template: string, params: (string | number)[]): str
     result = result.replace(new RegExp(`%${key + 1}`, 'g'), String(param));
   });
   return result;
+}
+
+export function makeString(context?: string) {
+  const withContext = (message: string) => (context ? `[${context}] ${message}` : message);
+
+  return function call(template: string, params: (string | number | boolean)[]): string {
+    if (!params?.length) return withContext(template);
+
+    let result = template;
+
+    params.forEach((param, key) => {
+      result = result.replace(new RegExp(`%${key + 1}`, 'g'), String(param));
+    });
+
+    if (!context) return result;
+
+    return withContext(result);
+  };
 }

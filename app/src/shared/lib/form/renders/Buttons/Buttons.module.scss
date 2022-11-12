@@ -1,0 +1,26 @@
+.container {
+	display: flex;
+	flex-flow: row-reverse nowrap;
+
+	button {
+		margin-inline-start: 1rem;
+	}
+}
+
+.processing {
+	cursor: wait
+}
+
+.some {
+	position: relative;
+
+	.spinner {
+		margin: auto;
+		position: absolute;
+		left: calc(50% - 1.35rem);
+	}
+
+	.transparent-label {
+		color: transparent;
+	}
+}

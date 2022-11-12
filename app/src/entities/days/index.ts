@@ -2,7 +2,7 @@ export * from './days.models';
 
 export * from './Days';
 
-export * from './days.tools';
+// export * from '../../shared/lib/day.tools';
 
 export * from './days.hooks';
 

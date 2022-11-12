@@ -8,7 +8,8 @@ import { TEXT } from '../../../data';
 import { getUnAssignedWorksQty, getWorkDaysLeft, getWorkDaysPerEngineer, useSelector } from '../../../state';
 import { CONSTANTS } from '../../../theme';
 import { ifTrue, setupText } from '../../../tools';
-import { AssignWork, CreateAssignWork } from '../../work';
+import { AssignWork } from '../../work';
+import { CreateAssignWork2 } from '../../work/CreateAssignWork/CreateAssignWork2';
 import { EngineerContext } from '../engineer.contexts';
 import { makeName } from '../engineer.tools';
 import { EngineerDaysOff } from '../EngineerDaysOff';
@@ -59,7 +60,7 @@ export function Engineer() {
   }
 
   function renderCreate() {
-    return <CreateAssignWork onCancel={toggle('create')} />;
+    return <CreateAssignWork2 onCancel={toggle('create')} />;
   }
 
   function renderAssign() {
