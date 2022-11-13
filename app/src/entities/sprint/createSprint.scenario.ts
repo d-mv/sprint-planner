@@ -12,6 +12,6 @@ export const loginFormScenario: FormScenario = {
   },
   buttons: [
     { label: 'Submit', type: 'primary', actionId: 'submit', role: 'submit' },
-    { label: 'Cancel', type: 'secondary', actionId: 'cancel' },
+    { label: 'Cancel', variant: 'text', type: 'secondary', actionId: 'cancel' },
   ],
 };

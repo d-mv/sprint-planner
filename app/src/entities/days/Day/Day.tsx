@@ -10,6 +10,7 @@ import { getIsDayOff, useSelector } from '../../../state';
 import { buildId, ifTrue } from '../../../tools';
 import { DayType } from '../days.models';
 import classes from './Day.module.scss';
+import { CONFIG } from '../../../config';
 
 interface Props {
   withDate?: boolean;
@@ -33,30 +34,21 @@ export function Day({ day, onClick, withDate }: Props) {
   }
 
   function getColor(): CSSProperties {
-    const style: CSSProperties = {
-      backgroundColor: '#fff',
-      color: theme.palette.text.primary,
-      border: 'var(--border)',
+    let style: CSSProperties = {
+      backgroundColor: CONFIG.colors.regular.backgroundColor,
+      color: CONFIG.colors.regular.color,
+      border: CONFIG.colors.border,
     };
 
-    if (isCommonOff) {
-      style.backgroundColor = pink[500];
-      style.color = '#fff';
-    }
+    if (isCommonOff) style = { ...style, ...CONFIG.colors.commonOff };
 
-    if (isOff) {
-      style.backgroundColor = pink[100];
-      // color = '#fff';
-    }
+    if (isOff) style = { ...style, ...CONFIG.colors.off };
 
     if (isWeekend) style.backgroundColor = grey[100];
 
-    if (isWork) {
-      style.backgroundColor = indigo[500];
-      style.color = '#fff';
-    }
+    if (isWork) style = { ...style, ...CONFIG.colors.work };
 
-    if (isToday) style.borderColor = red[500];
+    if (isToday) style.borderColor = CONFIG.colors.todayBorder;
 
     return style;
   }

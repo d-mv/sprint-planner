@@ -1,4 +1,4 @@
-import { assoc, map, path } from 'ramda';
+import { assoc, compose, map, path } from 'ramda';
 import { FormEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import { Result, success, failure } from '../../../entities';
@@ -9,6 +9,7 @@ import { FormContext, FormItemContext } from './contexts';
 import { FormItem, FormSection, FormTypes, SectionFormItem } from './models';
 import { Buttons, DateInput, Number, Text } from './renders';
 import { TEXT } from './text';
+import { getAllItems, getAllScenarioDataIds } from './tools';
 
 const RENDERS = makeMatch(
   {
@@ -31,6 +32,8 @@ export default function Form() {
 
   const [validatedElements, setValidatedElements] = useState<RecordObject<boolean>>({});
 
+  const allItems = getAllItems(scenario);
+
   useEffect(() => {
     return () => {
       setData({});
@@ -39,89 +42,81 @@ export default function Form() {
 
   function handleValidated(element: string) {
     return function call(status: boolean) {
+      // eslint-disable-next-line no-console
+      console.log(element, status);
+
       if (validatedElements[element] !== status) setValidatedElements(assoc(element, status, validatedElements));
     };
   }
 
-  // function checkIfRequiredValidated(form: FormData): Result<string> {
-  //   const result: string[] = [];
+  function checkIfRequiredValidated(form: FormData): Result<string> {
+    const result: string[] = [];
 
-  //   const requiredEntries = Object.entries(scenario.items).filter(([_, value]) => Boolean(value.isRequired));
+    const requiredItems = allItems.filter(item => Boolean(item.isRequired));
 
-  //   requiredEntries.forEach(([key]) => {
-  //     // if (scenario.items[key].type === FormTypes.DROPZONE) return;
+    requiredItems.forEach(({ dataId }) => {
+      const formValue = form.get(dataId);
 
-  //     const formValue = form.get(key);
+      if (!formValue) result.push(STRING(TXT('missingValue'), [dataId]));
+    });
 
-  //     if (!formValue) result.push(STRING(TXT('missingValue'), [key]));
-  //   });
+    if (!result.length) return success('OK');
 
-  //   if (!result.length) return success('OK');
+    return failure(result.join('. '));
+  }
 
-  //   return failure(result.join('. '));
-  // }
+  function getAllFormScenarioDataIds(items: (FormItem | SectionFormItem)[]): string[] {
+    return items.map(({ dataId }) => dataId);
+  }
 
-  // function checkIfValidated() {
-  //   const validatedKeys = Object.keys(validatedElements);
+  function getAllFormScenarioItemsWithValidation(
+    items: (FormItem | SectionFormItem)[],
+  ): (FormItem | SectionFormItem)[] {
+    return items.filter(item => !!item.validation);
+  }
 
-  //   const itemsKeys = Object.entries(scenario.items)
-  //     .filter(([_, value]) => !!value.validation)
-  //     .map(([key]) => key);
+  function checkIfValidated() {
+    const validatedKeys = Object.keys(validatedElements);
 
-  //   const result: string[] = [];
+    const dataIds = compose(getAllFormScenarioDataIds, getAllFormScenarioItemsWithValidation)(allItems);
 
-  //   itemsKeys.forEach(key => {
-  //     // if (scenario.items[key].type === FormTypes.DROPZONE) return;
+    const result: string[] = [];
 
-  //     if (!validatedKeys.includes(key)) result.push(STRING(TXT('keyIsNotValid'), [key]));
-  //   });
+    dataIds.forEach(dataId => {
+      if (!validatedKeys.includes(dataId)) result.push(STRING(TXT('keyIsNotValid'), [dataId]));
+    });
 
-  //   if (!result.length) return success('OK');
+    if (!result.length) return success('OK');
 
-  //   return failure(result.join('. '));
-  // }
-
-  // function addFilesToFormData(form: FormData, dataKey: string): FormData {
-  //   const newForm = form;
-
-  //   const files = data[dataKey];
-
-  //   newForm.set(`${dataKey}[]`, files[0]);
-
-  //   for (const file of files.slice(1)) {
-  //     newForm.append(`${dataKey}[]`, file);
-  //   }
-
-  //   return newForm;
-  // }
+    return failure(result.join('. '));
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // let form = new FormData();
+    const form = new FormData();
 
-    // for await (const key of Object.keys(scenario.items)) {
-    // const isFiles = scenario.items[key].type === FormTypes.DROPZONE;
+    for await (const dataId of getAllScenarioDataIds(scenario)) {
+      const value = path(['target', 'elements', dataId, 'value'], e) as string;
 
-    // if (isFiles) form = addFilesToFormData(form, key);
-    // else form.set(key, path(['target', 'elements', key, 'value'], e) as string);
-    // }
+      if (value !== undefined) form.set(dataId, value);
+    }
 
-    // const requiredCheckResult = checkIfRequiredValidated(form);
+    const requiredCheckResult = checkIfRequiredValidated(form);
 
-    // if (!requiredCheckResult.isOK) {
-    //   onError && onError(requiredCheckResult.message);
-    //   return;
-    // }
+    if (!requiredCheckResult.isOK) {
+      onError && onError(requiredCheckResult.message);
+      return;
+    }
 
-    // const validatedCheckResult = checkIfValidated();
+    const validatedCheckResult = checkIfValidated();
 
-    // if (!validatedCheckResult.isOK) {
-    //   onError && onError(validatedCheckResult.message);
-    //   return;
-    // }
+    if (!validatedCheckResult.isOK) {
+      onError && onError(validatedCheckResult.message);
+      return;
+    }
 
-    // submit(form);
+    submit(form);
   }
 
   function handleChange(key: string) {

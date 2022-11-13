@@ -19,6 +19,7 @@ specifiers:
   '@types/ramda': ^0.28.18
   '@types/react': ^18.0.24
   '@types/react-dom': ^18.0.8
+  '@types/validator': ^13.7.10
   '@types/wojtekmaj__react-daterange-picker': ^3.4.1
   '@typescript-eslint/eslint-plugin': 5.42.0
   '@typescript-eslint/parser': 5.42.0
@@ -86,6 +87,7 @@ specifiers:
   ts-jest: ^29.0.3
   typescript: ^4.8.4
   use-context-selector: ^1.4.1
+  validator: ^13.7.0
   web-vitals: ^2.1.4
   webpack: ^5.64.4
   webpack-dev-server: ^4.6.0
@@ -111,6 +113,7 @@ dependencies:
   '@types/ramda': 0.28.18
   '@types/react': 18.0.24
   '@types/react-dom': 18.0.8
+  '@types/validator': 13.7.10
   '@types/wojtekmaj__react-daterange-picker': 3.4.1
   '@typescript-eslint/eslint-plugin': 5.42.0_6xw5wg2354iw4zujk2f3vyfrzu
   '@typescript-eslint/parser': 5.42.0_wyqvi574yv7oiwfeinomdzmc3m
@@ -178,6 +181,7 @@ dependencies:
   ts-jest: 29.0.3_4zewshf53vgoqondinwz5w4czm
   typescript: 4.8.4
   use-context-selector: 1.4.1_biqbaboplfbrettd7655fr4n2y
+  validator: 13.7.0
   web-vitals: 2.1.4
   webpack: 5.74.0
   webpack-dev-server: 4.11.1_webpack@5.74.0
@@ -2998,6 +3002,10 @@ packages:
 
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
+    dev: false
+
+  /@types/validator/13.7.10:
+    resolution: {integrity: sha512-t1yxFAR2n0+VO6hd/FJ9F2uezAZVWHLmpmlJzm1eX03+H7+HsuTAp7L8QJs+2pQCfWkP1+EXsGK9Z9v7o/qPVQ==}
     dev: false
 
   /@types/wojtekmaj__react-daterange-picker/3.4.1:
@@ -10167,6 +10175,11 @@ packages:
       '@jridgewell/trace-mapping': 0.3.17
       '@types/istanbul-lib-coverage': 2.0.4
       convert-source-map: 1.9.0
+    dev: false
+
+  /validator/13.7.0:
+    resolution: {integrity: sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==}
+    engines: {node: '>= 0.10'}
     dev: false
 
   /vary/1.1.2:

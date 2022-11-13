@@ -1,12 +1,19 @@
 .actions {
-	padding: .5rem 0;
-	height: 3.3rem;
 
-	button+button {
-		margin-inline-start: 1rem;
+	align-items: center;
+
+	span+span {
+		margin-inline-start: .5rem;
 	}
 
-	button {
-		width: 7.8rem !important;
+	span {
+		width: 3rem;
 	}
+
+}
+
+.engineer-line {
+	// &:hover .actions {
+	// 	opacity: 1
+	// }
 }

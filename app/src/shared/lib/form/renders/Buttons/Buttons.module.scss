@@ -1,6 +1,7 @@
 .container {
 	display: flex;
 	flex-flow: row-reverse nowrap;
+	padding: 1rem 0;
 
 	button {
 		margin-inline-start: 1rem;

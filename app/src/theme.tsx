@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { blue, blueGrey } from '@mui/material/colors';
+import { blue, blueGrey, lightGreen } from '@mui/material/colors';
 
 export const CONSTANTS = {
   daysLineHeight: '4rem',
@@ -15,6 +15,12 @@ export const theme = createTheme({
       primary: blueGrey['800'],
       secondary: blueGrey['600'],
       disabled: blueGrey['400'],
+    },
+    success: {
+      light: lightGreen[300],
+      main: lightGreen[500],
+      dark: lightGreen[600],
+      contrastText: blueGrey['800'],
     },
   },
   typography: {

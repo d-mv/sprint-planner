@@ -1,16 +1,12 @@
 import { Button } from '@mui/material';
 import { map, path } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
-import { Spinner } from '../../../../../atoms';
-import { makeMatch, ifTrue } from '../../../../../tools';
 
-// import { ButtonSize, PrimaryButton, SecondaryButton } from '../../../../components/Buttons';
-// import { Spinner, SPINNERS } from '../../../../components/Loading';
+import { Spinner } from '../../../../../atoms';
+import { ifTrue } from '../../../../../tools';
 import { FormContext } from '../../contexts';
 import { FormButton } from '../../models';
 import classes from './Buttons.module.scss';
-
-const BUTTONS = makeMatch({ primary: Button, secondary: Button }, () => null);
 
 export function Buttons() {
   const [buttons, actions, process] = useContextSelector(FormContext, c => [c.scenario.buttons, c.actions, c.process]);
@@ -35,20 +31,20 @@ export function Buttons() {
 
   function renderButton(buttonItem: FormButton) {
     // eslint-disable-next-line no-useless-return, @typescript-eslint/no-empty-function
-    const action = actions ? actions[buttonItem.actionId] : () => {};
+    let action = () => {};
 
-    const Button = BUTTONS[buttonItem.type];
+    if (buttonItem.role !== 'submit' && actions) action = actions[buttonItem.actionId];
 
     return (
       <Button
-        id={buttonItem.actionId}
-        // isBusy={isProcess(buttonItem)}
-        className={ifTrue(isProcess(buttonItem), classes.processing)}
-        // size={buttonItem.size ?? ButtonSize.MEDIUM}
         key={buttonItem.label}
         onClick={action}
+        type={ifTrue(!actions, 'submit')}
         disabled={buttonItem.isDisabled}
-        type={buttonItem.role ?? 'button'}
+        className={ifTrue(isProcess(buttonItem), classes.processing)}
+        variant={buttonItem.variant ?? 'contained'}
+        size={buttonItem.size ?? 'medium'}
+        color={buttonItem.type}
       >
         {renderContent(buttonItem)}
       </Button>

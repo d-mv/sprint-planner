@@ -18,8 +18,21 @@ export const createWorkFormScenario: FormScenario = {
           type: FormTypes.TEXT,
           autoFocus: true,
           isRequired: true,
+          placeholder: 'ECP-000',
+          validation: {
+            type: 'text',
+            regex: '^ecp-\\d*$',
+          },
         },
-        jiraEpic: { dataId: 'jiraEpic', label: 'JIRA Epic', type: FormTypes.TEXT },
+        jiraEpic: {
+          dataId: 'jiraEpic',
+          label: 'JIRA Epic',
+          type: FormTypes.TEXT,
+          validation: {
+            type: 'text',
+            regex: '^ecp-\\d*$',
+          },
+        },
       },
     },
     title: {
@@ -34,13 +47,19 @@ export const createWorkFormScenario: FormScenario = {
       style: { display: 'flex', justifyContent: 'space-around' },
       order: 3,
       items: {
-        estimate: { dataId: 'estimate', label: 'Estimate', type: FormTypes.NUMBER, isRequired: true },
+        estimate: {
+          dataId: 'estimate',
+          label: 'Estimate',
+          type: FormTypes.NUMBER,
+          isRequired: true,
+          validation: { type: 'number', float: false, noZero: true, notNegative: true },
+        },
         startDate: { dataId: 'startDate', label: 'Start Date', type: FormTypes.DATE, isRequired: true },
       },
     },
   },
   buttons: [
     { label: 'Submit', type: 'primary', actionId: 'submit', role: 'submit' },
-    { label: 'Cancel', type: 'secondary', actionId: 'cancel' },
+    { label: 'Cancel', variant: 'text', type: 'primary', actionId: 'cancel' },
   ],
 };

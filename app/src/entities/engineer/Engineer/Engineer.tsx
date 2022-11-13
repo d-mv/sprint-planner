@@ -1,9 +1,9 @@
-import { Button, Collapse, Typography } from '@mui/material';
+import { Collapse, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { CountOfCount, Message } from '../../../atoms';
+import { CountOfCount, IconButton, Message } from '../../../atoms';
 import { TEXT } from '../../../data';
 import { getUnAssignedWorksQty, getWorkDaysLeft, getWorkDaysPerEngineer, useSelector } from '../../../state';
 import { CONSTANTS } from '../../../theme';
@@ -32,6 +32,10 @@ export function Engineer() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   const [isDaysOffOpen, setIsDaysOffOpen] = useState(false);
+
+  const [showActions, setShowActions] = useState(false);
+
+  const formIsOpen = () => isCreateOpen || isAssignOpen || isDaysOffOpen;
 
   const closeDaysOff = () => setIsDaysOffOpen(false);
 
@@ -73,24 +77,38 @@ export function Engineer() {
     return <EngineerDaysOff onClose={closeDaysOff} />;
   }
 
+  function closeActions() {
+    if (formIsOpen()) return;
+
+    setShowActions(false);
+  }
+
+  function openActions() {
+    setShowActions(true);
+  }
+
   function renderActions() {
     return (
       <div className={clsx('line', classes.actions)}>
-        <Button variant='contained' size='small' onClick={toggle('create')}>
-          {ifTrue(isCreateOpen, TXT('cancel'), TXT('createWork'))}
-        </Button>
-        <Button
-          variant='contained'
-          size='small'
-          color='success'
-          disabled={!unassignedWorksQty || !workDaysLeft}
+        <IconButton
+          variant='createWork'
+          onClick={toggle('create')}
+          tooltip={ifTrue(isCreateOpen, TXT('cancel'), TXT('createWork'))}
+          iconProps={ifTrue(isCreateOpen, { color: 'primary' })}
+        />
+        <IconButton
+          variant='assignWork'
           onClick={toggle('assign')}
-        >
-          {ifTrue(isAssignOpen, TXT('cancel'), TXT('assign'))}
-        </Button>
-        <Button variant='outlined' size='small' onClick={toggle('daysOff')}>
-          {ifTrue(isDaysOffOpen, TXT('cancel'), TXT('daysOffButton'))}
-        </Button>
+          disabled={!unassignedWorksQty || !workDaysLeft}
+          tooltip={ifTrue(isAssignOpen, TXT('cancel'), TXT('assign'))}
+          iconProps={ifTrue(isAssignOpen, { color: 'primary' })}
+        />
+        <IconButton
+          variant='dayOff'
+          onClick={toggle('daysOff')}
+          tooltip={ifTrue(isDaysOffOpen, TXT('cancel'), TXT('daysOffButton'))}
+          iconProps={ifTrue(isDaysOffOpen, { color: 'primary' })}
+        />
       </div>
     );
   }
@@ -99,15 +117,20 @@ export function Engineer() {
     <div className='column s-between'>
       <div
         id='engineer'
-        className='border border-right-none'
-        style={{ minHeight: CONSTANTS.engineerLineHeight, width: CONSTANTS.engineersWidth }}
+        onMouseEnter={openActions}
+        onMouseLeave={closeActions}
+        className={clsx('border border-right-none', classes['engineer-line'])}
+        style={{ width: CONSTANTS.engineersWidth }}
       >
-        <div className='align-center w-100 padding-1' style={{ backgroundColor: CONSTANTS.engineerLineColor }}>
+        <div
+          className='align-center w-100 padding-1'
+          style={{ backgroundColor: CONSTANTS.engineerLineColor, height: '4rem' }}
+        >
           <Typography className='w-100' variant='body1'>
             {makeName(engineer.person)}
           </Typography>
+          {ifTrue(showActions, renderActions())}
           <CountOfCount total={workDays.length} left={workDaysLeft} tooltip='Points available of total' />
-          {renderActions()}
         </div>
         <Collapse orientation='vertical' in={isCreateOpen}>
           {renderCreate()}

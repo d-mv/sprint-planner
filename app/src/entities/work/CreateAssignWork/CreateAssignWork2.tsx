@@ -1,12 +1,13 @@
 import { Button, TextField } from '@mui/material';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
-import { o } from 'ramda';
+import { compose, o } from 'ramda';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { TEXT } from '../../../data';
 import { Form, FormContext, LazyLoad } from '../../../shared';
+import { setMessage, useDispatch } from '../../../state';
 import { setupText } from '../../../tools';
 import { EngineerContext } from '../../engineer/engineer.contexts';
 import { createWorkFormScenario } from '../createWork.scenario';
@@ -32,6 +33,8 @@ export function CreateAssignWork2({ onCancel }: Props) {
   const [form, setForm] = useState<Work>(defaultForm);
 
   const [isValid, setIsValid] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isValid && (!form.jiraTicket || !form.title || !form.estimate)) setIsValid(false);
@@ -72,17 +75,23 @@ export function CreateAssignWork2({ onCancel }: Props) {
   }
 
   function handleSubmit(form: FormData) {
-    form.forEach(e => {
+    // eslint-disable-next-line no-console
+    console.log(form);
+    form.forEach((v, k) => {
       // eslint-disable-next-line no-console
-      console.log(e);
+      console.log(v, k);
     });
     // dispatch(identityLogin(form));
+  }
+
+  function handleError(message: string) {
+    compose(dispatch, setMessage)(message);
   }
 
   return (
     <div className={clsx('padding-1', classes.container)}>
       <LazyLoad>
-        <FormContext.Provider value={{ scenario: createWorkFormScenario, submit: handleSubmit }}>
+        <FormContext.Provider value={{ scenario: createWorkFormScenario, submit: handleSubmit, onError: handleError }}>
           <Form />
         </FormContext.Provider>
       </LazyLoad>

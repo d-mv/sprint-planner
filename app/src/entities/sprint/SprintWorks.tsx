@@ -29,7 +29,7 @@ export function SprintWorks() {
       <Fragment key={engineer._id}>
         <div
           className='border-top border-bottom'
-          style={{ height: CONSTANTS.engineerLineHeight, backgroundColor: CONSTANTS.engineerLineColor }}
+          style={{ height: '4.2rem', backgroundColor: CONSTANTS.engineerLineColor }}
         />
         {ifTrue(w?.length, () => map(renderAssignedWork(engineer), w))}
       </Fragment>

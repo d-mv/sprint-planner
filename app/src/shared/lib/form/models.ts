@@ -29,9 +29,18 @@ export interface VersionValidation {
 export interface TextValidation {
   type: 'text';
   regex?: string;
-  example: string;
+  example?: string;
   noWhitespace?: boolean;
   trim?: boolean;
+}
+
+export interface NumberValidation {
+  type: 'number';
+  min?: number;
+  max?: number;
+  float?: boolean;
+  notNegative?: boolean;
+  noZero?: boolean;
 }
 
 export interface FormItem {
@@ -53,13 +62,15 @@ export interface FormItem {
   maxLength?: number;
   rows?: number;
   maxRows?: number;
-  validation?: VersionValidation | TextValidation | DropValidation;
+  validation?: VersionValidation | TextValidation | DropValidation | NumberValidation;
 }
 
 export interface FormButton {
   label: string;
+  variant?: 'text' | 'outlined' | 'contained';
+  size?: 'small' | 'medium' | 'large';
   isDisabled?: boolean;
-  type: 'primary' | 'secondary';
+  type: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
   actionId: string;
   role?: 'submit' | 'reset';
   // size?: ButtonSize;

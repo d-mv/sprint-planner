@@ -1,23 +1,38 @@
 import { TextField } from '@mui/material';
-import clsx from 'clsx';
+import { ChangeEvent } from 'react';
 import { useContextSelector } from 'use-context-selector';
+
 import { FormItemContext } from '../../contexts';
+import { validateText } from '../../validators';
 
 export default function Text() {
-  const [item, onValidation] = useContextSelector(FormItemContext, c => [c.item, c.onValidation]);
+  const [item, onValidation, isValidated] = useContextSelector(FormItemContext, c => [
+    c.item,
+    c.onValidation,
+    c.isValidated,
+  ]);
 
-  const { isRequired, className, style, label } = item;
+  const { isRequired, className, style, label, validation } = item;
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    if (validation) onValidation(validateText(item, e.currentTarget.value));
+  }
 
   return (
     <TextField
-      id={item.dataId}
+      autoCapitalize={item.autoCapitalize}
+      autoComplete={item.autoComplete}
+      autoFocus={item.autoFocus}
       className={className}
-      required={isRequired}
+      defaultValue={item.defaultValue}
+      error={!isValidated}
+      id={item.dataId}
       label={label}
-      variant='standard'
-      // value={form.jiraTicket}
-      // onChange={handleChange('jiraTicket')}
+      onChange={handleChange}
+      placeholder={item.placeholder}
+      required={isRequired}
       style={style}
+      variant='standard'
     />
   );
 }
