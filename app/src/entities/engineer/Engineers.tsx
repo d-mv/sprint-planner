@@ -8,7 +8,7 @@ import { AddOrCreateEngineer } from './AddOrCreateEngineer';
 import { MongoDocument } from '../../models';
 import { useAssignedWork } from '../work/useAssignedWorks.hook';
 import { CONSTANTS } from '../../theme';
-import { ErrorMessage } from '../../atoms';
+import { ErrorMessage } from '../../shared';
 import { EngineerContext } from './engineer.contexts';
 import { ColorLegend, useApp } from '../app';
 import { useEngineers } from './useEngineers.hook';

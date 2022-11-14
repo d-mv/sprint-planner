@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { LoadingIndication } from '../../atoms';
+import { LoadingIndication } from '../../shared';
 
 import { SprintHeader, Sprints, Engineers } from '../../entities';
 import classes from './Main.module.scss';

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { PropsWithChildren } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { Tooltip } from '../../../atoms';
+import { Tooltip } from '../../../shared';
 import { ifTrue } from '../../../tools';
 import { useWorkIsOverSprint } from '../../days';
 import { WorkContext } from '../work.contexts';

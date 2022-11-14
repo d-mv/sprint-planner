@@ -4,7 +4,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { ChangeEvent, useState } from 'react';
 import clsx from 'clsx';
 
-import { ErrorMessage, Tooltip } from '../../atoms';
+import { ErrorMessage, Tooltip } from '../../shared';
 import classes from './Login.module.scss';
 import { getMessage, getIsLoading, useSelector } from '../../state';
 import { setupText } from '../../tools';

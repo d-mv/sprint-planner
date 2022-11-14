@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useContextSelector } from 'use-context-selector';
 
-import { IconButton } from '../../../atoms';
+import { IconButton } from '../../../shared';
 import { TEXT } from '../../../data';
 import { CONSTANTS } from '../../../theme';
 import { setupText } from '../../../tools';

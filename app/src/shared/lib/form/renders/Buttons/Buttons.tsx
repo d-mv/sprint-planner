@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { map, path } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
-import { Spinner } from '../../../../../atoms';
+import { Spinner } from '../../../../ui/atoms';
 import { ifTrue, makeMatch } from '../../../../../tools';
 import { FormContext, FormInternalContext } from '../../contexts';
 import { FormButton } from '../../models';

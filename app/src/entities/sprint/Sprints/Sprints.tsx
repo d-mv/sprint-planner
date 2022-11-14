@@ -6,7 +6,7 @@ import { Sprint as SprintType } from '../sprint.models';
 import { getMessage, getIsLoading, getSprints, useSelector } from '../../../state';
 import classes from './Sprints.module.scss';
 import { MongoDocument } from '../../../models';
-import { Spacer, Spinner } from '../../../atoms';
+import { Spacer, Spinner } from '../../../shared';
 import { SprintWorks } from '../SprintWorks';
 import { UnAssignedWorks } from '../../work';
 import { useSprints } from '../useSprints.hook';

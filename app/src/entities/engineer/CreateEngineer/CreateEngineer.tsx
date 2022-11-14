@@ -9,7 +9,7 @@ import classes from './CreateEngineer.module.scss';
 import { TEXT } from '../../../data';
 import { setupText } from '../../../tools';
 import { createEngineer, useDispatch } from '../../../state';
-import { Divider } from '../../../atoms';
+import { Divider } from '../../../shared';
 import { AddDaysOff } from '../../days';
 import clsx from 'clsx';
 

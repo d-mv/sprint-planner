@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs';
 import { map } from 'ramda';
 import { useState } from 'react';
 
-import { IconButton, Message } from '../../atoms';
+import { IconButton, Message } from '../../shared';
 import { TEXT } from '../../data';
 import { ifTrue, setupText } from '../../tools';
 import { AddDayOff } from './AddDayOff';

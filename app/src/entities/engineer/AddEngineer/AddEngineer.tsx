@@ -7,7 +7,7 @@ import { Engineer as EngineerType } from '../engineer.models';
 import { addEngineer, getNotAddedEngineers, useDispatch, useSelector } from '../../../state';
 import { ifTrue, setupText } from '../../../tools';
 import classes from './AddEngineer.module.scss';
-import { Message } from '../../../atoms';
+import { Message } from '../../../shared';
 import { MongoDocument } from '../../../models';
 import { makeName } from '../engineer.tools';
 import clsx from 'clsx';

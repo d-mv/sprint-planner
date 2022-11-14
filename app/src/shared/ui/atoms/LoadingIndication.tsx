@@ -1,5 +1,5 @@
 import { Spinner } from '.';
-import { getAllIsLoading, useSelector } from '../state';
+import { getAllIsLoading, useSelector } from '../../../state';
 
 export function LoadingIndication() {
   const isLoading = useSelector(getAllIsLoading);

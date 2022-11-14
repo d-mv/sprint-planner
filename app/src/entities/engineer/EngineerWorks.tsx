@@ -1,6 +1,6 @@
 import { map, omit } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
-import { Spinner } from '../../atoms';
+import { Spinner } from '../../shared';
 import { MongoDocument } from '../../models';
 
 import { getIsLoading, getWorksForEngineer, useSelector } from '../../state';
