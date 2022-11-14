@@ -11,7 +11,7 @@ export const loginFormScenario: FormScenario = {
     // password: { order: 2, type: FormTypes.PASSWORD, minLength: 8 },
   },
   buttons: [
-    { label: 'Submit', type: 'primary', actionId: 'submit', role: 'submit' },
-    { label: 'Cancel', variant: 'text', type: 'secondary', actionId: 'cancel' },
+    { label: 'Submit', type: 'primary', id: 'submit', role: 'submit' },
+    { label: 'Cancel', variant: 'text', type: 'secondary', id: 'cancel' },
   ],
 };

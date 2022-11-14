@@ -132,15 +132,9 @@ export function Engineer() {
           {ifTrue(showActions, renderActions())}
           <CountOfCount total={workDays.length} left={workDaysLeft} tooltip='Points available of total' />
         </div>
-        <Collapse orientation='vertical' in={isCreateOpen}>
-          {renderCreate()}
-        </Collapse>
-        <Collapse orientation='vertical' in={isAssignOpen}>
-          {renderAssign()}
-        </Collapse>
-        <Collapse orientation='vertical' in={isDaysOffOpen}>
-          {renderDaysOff()}
-        </Collapse>
+        {ifTrue(isCreateOpen, renderCreate)}
+        {ifTrue(isAssignOpen, renderAssign)}
+        {ifTrue(isDaysOffOpen, renderDaysOff)}
       </div>
       <EngineerWorks />
     </div>

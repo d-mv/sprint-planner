@@ -1,27 +1,14 @@
-import { Button, TextField } from '@mui/material';
 import clsx from 'clsx';
-import dayjs from 'dayjs';
-import { compose, o } from 'ramda';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { compose, o, path } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
-import { TEXT } from '../../../data';
+import { AnyValue, RecordObject } from '../../../models';
 import { Form, FormContext, LazyLoad } from '../../../shared';
-import { setMessage, useDispatch } from '../../../state';
-import { setupText } from '../../../tools';
+import { getIsLoading, setMessage, useDispatch, useSelector } from '../../../state';
 import { EngineerContext } from '../../engineer/engineer.contexts';
 import { createWorkFormScenario } from '../createWork.scenario';
 import { useWorks } from '../useWorks.hook';
-import { Work } from '../work.models';
 import classes from './CreateAssignWork.module.scss';
-
-const TXT = setupText(TEXT)(['work', 'form']);
-
-const defaultForm: Work = {
-  jiraTicket: '',
-  estimate: 0,
-  title: '',
-};
 
 interface Props {
   onCancel: () => void;
@@ -30,58 +17,17 @@ interface Props {
 export function CreateAssignWork2({ onCancel }: Props) {
   const engineerId = useContextSelector(EngineerContext, c => c.engineer._id);
 
-  const [form, setForm] = useState<Work>(defaultForm);
-
-  const [isValid, setIsValid] = useState(false);
-
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isValid && (!form.jiraTicket || !form.title || !form.estimate)) setIsValid(false);
-    else if (!isValid && form.jiraTicket && form.title && form.estimate) setIsValid(true);
-  }, [form.estimate, form.jiraTicket, form.title, isValid]);
-
-  const [startDate, setStartDate] = useState(dayjs());
+  const isLoading = useSelector(getIsLoading)('add-work');
 
   const { add } = useWorks();
 
-  function handleChange(key: keyof typeof form) {
-    return function change(e: ChangeEvent<HTMLInputElement>) {
-      let value: string | number = e.currentTarget.value;
+  function handleSubmit(form: RecordObject<AnyValue>) {
+    const startDate = String(path(['startDate'], form));
 
-      // parseInt is safe, as input type is number and it's going to be whole
-      // because of parseInt
-      if (key === 'estimate') value = parseInt(value);
-
-      setForm({ ...form, [key]: value });
-    };
-  }
-
-  function handleCancel() {
-    setForm(defaultForm);
+    add(form, { engineerId, startDate });
     onCancel();
-  }
-
-  function handleAssign() {
-    add(form, { engineerId, startDate: startDate.toString() });
-
-    handleCancel();
-  }
-
-  function handleDateChange(e: ChangeEvent<HTMLInputElement>) {
-    const value = dayjs(e.currentTarget.value);
-
-    setStartDate(value);
-  }
-
-  function handleSubmit(form: FormData) {
-    // eslint-disable-next-line no-console
-    console.log(form);
-    form.forEach((v, k) => {
-      // eslint-disable-next-line no-console
-      console.log(v, k);
-    });
-    // dispatch(identityLogin(form));
   }
 
   function handleError(message: string) {
@@ -91,68 +37,18 @@ export function CreateAssignWork2({ onCancel }: Props) {
   return (
     <div className={clsx('padding-1', classes.container)}>
       <LazyLoad>
-        <FormContext.Provider value={{ scenario: createWorkFormScenario, submit: handleSubmit, onError: handleError }}>
+        <FormContext.Provider
+          value={{
+            scenario: createWorkFormScenario,
+            submitData: handleSubmit,
+            onError: handleError,
+            process: { submit: isLoading },
+            actions: { cancel: onCancel },
+          }}
+        >
           <Form />
         </FormContext.Provider>
       </LazyLoad>
-      {/* <div className={classes.inputs}>
-        <div className='line s-between'>
-          <TextField
-            className={classes['input-item']}
-            required
-            label={TXT('jira')}
-            variant='standard'
-            value={form.jiraTicket}
-            onChange={handleChange('jiraTicket')}
-          />
-          <TextField
-            className={classes['input-item']}
-            label={TXT('epic')}
-            variant='standard'
-            value={form.jiraEpic}
-            onChange={handleChange('jiraEpic')}
-          />
-        </div>
-        <TextField
-          className={classes['input-item']}
-          required
-          label={TXT('title')}
-          variant='standard'
-          value={form.title}
-          onChange={handleChange('title')}
-        />
-        <div className='line s-between'>
-          <TextField
-            className={classes['input-item']}
-            label={TXT('est')}
-            required
-            variant='standard'
-            type='number'
-            value={form.estimate}
-            onChange={handleChange('estimate')}
-          />
-        </div>
-        <div className='line s-between m-b-start-1'>
-          <TextField
-            id='date'
-            required
-            className={classes.date}
-            type='date'
-            label={TXT('start')}
-            value={startDate.format('YYYY-M-DD')}
-            sx={{ width: 220 }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={handleDateChange}
-          />
-        </div>
-        <div className={clsx('center', classes.actions)}>
-          <Button variant='contained' size='small' disabled={!isValid} onClick={handleAssign}>
-            {TXT('createAssign')}
-          </Button>
-        </div>
-      </div> */}
     </div>
   );
 }

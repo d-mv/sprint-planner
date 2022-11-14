@@ -13,6 +13,7 @@ export const TEXT = {
     filesAdded: 'Added %1 file(s)',
     noFilesAdded: 'No files added',
     failedFunc: '%1::%2 > %3',
+    missingFuncs: 'Form requires either submitForm or submitData functions to be provided',
   },
   buttons: {
     clear: 'Clear list',

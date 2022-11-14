@@ -1,133 +1,114 @@
-import { assoc, compose, map, path } from 'ramda';
+import { assoc, map } from 'ramda';
 import { FormEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
-import { Result, success, failure } from '../../../entities';
+
 import { RecordObject, AnyValue } from '../../../models';
-import { makeMatch, makeString, setupText, sortScenarioKeys } from '../../../tools';
+import { makeMatch, setupText, sortScenarioKeys } from '../../../tools';
 import { lazyLoad } from '../render.tools';
-import { FormContext, FormItemContext } from './contexts';
+import { FormContext, FormInternalContext, FormItemContext } from './contexts';
 import { FormItem, FormSection, FormTypes, SectionFormItem } from './models';
 import { Buttons, DateInput, Number, Text } from './renders';
 import { TEXT } from './text';
-import { getAllItems, getAllScenarioDataIds } from './tools';
+import {
+  buildForm,
+  buildInitialRequired,
+  buildInitialValidation,
+  getAllEnteredDataIsValid,
+  getAllRequiredAreValid,
+} from './tools';
 
 const RENDERS = makeMatch(
   {
     [FormTypes.NUMBER]: Number,
     [FormTypes.TEXT]: Text,
     [FormTypes.DATE]: DateInput,
-    // [FormTypes.PASSWORD]: FormInput,
   },
   () => null,
 );
 
 const TXT = setupText(TEXT)(['form']);
 
-const STRING = makeString('Form');
-
 export default function Form() {
-  const [scenario, submit, onError] = useContextSelector(FormContext, c => [c.scenario, c.submit, c.onError]);
+  const [scenario, submitForm, submitData] = useContextSelector(FormContext, c => [
+    c.scenario,
+    c.submitForm,
+    c.submitData,
+  ]);
 
   const [data, setData] = useState<RecordObject<AnyValue>>({});
 
-  const [validatedElements, setValidatedElements] = useState<RecordObject<boolean>>({});
+  const [validated, setValidated] = useState<RecordObject<boolean>>(buildInitialValidation(scenario));
 
-  const allItems = getAllItems(scenario);
+  const [required, setRequired] = useState<RecordObject<boolean>>(buildInitialRequired(scenario));
 
+  const [formValuesValid, setFormValuesValid] = useState(false);
+
+  const [requiredFields, setRequiredFields] = useState(false);
+
+  const [statuses, setStatuses] = useState<RecordObject<boolean>>({ 'submit-disabled': true });
+
+  // clear form on unmount
   useEffect(() => {
     return () => {
       setData({});
+      setValidated(buildInitialValidation(scenario));
+      setRequired(buildInitialRequired(scenario));
     };
   }, []);
 
+  // check if all fields validated
+  useEffect(() => {
+    setFormValuesValid(Object.values(validated).every(Boolean));
+  }, [validated]);
+
+  // check if all required fields are filled
+  useEffect(() => {
+    setRequiredFields(Object.values(required).every(Boolean));
+  }, [required]);
+
+  // enable/disable form submission
+  useEffect(() => {
+    const checkRequired = getAllRequiredAreValid(required, validated);
+
+    const checkEntered = getAllEnteredDataIsValid(data, validated);
+
+    // allow submission if all required added and all entered are validated
+    if (checkRequired && checkEntered) setStatuses(assoc('submit-disabled', false, statuses));
+    else setStatuses(assoc('submit-disabled', true, statuses));
+  }, [formValuesValid, requiredFields, validated]);
+
+  if (!submitData && !submitForm) throw new Error(TXT('missingFuncs'));
+
+  // handlers
   function handleValidated(element: string) {
     return function call(status: boolean) {
-      // eslint-disable-next-line no-console
-      console.log(element, status);
-
-      if (validatedElements[element] !== status) setValidatedElements(assoc(element, status, validatedElements));
+      setValidated(assoc(element, status, validated));
     };
   }
 
-  function checkIfRequiredValidated(form: FormData): Result<string> {
-    const result: string[] = [];
+  function handleChange(key: string) {
+    return function call(value: AnyValue) {
+      setData({ ...data, [key]: value });
 
-    const requiredItems = allItems.filter(item => Boolean(item.isRequired));
+      // if required, update the list of entered required fields
+      if (!(key in required)) return;
 
-    requiredItems.forEach(({ dataId }) => {
-      const formValue = form.get(dataId);
-
-      if (!formValue) result.push(STRING(TXT('missingValue'), [dataId]));
-    });
-
-    if (!result.length) return success('OK');
-
-    return failure(result.join('. '));
-  }
-
-  function getAllFormScenarioDataIds(items: (FormItem | SectionFormItem)[]): string[] {
-    return items.map(({ dataId }) => dataId);
-  }
-
-  function getAllFormScenarioItemsWithValidation(
-    items: (FormItem | SectionFormItem)[],
-  ): (FormItem | SectionFormItem)[] {
-    return items.filter(item => !!item.validation);
-  }
-
-  function checkIfValidated() {
-    const validatedKeys = Object.keys(validatedElements);
-
-    const dataIds = compose(getAllFormScenarioDataIds, getAllFormScenarioItemsWithValidation)(allItems);
-
-    const result: string[] = [];
-
-    dataIds.forEach(dataId => {
-      if (!validatedKeys.includes(dataId)) result.push(STRING(TXT('keyIsNotValid'), [dataId]));
-    });
-
-    if (!result.length) return success('OK');
-
-    return failure(result.join('. '));
+      if (value !== undefined && !required[key]) setRequired({ ...required, [key]: true });
+      else if (value === undefined && required[key]) setRequired({ ...required, [key]: false });
+    };
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const form = new FormData();
+    if (submitData) return submitData(data);
 
-    for await (const dataId of getAllScenarioDataIds(scenario)) {
-      const value = path(['target', 'elements', dataId, 'value'], e) as string;
+    const form = await buildForm(scenario, e);
 
-      if (value !== undefined) form.set(dataId, value);
-    }
-
-    const requiredCheckResult = checkIfRequiredValidated(form);
-
-    if (!requiredCheckResult.isOK) {
-      onError && onError(requiredCheckResult.message);
-      return;
-    }
-
-    const validatedCheckResult = checkIfValidated();
-
-    if (!validatedCheckResult.isOK) {
-      onError && onError(validatedCheckResult.message);
-      return;
-    }
-
-    submit(form);
+    if (submitForm) submitForm(form);
   }
 
-  function handleChange(key: string) {
-    return function call(value: AnyValue) {
-      // eslint-disable-next-line no-console
-      console.log(key, value);
-
-      setData({ ...data, [key]: value });
-    };
-  }
-
+  // renders
   function renderFormInputs(item: FormItem | SectionFormItem) {
     const { dataId } = item;
 
@@ -139,7 +120,7 @@ export default function Form() {
             item,
             onChange: handleChange(dataId),
             onValidation: handleValidated(dataId),
-            isValidated: validatedElements[dataId],
+            isValidated: validated[dataId],
           }}
         >
           {lazyLoad(RENDERS[item.type])}
@@ -174,8 +155,10 @@ export default function Form() {
 
   return (
     <form onSubmit={handleSubmit} style={scenario._form?.style}>
-      {map(renderItems, Object.keys(sortScenarioKeys(scenario.items)))}
-      <Buttons />
+      <FormInternalContext.Provider value={{ statuses }}>
+        {map(renderItems, Object.keys(sortScenarioKeys(scenario.items)))}
+        <Buttons />
+      </FormInternalContext.Provider>
     </form>
   );
 }

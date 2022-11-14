@@ -42,6 +42,7 @@ export const createWorkFormScenario: FormScenario = {
       type: FormTypes.TEXT,
       isRequired: true,
       style: { width: '100%' },
+      validation: { type: 'text', nonEmpty: true },
     },
     group2: {
       style: { display: 'flex', justifyContent: 'space-around' },
@@ -54,12 +55,18 @@ export const createWorkFormScenario: FormScenario = {
           isRequired: true,
           validation: { type: 'number', float: false, noZero: true, notNegative: true },
         },
-        startDate: { dataId: 'startDate', label: 'Start Date', type: FormTypes.DATE, isRequired: true },
+        startDate: {
+          dataId: 'startDate',
+          label: 'Start Date',
+          type: FormTypes.DATE,
+          isRequired: true,
+          defaultValue: 'current',
+        },
       },
     },
   },
   buttons: [
-    { label: 'Submit', type: 'primary', actionId: 'submit', role: 'submit' },
-    { label: 'Cancel', variant: 'text', type: 'primary', actionId: 'cancel' },
+    { label: 'Submit', type: 'primary', id: 'submit', role: 'submit', style: { minWidth: '9rem' } },
+    { label: 'Cancel', variant: 'text', type: 'primary', id: 'cancel' },
   ],
 };

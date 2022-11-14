@@ -2,7 +2,7 @@ import { compose, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
 import { AppContext, AssignedWork, assignedWorkDayToDayjs, Work } from '..';
-import { MongoDocument } from '../../models';
+import { AnyValue, MongoDocument, RecordObject } from '../../models';
 import { setMessage, setIsLoading, setWorks, useDispatch, useSelector, addWork, addAssignedWork } from '../../state';
 
 export function useWorks() {
@@ -45,7 +45,7 @@ export function useWorks() {
     updateIsLoading('add-work');
   }
 
-  function add(work: Work, assign?: { engineerId: string; startDate: string }) {
+  function add(work: RecordObject<AnyValue>, assign?: { engineerId: string; startDate: string }) {
     updateIsLoading('add-work', true);
 
     if (error) compose(dispatch, setMessage)('');

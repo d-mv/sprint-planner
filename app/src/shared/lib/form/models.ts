@@ -32,6 +32,7 @@ export interface TextValidation {
   example?: string;
   noWhitespace?: boolean;
   trim?: boolean;
+  nonEmpty?: boolean;
 }
 
 export interface NumberValidation {
@@ -71,9 +72,9 @@ export interface FormButton {
   size?: 'small' | 'medium' | 'large';
   isDisabled?: boolean;
   type: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
-  actionId: string;
+  id: string;
   role?: 'submit' | 'reset';
-  // size?: ButtonSize;
+  style?: CSSProperties;
 }
 
 export interface FormOptions {

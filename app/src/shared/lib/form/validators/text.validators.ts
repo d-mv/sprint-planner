@@ -4,7 +4,9 @@ export function validateText(item: FormItem | SectionFormItem, value: string): b
   if (!('validation' in item) || item.validation?.type !== 'text') return true;
 
   // TODO: implement others
-  const { regex } = item.validation;
+  const { regex, nonEmpty } = item.validation;
+
+  if (nonEmpty && !value.length) return false;
 
   let result = true;
 

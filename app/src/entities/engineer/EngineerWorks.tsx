@@ -15,9 +15,6 @@ export function EngineerWorks() {
 
   const isLoading = useSelector(getIsLoading)('get-works');
 
-  // eslint-disable-next-line no-console
-  console.log(works);
-
   const isLoadingAssigned = useSelector(getIsLoading)('get-assigned-work');
 
   if (!works.length) return null;
