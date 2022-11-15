@@ -11,6 +11,11 @@ export interface FormContextType {
   process?: RecordObject<boolean>;
   onError?: (message: string) => void;
   onMessage?: (message: string) => void;
+  dataSources?: RecordObject<() => unknown[]>;
+  renders?: RecordObject<(item: AnyValue) => JSX.Element>;
+  initial?: RecordObject<AnyValue>;
+  components?: RecordObject<() => JSX.Element>;
+  triggers?: RecordObject<(arg0: string) => void>;
 }
 
 export const FormContext = createContext<FormContextType>({} as FormContextType);

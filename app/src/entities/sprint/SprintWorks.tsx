@@ -2,6 +2,7 @@ import { map } from 'ramda';
 import { Fragment } from 'react';
 
 import { MongoDocument } from '../../models';
+import { mapWithIndex } from '../../shared';
 import { getAddedEngineers, getWorksForEngineer, useSelector } from '../../state';
 import { CONSTANTS } from '../../theme';
 import { ifTrue } from '../../tools';
@@ -22,13 +23,13 @@ export function SprintWorks() {
     };
   }
 
-  function renderEngineerWorks(engineer: MongoDocument<Engineer>) {
+  function renderEngineerWorks(engineer: MongoDocument<Engineer>, index: number) {
     const w = works(engineer._id);
 
     return (
       <Fragment key={engineer._id}>
         <div
-          className='border-top border-bottom'
+          className={ifTrue(!index, 'border-bottom', 'border-top border-bottom')}
           style={{ height: '4.2rem', backgroundColor: CONSTANTS.engineerLineColor }}
         />
         {ifTrue(w?.length, () => map(renderAssignedWork(engineer), w))}
@@ -38,7 +39,7 @@ export function SprintWorks() {
 
   return (
     <div id='sprints-works' className='column w-fit'>
-      {map(renderEngineerWorks, engineers)}
+      {mapWithIndex(renderEngineerWorks, engineers)}
     </div>
   );
 }

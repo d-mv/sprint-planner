@@ -49,21 +49,9 @@ export function getAllRequiredFormScenarioItems(items: (FormItem | SectionFormIt
 export function buildInitialValidation(scenario: FormScenario): RecordObject<boolean> {
   const result: RecordObject<boolean> = {};
 
-  // const alltems = compose(getAllFormScenarioItemsWithValidation, getAllItems)(scenario);
-  const alltems = getAllItems(scenario);
+  const items = compose(getAllFormScenarioItemsWithValidation, getAllItems)(scenario);
 
-  // eslint-disable-next-line no-console
-  console.log('hiii', alltems);
-
-  const its = getAllFormScenarioItemsWithValidation(alltems);
-
-  // eslint-disable-next-line no-console
-  console.log('hi2', its);
-
-  // eslint-disable-next-line no-console
-  console.log('hi', its);
-
-  its.forEach(item => {
+  items.forEach(item => {
     result[item.dataId] = false;
   });
   return result;
@@ -86,7 +74,7 @@ export function getAllRequiredAreValid(required: RecordObject<boolean>, validate
   let result = true;
 
   Object.entries(required).forEach(([key, value]) => {
-    if (!value) result = true;
+    if (value) result = true;
     else {
       if (value !== validated[key]) result = false;
     }
@@ -99,6 +87,8 @@ export function getAllEnteredDataIsValid(data: RecordObject<AnyValue>, validated
 
   Object.entries(data).forEach(([key, value]) => {
     if (isEmpty(value) || isNil(value)) return;
+
+    if (!(key in validated)) return;
 
     if (!validated[key]) result = false;
   });

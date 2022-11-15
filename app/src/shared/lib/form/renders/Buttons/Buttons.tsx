@@ -35,13 +35,7 @@ export function Buttons() {
   }
 
   function renderContent(buttonItem: FormButton) {
-    // eslint-disable-next-line no-console
-    console.log(!isProcessingPresent, !isProcess(buttonItem));
-
     if (!isProcessingPresent || !isProcess(buttonItem)) return buttonItem.label;
-
-    // eslint-disable-next-line no-console
-    console.log(buttonItem.type, buttonItem.isDisabled);
 
     if (isProcess(buttonItem)) {
       const buttonIsDisabled = buttonItem.isDisabled ?? getStatus(buttonItem.id, 'disabled');
@@ -59,16 +53,18 @@ export function Buttons() {
   function renderButton(buttonItem: FormButton) {
     // eslint-disable-next-line no-useless-return, @typescript-eslint/no-empty-function
     let action = () => {};
+    let noAction = true;
 
-    if (buttonItem.role !== 'submit' && actions) action = actions[buttonItem.id];
+    if (buttonItem.role !== 'submit' && actions) {
+      action = actions[buttonItem.id];
+      noAction = false;
+    }
 
-    // eslint-disable-next-line no-console
-    console.log(buttonItem.style);
     return (
       <Button
         key={buttonItem.label}
         onClick={action}
-        type={ifTrue(!actions, 'submit')}
+        type={ifTrue(noAction, 'submit')}
         disabled={buttonItem.isDisabled ?? getStatus(buttonItem.id, 'disabled')}
         className={ifTrue(isProcess(buttonItem), classes.processing)}
         variant={buttonItem.variant ?? 'contained'}

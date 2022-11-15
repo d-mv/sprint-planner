@@ -70,6 +70,10 @@
   margin-block-start: 1rem;
 }
 
+.a-center {
+  align-items: center;
+}
+
 .align-center {
   display: flex;
   align-items: center;
@@ -102,6 +106,10 @@
 
 .w-fit {
   width: fit-content;
+}
+
+.min-w-fit {
+  min-width: fit-content;
 }
 
 .h-fit {

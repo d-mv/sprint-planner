@@ -2,6 +2,7 @@ import { CSSProperties } from 'react';
 import { RecordObject } from '../../../models';
 
 export enum FormTypes {
+  CUSTOM = 'custom',
   PERIOD = 'period',
   DATE = 'date',
   NUMBER = 'number',
@@ -10,6 +11,7 @@ export enum FormTypes {
   TEXT = 'input',
   TEXTAREA = 'textarea',
   DROPZONE = 'dropzone',
+  SELECTOR = 'selector',
 }
 
 export type Version = `${number}${number | ''}.${number}${number | ''}.${number}${number | ''}`;
@@ -62,8 +64,10 @@ export interface FormItem {
   minLength?: number;
   maxLength?: number;
   rows?: number;
+  dataSourceId?: string;
   maxRows?: number;
   validation?: VersionValidation | TextValidation | DropValidation | NumberValidation;
+  triggers?: string[]; // ids of trigger function to send value to
 }
 
 export interface FormButton {
@@ -79,6 +83,7 @@ export interface FormButton {
 
 export interface FormOptions {
   style: CSSProperties;
+  inputLineStyle: CSSProperties;
 }
 
 export type SectionFormItem = Omit<FormItem, 'order'>;

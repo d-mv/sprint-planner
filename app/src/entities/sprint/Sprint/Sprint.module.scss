@@ -1,13 +1,22 @@
 .list {
+	button + button {
+		border-right: none;
+	}
+
 	button {
-		border-bottom: none;
+
+
+
+
 
 		&:first-of-type {
-			border-left: none
+			border-left: none !important;
 		}
 
 		&:last-of-type {
-			border-right: none
+			border-right: none !important;
 		}
+
 	}
+
 }

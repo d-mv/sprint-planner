@@ -1,5 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { useContextSelector } from 'use-context-selector';
+import { Option } from '../../models';
 import { useSelector, getSprintDays, getIsDayOff, getCurrentSprint, getWorkById } from '../../state';
 import { Engineer } from '../engineer';
 import { WorkContext, WorkToRender } from '../work';
@@ -79,7 +80,9 @@ export function useUnassignedWorkIsOverSprint() {
 
   const getter = useSelector(getWorkById);
 
-  return function call(startDate: Dayjs, workId: string) {
+  return function call(startDate: Option<Dayjs>, workId: string) {
+    if (!startDate || !workId) return false;
+
     const work = getter(workId);
 
     if (!work || !sprint) return false;

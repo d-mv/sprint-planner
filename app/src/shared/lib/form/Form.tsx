@@ -1,5 +1,5 @@
 import { assoc, map } from 'ramda';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, lazy, LazyExoticComponent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { RecordObject, AnyValue } from '../../../models';
@@ -7,7 +7,7 @@ import { makeMatch, setupText, sortScenarioKeys } from '../../../tools';
 import { lazyLoad } from '../render.tools';
 import { FormContext, FormInternalContext, FormItemContext } from './contexts';
 import { FormItem, FormSection, FormTypes, SectionFormItem } from './models';
-import { Buttons, DateInput, Number, Text } from './renders';
+import { Buttons, DateInput, Number, Selector, Text } from './renders';
 import { TEXT } from './text';
 import {
   buildForm,
@@ -22,6 +22,7 @@ const RENDERS = makeMatch(
     [FormTypes.NUMBER]: Number,
     [FormTypes.TEXT]: Text,
     [FormTypes.DATE]: DateInput,
+    [FormTypes.SELECTOR]: Selector,
   },
   () => null,
 );
@@ -29,13 +30,15 @@ const RENDERS = makeMatch(
 const TXT = setupText(TEXT)(['form']);
 
 export default function Form() {
-  const [scenario, submitForm, submitData] = useContextSelector(FormContext, c => [
+  const [scenario, submitForm, submitData, initial, components] = useContextSelector(FormContext, c => [
     c.scenario,
     c.submitForm,
     c.submitData,
+    c.initial,
+    c.components,
   ]);
 
-  const [data, setData] = useState<RecordObject<AnyValue>>({});
+  const [data, setData] = useState<RecordObject<AnyValue>>({ ...initial });
 
   const [validated, setValidated] = useState<RecordObject<boolean>>(buildInitialValidation(scenario));
 
@@ -93,8 +96,8 @@ export default function Form() {
       // if required, update the list of entered required fields
       if (!(key in required)) return;
 
-      if (value !== undefined && !required[key]) setRequired({ ...required, [key]: true });
-      else if (value === undefined && required[key]) setRequired({ ...required, [key]: false });
+      if (value !== undefined && !required[key]) setRequired(state => ({ ...state, [key]: true }));
+      else if (value === undefined && required[key]) setRequired(state => ({ ...state, [key]: false }));
     };
   }
 
@@ -108,14 +111,22 @@ export default function Form() {
     if (submitForm) submitForm(form);
   }
 
+  function selectComponent(dataId: string, type: FormTypes) {
+    if (type !== FormTypes.CUSTOM) return lazyLoad(RENDERS[type]);
+
+    if (!components || !(dataId in components)) return <div id={dataId} />;
+
+    return components[dataId]();
+  }
+
   // renders
   function renderFormInputs(item: FormItem | SectionFormItem) {
-    const { dataId } = item;
+    const { dataId, type } = item;
 
     return (
-      <div style={{ padding: '1rem 0' }}>
+      <div style={{ padding: '1rem 0', ...scenario._form?.inputLineStyle }}>
         <FormItemContext.Provider
-          key={item.dataId}
+          key={dataId}
           value={{
             item,
             onChange: handleChange(dataId),
@@ -123,7 +134,7 @@ export default function Form() {
             isValidated: validated[dataId],
           }}
         >
-          {lazyLoad(RENDERS[item.type])}
+          {selectComponent(dataId, type)}
         </FormItemContext.Provider>
       </div>
     );

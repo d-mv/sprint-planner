@@ -48,9 +48,9 @@ export function Day({ day, onClick, withDate }: Props) {
 
     if (isWork) style = { ...style, ...CONFIG.colors.work };
 
-    if (isToday) style.borderColor = CONFIG.colors.todayBorder;
+    if (isToday) return { ...style, borderColor: CONFIG.colors.todayBorder };
 
-    return style;
+    return { ...style, borderRight: 'none' };
   }
 
   function renderDate() {
@@ -67,7 +67,7 @@ export function Day({ day, onClick, withDate }: Props) {
       id={buildId('day', day._id)}
       onClick={handleClick}
       disabled={!onClick}
-      className={clsx('center', classes['header-cell'])}
+      className={clsx('center', classes.container)}
       style={getColor()}
     >
       {ifTrue(withDate, renderDate)}

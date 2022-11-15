@@ -1,14 +1,10 @@
 .sprints {
-	overflow-x: scroll;
-	overflow-y: hidden;
-
-	section + section {
+	section+section {
 		border-left: none;
 	}
 
 }
 
 .container {
-	overflow-x: scroll;
-	overflow-y: hidden;
+	overflow: scroll;
 }

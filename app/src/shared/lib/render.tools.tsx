@@ -7,7 +7,9 @@ interface LazyLoadOptions {
   message?: string;
 }
 
-export function lazyLoad(Component: LazyExoticComponent<ComponentType<AnyValue>>, options?: Partial<LazyLoadOptions>) {
+type Component = LazyExoticComponent<ComponentType<AnyValue>>;
+
+export function lazyLoad(Component: Component, options?: Partial<LazyLoadOptions>) {
   let fallback = null;
 
   if (options?.isDefault) fallback = 'Loading...';
