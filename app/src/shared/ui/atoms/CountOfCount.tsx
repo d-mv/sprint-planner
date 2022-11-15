@@ -1,6 +1,6 @@
-import { Chip, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
-import { Tooltip } from '.';
+import { ChipWithTooltip } from './ChipWithTooltip';
 
 interface Props {
   left: number;
@@ -35,9 +35,7 @@ export function CountOfCount({ total, left, tooltip }: Props) {
 
   return (
     <div className={'line m-h-1'}>
-      <Tooltip message={tooltip}>
-        <Chip size='small' label={renderLabel()} color={getColor()} />
-      </Tooltip>
+      <ChipWithTooltip tooltip={tooltip} label={renderLabel()} color={getColor()} />
     </div>
   );
 }

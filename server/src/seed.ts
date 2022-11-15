@@ -20,14 +20,6 @@ function binaryChoice<T>(opt1: T, opt2: T): T {
   return choice ? opt1 : opt2;
 }
 
-// function generateDaysOff(start: Dayjs): DayType[] {
-//   const choice = binaryChoice(2, 4);
-
-//   const date = start.add(choice, 'days');
-
-//   return [{ date: date.toDate(), month: parseInt(date.month().toString()) + 1, isWeekend: checkIfWeekend(date) }];
-// }
-
 function generateEngineersDaysOff(start: Dayjs): Date[] {
   const choice = binaryChoice(2, 4);
 

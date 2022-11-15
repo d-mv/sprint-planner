@@ -72,7 +72,7 @@ export function useWorkIsOverSprint() {
 
   const endDate = assigned.startDate.add(work.estimate, 'days');
 
-  return endDate.isAfter(sprint.endDate);
+  return endDate.isAfter(sprint.endDate, 'days');
 }
 
 export function useUnassignedWorkIsOverSprint() {

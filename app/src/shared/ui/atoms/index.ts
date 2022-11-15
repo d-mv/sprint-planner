@@ -15,3 +15,5 @@ export * from './ErrorMessage';
 export * from './Spinner';
 
 export * from './IconButton';
+
+export * from './ChipWithTooltip';

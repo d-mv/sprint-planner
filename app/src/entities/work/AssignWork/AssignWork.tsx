@@ -48,7 +48,7 @@ export function AssignWork({ onCancel }: Props) {
   function renderWork(work: MongoDocument<Work>) {
     return (
       <MenuItem key={work._id} value={work._id}>
-        {`${work.jiraTicket} ${work.title}`}
+        {`${work.jiraTicket} (${work.estimate}) ${work.title}`}
       </MenuItem>
     );
   }

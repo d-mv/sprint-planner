@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { PropsWithChildren } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { Tooltip } from '../../../shared';
+import { ChipWithTooltip, Tooltip } from '../../../shared';
 import { ifTrue } from '../../../tools';
 import { useWorkIsOverSprint } from '../../days';
 import { WorkContext } from '../work.contexts';
@@ -38,6 +38,10 @@ export function WorkLine({ children, className }: PropsWithChildren<Props>) {
     return renderDescription();
   }
 
+  function renderChip() {
+    return <Typography variant='body2'>{work.estimate}</Typography>;
+  }
+
   return (
     <div
       className={clsx('line s-between align-center w-100', classes.container, className)}
@@ -48,6 +52,7 @@ export function WorkLine({ children, className }: PropsWithChildren<Props>) {
           {jiraTicket}
         </a>
       </Typography>
+      <ChipWithTooltip tooltip='Estimate points' label={renderChip()} color='default' style={{ padding: '0 1rem' }} />
       {renderWithTooltip()}
       {children}
     </div>
