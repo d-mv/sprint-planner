@@ -1,21 +1,27 @@
 import { TextField } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
+import { isNil } from 'ramda';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { FormItemContext } from '../../contexts';
 import { validateNumber } from '../../validators';
 
 export default function Number() {
-  const { item, onValidation, isValidated, onChange } = useContextSelector(FormItemContext, c => c);
+  const { item, onValidation, isValidated, onChange, value } = useContextSelector(FormItemContext, c => c);
 
   const [isTouched, setIsTouched] = useState(false);
 
-  const { isRequired, className, style, label, validation } = item;
+  const { isRequired, className, style, label, validation, defaultValue } = item;
+  function sendUpdate(v: string) {
+    if (validation) onValidation(validateNumber(item, v));
 
+    onChange(v);
+  }
+  useEffect(() => {
+    if (!isNil(defaultValue)) sendUpdate(defaultValue);
+  }, [defaultValue]);
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    if (validation) onValidation(validateNumber(item, e.currentTarget.value));
-
-    onChange(e.currentTarget.value);
+    sendUpdate(e.currentTarget.value);
   }
 
   function handleFocus() {
@@ -38,6 +44,7 @@ export default function Number() {
       style={style}
       type='number'
       variant='standard'
+      value={value}
     />
   );
 }

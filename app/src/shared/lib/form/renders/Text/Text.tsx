@@ -1,27 +1,36 @@
 import { TextField } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
+import { isNil } from 'ramda';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { FormItemContext } from '../../contexts';
 import { validateText } from '../../validators';
 
 export default function Text() {
-  const [item, onValidation, isValidated, onChange] = useContextSelector(FormItemContext, c => [
+  const [item, onValidation, isValidated, onChange, value] = useContextSelector(FormItemContext, c => [
     c.item,
     c.onValidation,
     c.isValidated,
     c.onChange,
+    c.value,
   ]);
 
   const [isTouched, setIsTouched] = useState(false);
 
-  const { isRequired, className, style, label, validation } = item;
+  const { isRequired, className, style, label, validation, defaultValue } = item;
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    if (validation) onValidation(validateText(item, e.currentTarget.value));
+  function sendUpdate(v: string) {
+    if (validation) onValidation(validateText(item, v));
     else onValidation(true);
 
-    onChange(e.currentTarget.value);
+    onChange(v);
+  }
+  useEffect(() => {
+    if (!isNil(defaultValue)) sendUpdate(defaultValue);
+  }, [defaultValue]);
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    sendUpdate(e.currentTarget.value);
   }
 
   function handleFocus() {
@@ -44,6 +53,7 @@ export default function Text() {
       required={isRequired}
       style={style}
       variant='standard'
+      value={value ?? ''}
     />
   );
 }

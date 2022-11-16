@@ -18,6 +18,8 @@ export enum StateActions {
   ADD_ASSIGNED_WORK = 'addAssignedWork',
   SET_WORKS = 'setWorks',
   ADD_WORK = 'addWork',
+  UPDATE_WORK = 'updateWork',
+  UPDATE_ASSIGNED_WORK = 'updateAssignedWork',
   // to revise
   ADD_SPRINT = 'addSprint',
   ADD_REMOVE_DAY_OFF = 'addRemoveDayOff',

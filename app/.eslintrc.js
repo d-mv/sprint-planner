@@ -7,14 +7,20 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:eslint-comments/recommended',
-    'plugin:import/errors',
     'plugin:import/typescript',
-    'plugin:import/warnings',
     'plugin:json/recommended',
     'plugin:jest/recommended',
     'plugin:markdown/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:node/recommended',
+    'plugin:security/recommended',
+    'promise',
+    'plugin:react-hooks/recommended',
+    'plugin:import/recommended',
+    'plugin:react/recommended',
+    'plugin:jsdoc/recommended',
+    'plugin:regexp/recommended',
     'prettier',
     'plugin:prettier/recommended',
   ],
@@ -22,6 +28,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
   plugins: [
     '@getify/proper-arrows',
@@ -31,10 +40,43 @@ module.exports = {
     'import',
     'jest',
     'prettier',
+    'react',
     'promise',
     'ramda',
+    'jsdoc',
+    'regexp',
+    'testing-library',
+    'html',
   ],
   rules: {
+    'testing-library/await-async-query': 'error',
+    'testing-library/no-await-sync-query': 'error',
+    'testing-library/no-debugging-utils': 'warn',
+    'testing-library/no-dom-import': 'off',
+    'react/jsx-uses-react': 'error',
+    'react/jsx-uses-vars': 'error',
+    'promise/always-return': 'error',
+    'promise/no-return-wrap': 'error',
+    'promise/param-names': 'error',
+    'promise/catch-or-return': 'error',
+    'promise/no-native': 'off',
+    'promise/no-nesting': 'warn',
+    'promise/no-promise-in-callback': 'warn',
+    'promise/no-callback-in-promise': 'warn',
+    'promise/avoid-new': 'warn',
+    'promise/no-new-statics': 'error',
+    'promise/no-return-in-finally': 'warn',
+    'promise/valid-params': 'warn',
+    'node/exports-style': ['error', 'module.exports'],
+    'node/file-extension-in-import': ['error', 'always'],
+    'node/prefer-global/buffer': ['error', 'always'],
+    'node/prefer-global/console': ['error', 'always'],
+    'node/prefer-global/process': ['error', 'always'],
+    'node/prefer-global/url-search-params': ['error', 'always'],
+    'node/prefer-global/url': ['error', 'always'],
+    'node/prefer-promises/dns': 'error',
+    'node/prefer-promises/fs': 'error',
+    complexity: ['error', 3],
     'ramda/always-simplification': 'error',
     'ramda/any-pass-simplification': 'error',
     'ramda/both-simplification': 'error',
@@ -146,6 +188,67 @@ module.exports = {
       {
         allowWholeFile: true,
       },
+    ],
+  },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+
+        // Choose from one of the "project" configs below or omit to use <root>/tsconfig.json by default
+
+        // use <root>/path/to/folder/tsconfig.json
+        project: 'path/to/folder',
+
+        // Multiple tsconfigs (Useful for monorepos)
+
+        // use a glob pattern
+        project: 'packages/*/tsconfig.json',
+
+        // use an array
+        project: ['packages/module-a/tsconfig.json', 'packages/module-b/tsconfig.json'],
+
+        // use an array of glob patterns
+        project: ['packages/*/tsconfig.json', 'other-packages/*/tsconfig.json'],
+      },
+    },
+    react: {
+      createClass: 'createReactClass', // Regex for Component Factory to use,
+      // default to "createReactClass"
+      pragma: 'React', // Pragma to use, default to "React"
+      fragment: 'Fragment', // Fragment to use (may be a property of <pragma>), default to "Fragment"
+      version: 'detect', // React version. "detect" automatically picks the version you have installed.
+      // You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
+      // It will default to "latest" and warn if missing, and to "detect" in the future
+      flowVersion: '0.53', // Flow version
+    },
+    propWrapperFunctions: [
+      // The names of any function used to wrap propTypes, e.g. `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
+      'forbidExtraProps',
+      { property: 'freeze', object: 'Object' },
+      { property: 'myFavoriteWrapper' },
+      // for rules that check exact prop wrappers
+      { property: 'forbidExtraProps', exact: true },
+    ],
+    componentWrapperFunctions: [
+      // The name of any function used to wrap components, e.g. Mobx `observer` function. If this isn't set, components wrapped by these functions will be skipped.
+      'observer', // `property`
+      { property: 'styled' }, // `object` is optional
+      { property: 'observer', object: 'Mobx' },
+      { property: 'observer', object: '<pragma>' }, // sets `object` to whatever value `settings.react.pragma` is set to
+    ],
+    formComponents: [
+      // Components used as alternatives to <form> for forms, eg. <Form endpoint={ url } />
+      'CustomForm',
+      { name: 'Form', formAttribute: 'endpoint' },
+    ],
+    linkComponents: [
+      // Components used as alternatives to <a> for linking, eg. <Link to={ url } />
+      'Hyperlink',
+      { name: 'Link', linkAttribute: 'to' },
     ],
   },
 };

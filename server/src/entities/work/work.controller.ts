@@ -1,4 +1,4 @@
-import { failure, success, Result, PromisedResult } from '..';
+import { failure, success, Result, PromisedResult, Work } from '..';
 import { ControllerRequest } from '../../models';
 import { makeMatch } from '../../tools';
 
@@ -39,9 +39,38 @@ export const WorkController = makeMatch<(arg: ControllerRequest) => PromisedResu
 
       if (!item) return failure('Missing data', 400);
 
-      const result = await context.collections.work.updateOne(query.payload);
+      const assignedItemToUpdate = await context.collections.assignedWork.findOne({ _id: item._id });
 
-      if (result.modifiedCount) return success('OK');
+      let assignedUpdateResult = -1;
+
+      const { startDate, _id, estimate, jiraEpic, jiraTicket, title } = item;
+
+      if (startDate) {
+        const result = await context.collections.assignedWork.updateOne({ _id, startDate });
+
+        if (result.modifiedCount) assignedUpdateResult = 1;
+        else assignedUpdateResult = 0;
+      }
+
+      const updateData: Partial<Work> = {};
+
+      if (estimate) updateData.estimate = estimate;
+
+      if (jiraEpic) updateData.jiraEpic = jiraEpic;
+
+      if (jiraTicket) updateData.jiraTicket = jiraTicket;
+
+      if (title) updateData.title = title;
+
+      const result = await context.collections.work.updateOne({ _id: assignedItemToUpdate?.workId }, updateData);
+
+      if (assignedUpdateResult && result.modifiedCount) {
+        const work = await context.collections.work.findOne({ _id: assignedItemToUpdate?.workId });
+
+        const assignedWork = await context.collections.assignedWork.findOne({ _id });
+
+        return success({ work, assignedWork });
+      }
 
       return failure('Failed to update record', 500);
     },

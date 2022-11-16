@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import { compose, o, path } from 'ramda';
+import dayjs, { Dayjs } from 'dayjs';
+import { assoc, compose, o, omit, path, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
 import { AnyValue, RecordObject } from '../../../models';
@@ -8,30 +9,45 @@ import { getIsLoading, setMessage, useDispatch, useSelector } from '../../../sta
 import { EngineerContext } from '../../engineer/engineer.contexts';
 import { createWorkFormScenario } from '../createWork.scenario';
 import { useWorks } from '../useWorks.hook';
-import classes from './CreateAssignWork.module.scss';
+import { WorkContext } from '../work.contexts';
+import classes from './EditWork.module.scss';
 
 interface Props {
   onCancel: () => void;
 }
 
-export function CreateAssignWork2({ onCancel }: Props) {
+export function EditWork({ onCancel }: Props) {
   const engineerId = useContextSelector(EngineerContext, c => c.engineer._id);
+  const { assigned, work } = useContextSelector(WorkContext, c => c);
 
+  // eslint-disable-next-line no-console
+  console.log(work);
   const dispatch = useDispatch();
 
   const isLoading = useSelector(getIsLoading)('add-work');
 
-  const { add } = useWorks();
+  const { update } = useWorks();
 
   function handleSubmit(form: RecordObject<AnyValue>) {
     const startDate = String(path(['startDate'], form));
 
-    add(form, { engineerId, startDate });
+    update(form);
     onCancel();
   }
 
   function handleError(message: string) {
     compose(dispatch, setMessage)(message);
+  }
+
+  function getWorkToEdit(work: RecordObject<AnyValue>) {
+
+    let picked = pick(['_id','estimate', 'jiraEpic', 'jiraTicket', 'startDate', 'title'], work);
+    const startDate = path(['startDate'], picked);
+    const isDayjs = Object.getPrototypeOf(startDate) === Object.getPrototypeOf(dayjs());
+    if (isDayjs) picked = assoc('startDate', (startDate as Dayjs).toString(), picked);
+    const allRequiredPresent = Object.values(omit(['jiraEpic','_id'], picked)).every(Boolean);
+
+    return allRequiredPresent ? picked : {};
   }
 
   return (
@@ -44,6 +60,7 @@ export function CreateAssignWork2({ onCancel }: Props) {
             onError: handleError,
             process: { submit: isLoading },
             actions: { cancel: onCancel },
+            initial: getWorkToEdit({ ...work, ...assigned }),
           }}
         >
           <Form />

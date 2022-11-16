@@ -3,7 +3,17 @@ import { useContextSelector } from 'use-context-selector';
 
 import { AppContext, AssignedWork, assignedWorkDayToDayjs, Work } from '..';
 import { AnyValue, MongoDocument, RecordObject } from '../../models';
-import { setMessage, setIsLoading, setWorks, useDispatch, useSelector, addWork, addAssignedWork } from '../../state';
+import {
+  setMessage,
+  setIsLoading,
+  setWorks,
+  useDispatch,
+  useSelector,
+  addWork,
+  addAssignedWork,
+  updateWork,
+  updateAssignedWork,
+} from '../../state';
 
 export function useWorks() {
   const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
@@ -67,9 +77,26 @@ export function useWorks() {
       .catch(err => handleGetNegative(err.message));
   }
 
-  function update() {
-    // eslint-disable-next-line no-console
-    console.log('update');
+  function handleUpdatePositive(data: MixedAddResult) {
+    compose(dispatch, updateWork)(data.work);
+    compose(dispatch, updateAssignedWork, assignedWorkDayToDayjs)(data.assignedWork);
+
+    updateIsLoading('update-work');
+  }
+
+  function handleUpdateNegative(message: string) {
+    compose(dispatch, setMessage)(message);
+    updateIsLoading('update-work');
+  }
+
+  function update(data: RecordObject<AnyValue>) {
+    updateIsLoading('update-work', true);
+
+    if (error) compose(dispatch, setMessage)('');
+
+    query<MixedAddResult>('work', 'update', data)
+      .then(r => (r.isOK ? handleUpdatePositive(r.payload) : handleUpdateNegative(r.message)))
+      .catch(err => handleUpdateNegative(err.message));
   }
 
   function remove() {

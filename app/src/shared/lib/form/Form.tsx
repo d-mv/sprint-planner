@@ -1,4 +1,4 @@
-import { assoc, map } from 'ramda';
+import { assoc, isEmpty, isNil, map } from 'ramda';
 import { FormEvent, lazy, LazyExoticComponent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
@@ -50,15 +50,6 @@ export default function Form() {
 
   const [statuses, setStatuses] = useState<RecordObject<boolean>>({ 'submit-disabled': true });
 
-  // clear form on unmount
-  useEffect(() => {
-    return () => {
-      setData({});
-      setValidated(buildInitialValidation(scenario));
-      setRequired(buildInitialRequired(scenario));
-    };
-  }, []);
-
   // check if all fields validated
   useEffect(() => {
     setFormValuesValid(Object.values(validated).every(Boolean));
@@ -68,6 +59,23 @@ export default function Form() {
   useEffect(() => {
     setRequiredFields(Object.values(required).every(Boolean));
   }, [required]);
+
+  // if initial state provided - update statuses
+  function validateAndUpdateRequired() {
+    // eslint-disable-next-line no-console
+    console.log(initial)
+    if (!initial || isEmpty(initial)) return;
+
+    Object.keys(initial).forEach(key => {
+      if (!isNil(initial[key])) {
+        setRequired(state => assoc(key, true, state));
+        setValidated(state => assoc(key, true, state));
+      }
+    });
+  }
+  useEffect(() => {
+    validateAndUpdateRequired();
+  }, [initial]);
 
   // enable/disable form submission
   useEffect(() => {
@@ -85,7 +93,9 @@ export default function Form() {
   // handlers
   function handleValidated(element: string) {
     return function call(status: boolean) {
-      setValidated(assoc(element, status, validated));
+      // eslint-disable-next-line no-console
+      console.log(element, status);
+      setValidated(state => assoc(element, status, state));
     };
   }
 
@@ -132,6 +142,7 @@ export default function Form() {
             onChange: handleChange(dataId),
             onValidation: handleValidated(dataId),
             isValidated: validated[dataId],
+            value: data[dataId],
           }}
         >
           {selectComponent(dataId, type)}

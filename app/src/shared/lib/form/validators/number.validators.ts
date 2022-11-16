@@ -10,11 +10,11 @@ export function validateNumber(item: FormItem | SectionFormItem, value: string):
 
   let result = true;
 
-  const isDecimal = validator.isDecimal(value, { force_decimal: true });
+  const isDecimal = validator.isDecimal(String(value), { force_decimal: true });
 
   if (float !== isDecimal) result = false;
 
-  const number = isDecimal ? parseFloat(value) : parseInt(value);
+  const number = isDecimal ? parseFloat(String(value)) : parseInt(String(value));
 
   if (notNegative && number < 0) result = false;
 

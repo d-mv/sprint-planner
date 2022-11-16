@@ -84,6 +84,24 @@ MAP.set(StateActions.ADD_WORK, (state: State, action: Action<MongoDocument<Work>
   return assoc('works', [...state.works, action.payload], state);
 });
 
+MAP.set(StateActions.UPDATE_WORK, (state: State, action: Action<MongoDocument<Work>>) => {
+  if (!action.payload) return state;
+  const works = state.works.map(work => {
+    if (work._id === action.payload?._id) return action.payload;
+    return work;
+  });
+  return assoc('works', works, state);
+});
+
+MAP.set(StateActions.UPDATE_ASSIGNED_WORK, (state: State, action: Action<MongoDocument<AssignedWork>>) => {
+  if (!action.payload) return state;
+
+  const works = state.assignedWorks.map(work => {
+    if (work._id === action.payload?._id) return action.payload;
+    return work;
+  });
+  return assoc('assignedWorks', works, state);
+});
 // to revise
 
 MAP.set(StateActions.ADD_SPRINT, (state: State, action: Action<MongoDocument<Sprint<Dayjs>>>) => {

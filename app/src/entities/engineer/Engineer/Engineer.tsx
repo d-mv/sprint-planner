@@ -9,7 +9,7 @@ import { getUnAssignedWorksQty, getWorkDaysLeft, getWorkDaysPerEngineer, useSele
 import { CONSTANTS } from '../../../theme';
 import { ifTrue, setupText } from '../../../tools';
 import { AssignWork } from '../../work';
-import { CreateAssignWork2 } from '../../work/CreateAssignWork/CreateAssignWork2';
+import { CreateAssignWork } from '../../work/CreateAssignWork';
 import { EngineerContext } from '../engineer.contexts';
 import { makeName } from '../engineer.tools';
 import { EngineerDaysOff } from '../EngineerDaysOff';
@@ -39,38 +39,38 @@ export function Engineer() {
 
   const closeDaysOff = () => setIsDaysOffOpen(false);
 
-  function toggle(item: 'assign' | 'daysOff' | 'create') {
-    return function call() {
-      if (item === 'assign') {
-        if (isDaysOffOpen) closeDaysOff();
+  function toggleAssign() {
+    if (isDaysOffOpen) closeDaysOff();
 
-        if (isCreateOpen) setIsCreateOpen(false);
+    if (isCreateOpen) setIsCreateOpen(false);
 
-        setIsAssignOpen(state => !state);
-      } else if (item === 'create') {
-        if (isDaysOffOpen) closeDaysOff();
+    setIsAssignOpen(state => !state);
+  }
 
-        if (isAssignOpen) setIsAssignOpen(false);
+  function toggleDaysOff() {
+    if (isAssignOpen) setIsAssignOpen(false);
 
-        setIsCreateOpen(state => !state);
-      } else {
-        if (isAssignOpen) setIsAssignOpen(false);
+    if (isCreateOpen) setIsCreateOpen(false);
 
-        if (isCreateOpen) setIsCreateOpen(false);
+    setIsDaysOffOpen(state => !state);
+  }
 
-        setIsDaysOffOpen(state => !state);
-      }
-    };
+  function toggleCreate() {
+    if (isDaysOffOpen) closeDaysOff();
+
+    if (isAssignOpen) setIsAssignOpen(false);
+
+    setIsCreateOpen(state => !state);
   }
 
   function renderCreate() {
-    return <CreateAssignWork2 onCancel={toggle('create')} />;
+    return <CreateAssignWork onCancel={toggleCreate} />;
   }
 
   function renderAssign() {
     if (!unassignedWorksQty) return <Message className='txt-center' message={TXT('noUnAssigned')} />;
 
-    return <AssignWork onCancel={toggle('assign')} />;
+    return <AssignWork onCancel={toggleAssign} />;
   }
 
   function renderDaysOff() {
@@ -92,20 +92,20 @@ export function Engineer() {
       <div className={clsx('line', classes.actions)}>
         <IconButton
           variant='createWork'
-          onClick={toggle('create')}
+          onClick={toggleCreate}
           tooltip={ifTrue(isCreateOpen, TXT('cancel'), TXT('createWork'))}
           iconProps={ifTrue(isCreateOpen, { color: 'primary' })}
         />
         <IconButton
           variant='assignWork'
-          onClick={toggle('assign')}
+          onClick={toggleAssign}
           disabled={!unassignedWorksQty || !workDaysLeft}
           tooltip={ifTrue(isAssignOpen, TXT('cancel'), TXT('assign'))}
           iconProps={ifTrue(isAssignOpen, { color: 'primary' })}
         />
         <IconButton
           variant='dayOff'
-          onClick={toggle('daysOff')}
+          onClick={toggleDaysOff}
           tooltip={ifTrue(isDaysOffOpen, TXT('cancel'), TXT('daysOffButton'))}
           iconProps={ifTrue(isDaysOffOpen, { color: 'primary' })}
         />

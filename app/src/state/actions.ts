@@ -69,6 +69,15 @@ export const addWork = (payload: MongoDocument<Work>): Action => ({
   payload,
 });
 
+export const updateWork = (payload: MongoDocument<Work>): Action => ({
+  type: StateActions.UPDATE_WORK,
+  payload,
+});
+
+export const updateAssignedWork = (payload: MongoDocument<AssignedWork>): Action => ({
+  type: StateActions.UPDATE_ASSIGNED_WORK,
+  payload,
+});
 // to revise:
 
 export const addSprint = (payload: Sprint): Action => ({

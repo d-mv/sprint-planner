@@ -6,7 +6,7 @@ import { useContextSelector } from 'use-context-selector';
 import { FormContext, FormItemContext } from '../../contexts';
 
 export default function DateInput() {
-  const { item, isValidated, onValidation, onChange } = useContextSelector(FormItemContext, c => c);
+  const { item, isValidated, onValidation, onChange, value } = useContextSelector(FormItemContext, c => c);
 
   const triggerFns = useContextSelector(FormContext, c => c.triggers);
 
@@ -15,7 +15,9 @@ export default function DateInput() {
   const { isRequired, className, style, label, validation, defaultValue, triggers } = item;
 
   function makeDefaultValue() {
-    return defaultValue === 'current' ? dayjs().format('YYYY-M-DD') : dayjs(defaultValue).format('YYYY-M-DD');
+    if (value) return dayjs(value).format('YYYY-M-DD');
+    if (defaultValue === 'current') return dayjs().format('YYYY-M-DD')
+    return dayjs(defaultValue).format('YYYY-M-DD');
   }
 
   function sendUpdate(v: string) {
@@ -29,8 +31,9 @@ export default function DateInput() {
   }
 
   useEffect(() => {
-    if (defaultValue) sendUpdate(makeDefaultValue());
-  }, [item]);
+
+  sendUpdate(makeDefaultValue());
+  }, [defaultValue]);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     sendUpdate(e.currentTarget.value);
@@ -50,7 +53,7 @@ export default function DateInput() {
       onChange={handleChange}
       onBlur={handleFocus}
       error={validation && !isValidated}
-      defaultValue={makeDefaultValue()}
+      value={makeDefaultValue()}
       style={style}
       type='date'
       InputLabelProps={{
