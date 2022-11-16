@@ -13,9 +13,8 @@ module.exports = {
     'plugin:markdown/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:node/recommended',
+    // 'plugin:node/recommended',
     'plugin:security/recommended',
-    'promise',
     'plugin:react-hooks/recommended',
     'plugin:import/recommended',
     'plugin:react/recommended',
@@ -49,6 +48,7 @@ module.exports = {
     'html',
   ],
   rules: {
+    'react/react-in-jsx-scope': 'off',
     'testing-library/await-async-query': 'error',
     'testing-library/no-await-sync-query': 'error',
     'testing-library/no-debugging-utils': 'warn',
@@ -67,16 +67,16 @@ module.exports = {
     'promise/no-new-statics': 'error',
     'promise/no-return-in-finally': 'warn',
     'promise/valid-params': 'warn',
-    'node/exports-style': ['error', 'module.exports'],
-    'node/file-extension-in-import': ['error', 'always'],
-    'node/prefer-global/buffer': ['error', 'always'],
-    'node/prefer-global/console': ['error', 'always'],
-    'node/prefer-global/process': ['error', 'always'],
-    'node/prefer-global/url-search-params': ['error', 'always'],
-    'node/prefer-global/url': ['error', 'always'],
-    'node/prefer-promises/dns': 'error',
-    'node/prefer-promises/fs': 'error',
-    complexity: ['error', 3],
+    // 'node/exports-style': ['error', 'module.exports'],
+    // 'node/file-extension-in-import': ['error', 'always'],
+    // 'node/prefer-global/buffer': ['error', 'always'],
+    // 'node/prefer-global/console': ['error', 'always'],
+    // 'node/prefer-global/process': ['error', 'always'],
+    // 'node/prefer-global/url-search-params': ['error', 'always'],
+    // 'node/prefer-global/url': ['error', 'always'],
+    // 'node/prefer-promises/dns': 'error',
+    // 'node/prefer-promises/fs': 'error',
+    complexity: ['error', 10],
     'ramda/always-simplification': 'error',
     'ramda/any-pass-simplification': 'error',
     'ramda/both-simplification': 'error',
@@ -201,18 +201,18 @@ module.exports = {
         // Choose from one of the "project" configs below or omit to use <root>/tsconfig.json by default
 
         // use <root>/path/to/folder/tsconfig.json
-        project: 'path/to/folder',
+        // project: 'path/to/folder',
 
-        // Multiple tsconfigs (Useful for monorepos)
+        // // Multiple tsconfigs (Useful for monorepos)
 
-        // use a glob pattern
-        project: 'packages/*/tsconfig.json',
+        // // use a glob pattern
+        // project: 'packages/*/tsconfig.json',
 
-        // use an array
-        project: ['packages/module-a/tsconfig.json', 'packages/module-b/tsconfig.json'],
+        // // use an array
+        // project: ['packages/module-a/tsconfig.json', 'packages/module-b/tsconfig.json'],
 
-        // use an array of glob patterns
-        project: ['packages/*/tsconfig.json', 'other-packages/*/tsconfig.json'],
+        // // use an array of glob patterns
+        // project: ['packages/*/tsconfig.json', 'other-packages/*/tsconfig.json'],
       },
     },
     react: {

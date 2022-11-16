@@ -16,18 +16,29 @@ interface Props {
   onCancel: () => void;
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.onCancel
+ */
 export function EditWork({ onCancel }: Props) {
   const engineerId = useContextSelector(EngineerContext, c => c.engineer._id);
+
   const { assigned, work } = useContextSelector(WorkContext, c => c);
 
   // eslint-disable-next-line no-console
   console.log(work);
+
   const dispatch = useDispatch();
 
   const isLoading = useSelector(getIsLoading)('add-work');
 
   const { update } = useWorks();
 
+  /**
+   *
+   * @param form
+   */
   function handleSubmit(form: RecordObject<AnyValue>) {
     const startDate = String(path(['startDate'], form));
 
@@ -35,17 +46,28 @@ export function EditWork({ onCancel }: Props) {
     onCancel();
   }
 
+  /**
+   *
+   * @param message
+   */
   function handleError(message: string) {
     compose(dispatch, setMessage)(message);
   }
 
+  /**
+   *
+   * @param work
+   */
   function getWorkToEdit(work: RecordObject<AnyValue>) {
+    let picked = pick(['_id', 'estimate', 'jiraEpic', 'jiraTicket', 'startDate', 'title'], work);
 
-    let picked = pick(['_id','estimate', 'jiraEpic', 'jiraTicket', 'startDate', 'title'], work);
     const startDate = path(['startDate'], picked);
+
     const isDayjs = Object.getPrototypeOf(startDate) === Object.getPrototypeOf(dayjs());
+
     if (isDayjs) picked = assoc('startDate', (startDate as Dayjs).toString(), picked);
-    const allRequiredPresent = Object.values(omit(['jiraEpic','_id'], picked)).every(Boolean);
+
+    const allRequiredPresent = Object.values(omit(['jiraEpic', '_id'], picked)).every(Boolean);
 
     return allRequiredPresent ? picked : {};
   }

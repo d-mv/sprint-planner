@@ -1,1 +1,1 @@
-export * from './EditWork'
+export * from './EditWork';

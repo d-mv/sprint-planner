@@ -15,6 +15,9 @@ import {
   updateAssignedWork,
 } from '../../state';
 
+/**
+ *
+ */
 export function useWorks() {
   const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
 
@@ -24,11 +27,19 @@ export function useWorks() {
 
   const updateIsLoading = (item: string, status = false) => compose(dispatch, setIsLoading)([item, status]);
 
+  /**
+   *
+   * @param data
+   */
   function handleGetPositive(data: MongoDocument<Work>[]) {
     compose(dispatch, setWorks)(data);
     updateIsLoading('get-works');
   }
 
+  /**
+   *
+   * @param message
+   */
   function handleGetNegative(message: string) {
     compose(dispatch, setMessage)(message);
     updateIsLoading('get-works');
@@ -39,6 +50,11 @@ export function useWorks() {
   function handleAddPositive(data: MongoDocument<Work>): void;
   function handleAddPositive(data: MixedAddResult, withAssign: boolean): void;
 
+  /**
+   *
+   * @param data
+   * @param withAssign
+   */
   function handleAddPositive(data: MongoDocument<Work> | MixedAddResult, withAssign = false) {
     if (!withAssign) {
       compose(dispatch, addWork)(data as MongoDocument<Work>);
@@ -50,11 +66,22 @@ export function useWorks() {
     updateIsLoading('add-work');
   }
 
+  /**
+   *
+   * @param message
+   */
   function handleAddNegative(message: string) {
     compose(dispatch, setMessage)(message);
     updateIsLoading('add-work');
   }
 
+  /**
+   *
+   * @param work
+   * @param assign
+   * @param assign.engineerId
+   * @param assign.startDate
+   */
   function add(work: RecordObject<AnyValue>, assign?: { engineerId: string; startDate: string }) {
     updateIsLoading('add-work', true);
 
@@ -62,11 +89,14 @@ export function useWorks() {
 
     query('work', 'add', { work, assign })
       .then(r => {
-        r.isOK ? handleAddPositive(r.payload, !!assign) : handleAddNegative(r.message);
+        return r.isOK ? handleAddPositive(r.payload, !!assign) : handleAddNegative(r.message);
       })
       .catch(err => handleAddNegative(err.message));
   }
 
+  /**
+   *
+   */
   function get() {
     updateIsLoading('get-works', true);
 
@@ -77,6 +107,10 @@ export function useWorks() {
       .catch(err => handleGetNegative(err.message));
   }
 
+  /**
+   *
+   * @param data
+   */
   function handleUpdatePositive(data: MixedAddResult) {
     compose(dispatch, updateWork)(data.work);
     compose(dispatch, updateAssignedWork, assignedWorkDayToDayjs)(data.assignedWork);
@@ -84,11 +118,19 @@ export function useWorks() {
     updateIsLoading('update-work');
   }
 
+  /**
+   *
+   * @param message
+   */
   function handleUpdateNegative(message: string) {
     compose(dispatch, setMessage)(message);
     updateIsLoading('update-work');
   }
 
+  /**
+   *
+   * @param data
+   */
   function update(data: RecordObject<AnyValue>) {
     updateIsLoading('update-work', true);
 
@@ -99,6 +141,9 @@ export function useWorks() {
       .catch(err => handleUpdateNegative(err.message));
   }
 
+  /**
+   *
+   */
   function remove() {
     // eslint-disable-next-line no-console
     console.log('remove');

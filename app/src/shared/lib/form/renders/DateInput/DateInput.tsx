@@ -5,6 +5,9 @@ import { useContextSelector } from 'use-context-selector';
 
 import { FormContext, FormItemContext } from '../../contexts';
 
+/**
+ *
+ */
 export default function DateInput() {
   const { item, isValidated, onValidation, onChange, value } = useContextSelector(FormItemContext, c => c);
 
@@ -14,12 +17,21 @@ export default function DateInput() {
 
   const { isRequired, className, style, label, validation, defaultValue, triggers } = item;
 
+  /**
+   *
+   */
   function makeDefaultValue() {
     if (value) return dayjs(value).format('YYYY-M-DD');
-    if (defaultValue === 'current') return dayjs().format('YYYY-M-DD')
+
+    if (defaultValue === 'current') return dayjs().format('YYYY-M-DD');
+
     return dayjs(defaultValue).format('YYYY-M-DD');
   }
 
+  /**
+   *
+   * @param v
+   */
   function sendUpdate(v: string) {
     onChange(v);
     onValidation(true);
@@ -31,14 +43,20 @@ export default function DateInput() {
   }
 
   useEffect(() => {
-
-  sendUpdate(makeDefaultValue());
+    sendUpdate(makeDefaultValue());
   }, [defaultValue]);
 
+  /**
+   *
+   * @param e
+   */
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     sendUpdate(e.currentTarget.value);
   }
 
+  /**
+   *
+   */
   function handleFocus() {
     if (!isTouched) setIsTouched(true);
   }

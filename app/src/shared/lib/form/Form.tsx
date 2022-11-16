@@ -1,5 +1,5 @@
-import { assoc, isEmpty, isNil, map } from 'ramda';
-import { FormEvent, lazy, LazyExoticComponent, useEffect, useState } from 'react';
+import { assoc, isEmpty, isNil, map, path } from 'ramda';
+import { FormEvent, lazy, LazyExoticComponent, useCallback, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { RecordObject, AnyValue } from '../../../models';
@@ -29,6 +29,9 @@ const RENDERS = makeMatch(
 
 const TXT = setupText(TEXT)(['form']);
 
+/**
+ *
+ */
 export default function Form() {
   const [scenario, submitForm, submitData, initial, components] = useContextSelector(FormContext, c => [
     c.scenario,
@@ -61,21 +64,26 @@ export default function Form() {
   }, [required]);
 
   // if initial state provided - update statuses
-  function validateAndUpdateRequired() {
+  /**
+   *
+   */
+  const validateAndUpdateRequired = useCallback(() => {
     // eslint-disable-next-line no-console
-    console.log(initial)
+    console.log(initial);
+
     if (!initial || isEmpty(initial)) return;
 
     Object.keys(initial).forEach(key => {
-      if (!isNil(initial[key])) {
+      if (!isNil(path([key], initial))) {
         setRequired(state => assoc(key, true, state));
         setValidated(state => assoc(key, true, state));
       }
     });
-  }
+  }, [initial]);
+
   useEffect(() => {
     validateAndUpdateRequired();
-  }, [initial]);
+  }, [initial, validateAndUpdateRequired]);
 
   // enable/disable form submission
   useEffect(() => {
@@ -91,6 +99,10 @@ export default function Form() {
   if (!submitData && !submitForm) throw new Error(TXT('missingFuncs'));
 
   // handlers
+  /**
+   *
+   * @param element
+   */
   function handleValidated(element: string) {
     return function call(status: boolean) {
       // eslint-disable-next-line no-console
@@ -99,6 +111,10 @@ export default function Form() {
     };
   }
 
+  /**
+   *
+   * @param key
+   */
   function handleChange(key: string) {
     return function call(value: AnyValue) {
       setData({ ...data, [key]: value });
@@ -111,6 +127,10 @@ export default function Form() {
     };
   }
 
+  /**
+   *
+   * @param e
+   */
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -121,6 +141,11 @@ export default function Form() {
     if (submitForm) submitForm(form);
   }
 
+  /**
+   *
+   * @param dataId
+   * @param type
+   */
   function selectComponent(dataId: string, type: FormTypes) {
     if (type !== FormTypes.CUSTOM) return lazyLoad(RENDERS[type]);
 
@@ -130,6 +155,10 @@ export default function Form() {
   }
 
   // renders
+  /**
+   *
+   * @param item
+   */
   function renderFormInputs(item: FormItem | SectionFormItem) {
     const { dataId, type } = item;
 
@@ -151,12 +180,20 @@ export default function Form() {
     );
   }
 
+  /**
+   *
+   * @param items
+   */
   function renderSectionItem(items: RecordObject<SectionFormItem>) {
     return function render(key: string) {
       return renderFormInputs(items[key]);
     };
   }
 
+  /**
+   *
+   * @param sectionKey
+   */
   function renderSection(sectionKey: string) {
     const section = scenario.items[sectionKey] as FormSection;
 
@@ -167,6 +204,10 @@ export default function Form() {
     );
   }
 
+  /**
+   *
+   * @param key
+   */
   function renderItems(key: string) {
     const maybeSection = scenario.items[key];
 
