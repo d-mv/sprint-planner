@@ -6,8 +6,8 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { Engineer as EngineerType } from '../engineer.models';
 import classes from './CreateEngineer.module.scss';
-import { TEXT } from '../../../data';
-import { setupText } from '../../../tools';
+import { TEXT } from '../../../shared';
+import { setupText } from '../../../shared';
 import { createEngineer, useDispatch } from '../../../state';
 import { Divider } from '../../../shared';
 import { AddDaysOff } from '../../days';

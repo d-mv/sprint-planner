@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
-import { CONFIG } from '../config';
+import { CONFIG } from '../shared';
 import { useLogin } from '../entities';
 import { Loading, Login, Main } from '../pages';
 import { getIsConnected, StateActions, useDispatch, useSelector } from '../state';
-import { ifTrue } from '../tools';
+import { ifTrue } from '../shared';
 
 export function App() {
   const dispatch = useDispatch();

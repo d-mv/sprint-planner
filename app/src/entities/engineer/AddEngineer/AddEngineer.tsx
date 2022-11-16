@@ -2,13 +2,12 @@ import { Button, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { compose, map } from 'ramda';
 import { useState } from 'react';
 
-import { TEXT } from '../../../data';
+import { TEXT } from '../../../shared';
 import { Engineer as EngineerType } from '../engineer.models';
 import { addEngineer, getNotAddedEngineers, useDispatch, useSelector } from '../../../state';
-import { ifTrue, setupText } from '../../../tools';
+import { ifTrue, setupText } from '../../../shared';
 import classes from './AddEngineer.module.scss';
-import { Message } from '../../../shared';
-import { MongoDocument } from '../../../models';
+import { Message, MongoDocument } from '../../../shared';
 import { makeName } from '../engineer.tools';
 import clsx from 'clsx';
 

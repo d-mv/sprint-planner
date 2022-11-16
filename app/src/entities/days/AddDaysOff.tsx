@@ -4,8 +4,8 @@ import { map } from 'ramda';
 import { useState } from 'react';
 
 import { IconButton, Message } from '../../shared';
-import { TEXT } from '../../data';
-import { ifTrue, setupText } from '../../tools';
+import { TEXT } from '../../shared';
+import { ifTrue, setupText } from '../../shared';
 import { AddDayOff } from './AddDayOff';
 
 const TXT = setupText(TEXT)('days');

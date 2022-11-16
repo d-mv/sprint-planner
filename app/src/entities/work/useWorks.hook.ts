@@ -1,8 +1,8 @@
 import { compose, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
-import { AppContext, AssignedWork, assignedWorkDayToDayjs, Work } from '..';
-import { AnyValue, MongoDocument, RecordObject } from '../../models';
+import { AppContext, assignedWorkDayToDayjs, Work } from '..';
+import { AnyValue, MongoDocument, RecordObject, DbAssignedWork } from '../../shared';
 import {
   setMessage,
   setIsLoading,
@@ -45,7 +45,7 @@ export function useWorks() {
     updateIsLoading('get-works');
   }
 
-  type MixedAddResult = { work: MongoDocument<Work>; assignedWork: MongoDocument<AssignedWork<string>> };
+  type MixedAddResult = { work: MongoDocument<Work>; assignedWork: DbAssignedWork<string> };
 
   function handleAddPositive(data: MongoDocument<Work>): void;
   function handleAddPositive(data: MixedAddResult, withAssign: boolean): void;

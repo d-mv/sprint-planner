@@ -4,8 +4,8 @@ import { Dayjs } from 'dayjs';
 import { map } from 'ramda';
 import { MouseEvent, useState } from 'react';
 
-import { MongoDocument, Option } from '../../models';
-import { CONSTANTS } from '../../theme';
+import { MongoDocument, Option } from '../../shared';
+import { CONSTANTS } from '../../shared';
 import { DayPopup, DayType, useWorkDays } from '../days';
 import { Day } from '../days/Day';
 import { Engineer, useEngineers } from '../engineer';

@@ -1,8 +1,8 @@
 import { Dayjs } from 'dayjs';
 import { assoc } from 'ramda';
-import { AssignedWork, Engineer, Sprint, Work } from '../entities';
 
-import { MongoDocument } from '../models';
+import { Engineer, Sprint, Work } from '../entities';
+import { DbAssignedWork, MongoDocument } from '../shared';
 import { Action, MappedReducerFns, StateActions, State } from './types';
 
 export const MAP: MappedReducerFns = new Map();
@@ -23,7 +23,7 @@ MAP.set(StateActions.SET_IS_LOADING, (state: State, action: Action<[key: string,
   return assoc('isLoading', assoc(key, value, state.isLoading), state);
 });
 
-MAP.set(StateActions.SET_SPRINTS, (state: State, action: Action<MongoDocument<Sprint<Dayjs>>[]>) => {
+MAP.set(StateActions.SET_SPRINTS, (state: State, action: Action<MongoDocument<Sprint>[]>) => {
   if (!action.payload) return state;
 
   return { ...state, sprints: action.payload };
@@ -54,7 +54,7 @@ MAP.set(StateActions.SET_ADDED_ENGINEERS, (state: State, action: Action<string[]
   return { ...state, addedEngineers: action.payload };
 });
 
-MAP.set(StateActions.SET_ASSIGNED_WORKS, (state: State, action: Action<MongoDocument<AssignedWork>[]>) => {
+MAP.set(StateActions.SET_ASSIGNED_WORKS, (state: State, action: Action<DbAssignedWork[]>) => {
   if (!action.payload) return state;
 
   return { ...state, assignedWorks: action.payload };
@@ -66,7 +66,7 @@ MAP.set(StateActions.REMOVE_ASSIGNED_WORK, (state: State, action: Action<string>
   return { ...state, assignedWorks: state.assignedWorks.filter(work => work._id !== action.payload) };
 });
 
-MAP.set(StateActions.ADD_ASSIGNED_WORK, (state: State, action: Action<MongoDocument<AssignedWork>>) => {
+MAP.set(StateActions.ADD_ASSIGNED_WORK, (state: State, action: Action<DbAssignedWork>) => {
   if (!action.payload) return state;
 
   return { ...state, assignedWorks: [...state.assignedWorks, action.payload] };
@@ -96,7 +96,7 @@ MAP.set(StateActions.UPDATE_WORK, (state: State, action: Action<MongoDocument<Wo
   return assoc('works', works, state);
 });
 
-MAP.set(StateActions.UPDATE_ASSIGNED_WORK, (state: State, action: Action<MongoDocument<AssignedWork>>) => {
+MAP.set(StateActions.UPDATE_ASSIGNED_WORK, (state: State, action: Action<DbAssignedWork>) => {
   if (!action.payload) return state;
 
   const works = state.assignedWorks.map(work => {
@@ -141,7 +141,7 @@ MAP.set(StateActions.ADD_ENGINEER, (state: State, action: Action<string>) => {
 
   return assoc('addedEngineers', [...state.addedEngineers, action.payload], state);
 });
-MAP.set(StateActions.ASSIGN_WORK, (state: State, action: Action<MongoDocument<AssignedWork>>) => {
+MAP.set(StateActions.ASSIGN_WORK, (state: State, action: Action<DbAssignedWork>) => {
   if (!action.payload) return state;
 
   return assoc('assignedWorks', [...state.assignedWorks, action.payload], state);

@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs';
-import { MongoDocument } from '../../models';
+import { MongoDocument } from '../../shared';
 
 import { DayType } from '../days';
 

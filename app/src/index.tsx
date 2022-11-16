@@ -1,24 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { ThemeProvider } from '@emotion/react';
+import { CssBaseline } from '@mui/material';
+import { createRoot } from 'react-dom/client';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import './classes.css';
+import './shared/classes.css';
 
 import { App } from './app';
 import reportWebVitals from './reportWebVitals';
 import { getMessage, StateProvider } from './state';
-import { CssBaseline } from '@mui/material';
-import { ThemeProvider } from '@emotion/react';
-import { theme } from './theme';
+import { theme, query } from './shared';
 import { AppContext } from './entities';
-import { query } from './adaptors';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <StateProvider>
       <CssBaseline />
       <ThemeProvider theme={theme}>
@@ -27,7 +26,7 @@ root.render(
         </AppContext.Provider>
       </ThemeProvider>
     </StateProvider>
-  </React.StrictMode>,
+  </StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

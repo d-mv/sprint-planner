@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
 import { ChangeEvent, useState } from 'react';
 
-import { TEXT } from '../../../data';
-import { setupText } from '../../../tools';
+import { TEXT } from '../../../shared';
+import { setupText } from '../../../shared';
 import classes from './AddDayOff.module.scss';
 
 const TXT = setupText(TEXT)('days');

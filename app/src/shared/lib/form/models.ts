@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { RecordObject } from '../../../models';
+import { RecordObject } from '../../models';
 
 export enum FormTypes {
   CUSTOM = 'custom',

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 import { CONFIG } from '../config';
-import { Result } from '../entities';
+import { Result } from '../../entities';
 
-import { AnyValue } from '../models';
+import { AnyValue } from '..';
 
 export async function query<T = AnyValue>(domain: string, action: string, payload?: AnyValue) {
   const r = await axios.post<Result<T>>(CONFIG.backend, { domain, action, payload });

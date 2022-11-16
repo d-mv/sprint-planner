@@ -2,8 +2,8 @@ import { assoc, isEmpty, isNil, map, path } from 'ramda';
 import { FormEvent, lazy, LazyExoticComponent, useCallback, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { RecordObject, AnyValue } from '../../../models';
-import { makeMatch, setupText, sortScenarioKeys } from '../../../tools';
+import { RecordObject, AnyValue } from '../../models';
+import { makeMatch, setupText, sortScenarioKeys } from '../../tools';
 import { lazyLoad } from '../render.tools';
 import { FormContext, FormInternalContext, FormItemContext } from './contexts';
 import { FormItem, FormSection, FormTypes, SectionFormItem } from './models';

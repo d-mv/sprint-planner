@@ -1,6 +1,6 @@
 import { path } from 'ramda';
 
-import { RecordObject } from '../models';
+import { RecordObject } from '..';
 
 function buildPath(sectionOrPath: string | string[], keyOrPath: string | string[]) {
   const pathToValue = typeof sectionOrPath === 'string' ? [sectionOrPath] : sectionOrPath;
@@ -22,8 +22,9 @@ export function buildId(module: string, id: string) {
 
 /**
  * Substitute %1 placeholders in template with provided data
- * @param {String} template template with %1,%2,... placeholders
- * @param {String|Array} params array of strings or numbers
+ *
+ * @param {string} template template with %1,%2,... placeholders
+ * @param {string | Array} params array of strings or numbers
  * @returns string message
  */
 export function fromTemplate(template: string, params: (string | number)[]): string {

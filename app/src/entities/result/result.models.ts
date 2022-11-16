@@ -1,4 +1,4 @@
-import { AnyValue } from '../../models';
+import { AnyValue } from '../../shared';
 
 export type Some<Payload> = { isOK: true; payload: Payload };
 

@@ -7,8 +7,8 @@ import clsx from 'clsx';
 import { ErrorMessage, Tooltip } from '../../shared';
 import classes from './Login.module.scss';
 import { getMessage, getIsLoading, useSelector } from '../../state';
-import { setupText } from '../../tools';
-import { TEXT } from '../../data';
+import { setupText } from '../../shared';
+import { TEXT } from '../../shared';
 import { useLogin } from '../../entities';
 
 const TXT = setupText(TEXT)('login');

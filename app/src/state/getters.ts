@@ -3,8 +3,8 @@ import memoizeOne from 'memoize-one';
 import { omit, path, sum } from 'ramda';
 
 import { State } from '.';
-import { WorkToRender } from '../entities';
-import { MongoDocument, Option } from '../models';
+import { Work, WorkToRender } from '../entities';
+import { DbWorkToRender, MongoDocument, Option } from '../shared';
 
 export const getSprints = (state: State) => state.sprints;
 
@@ -41,12 +41,12 @@ export const getAddedEngineers = memoizeOne(addedEngineers);
 export const getNotAddedEngineers = memoizeOne(notAddedEngineers);
 
 export function getWorksForEngineer(state: State) {
-  return function call(engineerId: string): MongoDocument<WorkToRender>[] {
+  return function call(engineerId: string): DbWorkToRender[] {
     const assignedWorks = state.assignedWorks.filter(work => work.engineerId === engineerId);
 
     return assignedWorks.map(assignedWork => ({
       ...omit(['workId'], assignedWork),
-      work: state.works.find(work => work._id === assignedWork.workId)!,
+      work: state.works.find(work => work._id === assignedWork.workId) as MongoDocument<Work>,
     }));
   };
 }

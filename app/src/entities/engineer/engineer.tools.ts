@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { MongoDocument } from '../../models';
+import { MongoDocument } from '../../shared';
 import { Engineer, Person } from './engineer.models';
 
 export function makeName(person: Person) {

@@ -1,7 +1,7 @@
 import { compose, pick } from 'ramda';
 
 import { AppContext, Engineer, engineerDaysOffToDayjs } from '..';
-import { MongoDocument } from '../../models';
+import { MongoDocument } from '../../shared';
 import { setMessage, setEngineers, setIsLoading, useDispatch, useSelector, updateEngineer } from '../../state';
 import { useContextSelector } from 'use-context-selector';
 

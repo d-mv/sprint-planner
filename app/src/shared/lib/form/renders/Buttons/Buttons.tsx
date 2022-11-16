@@ -3,7 +3,7 @@ import { map, path } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
 import { Spinner } from '../../../../ui/atoms';
-import { ifTrue, makeMatch } from '../../../../../tools';
+import { ifTrue, makeMatch } from '../../../../tools';
 import { FormContext, FormInternalContext } from '../../contexts';
 import { FormButton } from '../../models';
 import classes from './Buttons.module.scss';

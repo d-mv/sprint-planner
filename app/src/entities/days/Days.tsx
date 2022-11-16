@@ -8,7 +8,7 @@ import { DayType } from './days.models';
 import { Popover } from '@mui/material';
 import { DayPopup } from './DayPopup';
 import { addRemoveDayOff, getIsDayOff, useDispatch, useSelector } from '../../state';
-import { MongoDocument, Option } from '../../models';
+import { MongoDocument, Option } from '../../shared';
 
 interface Props {
   sprint: Sprint;

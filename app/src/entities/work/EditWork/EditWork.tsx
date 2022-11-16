@@ -3,8 +3,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { assoc, compose, o, omit, path, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
-import { AnyValue, RecordObject } from '../../../models';
-import { Form, FormContext, LazyLoad } from '../../../shared';
+import { AnyValue, RecordObject, Form, FormContext, LazyLoad } from '../../../shared';
 import { getIsLoading, setMessage, useDispatch, useSelector } from '../../../state';
 import { EngineerContext } from '../../engineer/engineer.contexts';
 import { createWorkFormScenario } from '../createWork.scenario';

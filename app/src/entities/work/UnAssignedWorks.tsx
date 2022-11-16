@@ -2,8 +2,7 @@ import { List, Typography } from '@mui/material';
 import { map } from 'ramda';
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 
-import { Divider } from '../../shared';
-import { MongoDocument } from '../../models';
+import { Divider, MongoDocument } from '../../shared';
 import { useSelector, getUnAssignedWorks } from '../../state';
 import { WorkContext } from './work.contexts';
 import { Work } from './work.models';

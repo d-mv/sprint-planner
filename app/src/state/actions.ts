@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 
 import { AssignedWork, Engineer, Sprint, Work } from '../entities';
-import { MongoDocument } from '../models';
+import { DbAssignedWork, MongoDocument } from '../shared';
 import { Action, StateActions } from './types';
 
 export const setIsLoading = (payload: [key: string, value: boolean]): Action => ({
@@ -44,7 +44,7 @@ export const setAddedEngineers = (payload: string[]): Action => ({
   payload,
 });
 
-export const setAssignedWorks = (payload: MongoDocument<AssignedWork>[]): Action => ({
+export const setAssignedWorks = (payload: DbAssignedWork[]): Action => ({
   type: StateActions.SET_ASSIGNED_WORKS,
   payload,
 });
@@ -54,7 +54,7 @@ export const removeAssignedWork = (payload: string): Action => ({
   payload,
 });
 
-export const addAssignedWork = (payload: MongoDocument<AssignedWork>): Action => ({
+export const addAssignedWork = (payload: DbAssignedWork): Action => ({
   type: StateActions.ADD_ASSIGNED_WORK,
   payload,
 });
@@ -74,7 +74,7 @@ export const updateWork = (payload: MongoDocument<Work>): Action => ({
   payload,
 });
 
-export const updateAssignedWork = (payload: MongoDocument<AssignedWork>): Action => ({
+export const updateAssignedWork = (payload: DbAssignedWork): Action => ({
   type: StateActions.UPDATE_ASSIGNED_WORK,
   payload,
 });

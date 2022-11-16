@@ -2,8 +2,8 @@ import Button from '@mui/material/Button';
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import { TEXT } from '../../../data';
-import { ifTrue, setupText } from '../../../tools';
+import { TEXT } from '../../../shared';
+import { ifTrue, setupText } from '../../../shared';
 import { AddSprint } from '../AddSprint';
 import classes from './SprintHeader.module.scss';
 

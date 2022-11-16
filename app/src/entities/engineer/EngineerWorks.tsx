@@ -1,10 +1,9 @@
 import { map, omit } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
-import { Spinner } from '../../shared';
-import { MongoDocument } from '../../models';
+import { DbWorkToRender, Spinner, MongoDocument } from '../../shared';
 
 import { getIsLoading, getWorksForEngineer, useSelector } from '../../state';
-import { WorkToRender, WorkContext } from '../work';
+import { WorkContext } from '../work';
 import { AssignedWork } from '../work/AssignedWork';
 import { EngineerContext } from './engineer.contexts';
 
@@ -15,7 +14,7 @@ import { EngineerContext } from './engineer.contexts';
  * @param {MongoDocument} work compound object work + assigned work
  * @returns Element
  */
-function renderWork(work: MongoDocument<WorkToRender>) {
+function renderWork(work: DbWorkToRender) {
   if (!work.work) return null;
 
   return (

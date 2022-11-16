@@ -3,8 +3,8 @@ import { Dayjs } from 'dayjs';
 import { useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { TEXT } from '../../data';
-import { setupText } from '../../tools';
+import { TEXT } from '../../shared';
+import { setupText } from '../../shared';
 import { AddDaysOff } from '../days';
 import { EngineerContext } from './engineer.contexts';
 import { useEngineers } from './useEngineers.hook';

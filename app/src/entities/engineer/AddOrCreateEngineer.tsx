@@ -2,9 +2,9 @@ import { Button } from '@mui/material';
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import { TEXT } from '../../data';
+import { TEXT } from '../../shared';
 import { getAddedEngineers, useSelector } from '../../state';
-import { ifTrue, setupText } from '../../tools';
+import { ifTrue, setupText } from '../../shared';
 import { AddEngineer } from './AddEngineer';
 import { CreateEngineer } from './CreateEngineer';
 

@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import { MongoDocument } from '../../models';
+import { MongoDocument } from '../../shared';
 import { Sprint } from './sprint.models';
 
 export function sprintDateToDayjs(sprints: MongoDocument<Sprint>[]): MongoDocument<Sprint<Dayjs>>[] {

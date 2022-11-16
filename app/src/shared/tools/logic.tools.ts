@@ -1,4 +1,4 @@
-import { AnyValue } from '../models';
+import { AnyValue } from '..';
 
 export function isFn(data: AnyValue): boolean {
   return typeof data === 'function';

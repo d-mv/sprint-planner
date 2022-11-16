@@ -1,5 +1,5 @@
 import { LazyExoticComponent, ComponentType, Suspense, PropsWithChildren } from 'react';
-import { AnyValue } from '../../models';
+import { AnyValue } from '../models';
 
 interface LazyLoadOptions {
   isDefault: boolean;

@@ -5,15 +5,14 @@ import { Engineer as EngineerType } from './engineer.models';
 import { getAddedEngineers, getMessage, useSelector } from '../../state';
 import { Engineer } from './Engineer';
 import { AddOrCreateEngineer } from './AddOrCreateEngineer';
-import { MongoDocument } from '../../models';
+import { MongoDocument, ErrorMessage } from '../../shared';
 import { useAssignedWork } from '../work/useAssignedWorks.hook';
-import { CONSTANTS } from '../../theme';
-import { ErrorMessage } from '../../shared';
+import { CONSTANTS } from '../../shared';
 import { EngineerContext } from './engineer.contexts';
 import { ColorLegend, useApp } from '../app';
 import { useEngineers } from './useEngineers.hook';
 import { useWorks } from '../work';
-import { ifTrue } from '../../tools';
+import { ifTrue } from '../../shared';
 
 export function Engineers() {
   const addedEngineers = useSelector(getAddedEngineers);

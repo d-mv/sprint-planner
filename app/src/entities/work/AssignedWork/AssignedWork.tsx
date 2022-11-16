@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { useContextSelector } from 'use-context-selector';
 
 import { IconButton } from '../../../shared';
-import { TEXT } from '../../../data';
-import { CONSTANTS } from '../../../theme';
-import { ifTrue, setupText } from '../../../tools';
+import { TEXT } from '../../../shared';
+import { CONSTANTS } from '../../../shared';
+import { ifTrue, setupText } from '../../../shared';
 import { useAssignedWork } from '../useAssignedWorks.hook';
 import { WorkContext } from '../work.contexts';
 import { WorkLine } from '../WorkLine';

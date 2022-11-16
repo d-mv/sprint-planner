@@ -8,7 +8,7 @@ import EventNoteRoundedIcon from '@mui/icons-material/EventNoteRounded';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import classes from './AddSprint.module.scss';
-import { AnyValue } from '../../../models';
+import { AnyValue } from '../../../shared';
 import './calendarOverride.css';
 import './inputOverride.css';
 import { addSprint, useDispatch } from '../../../state';

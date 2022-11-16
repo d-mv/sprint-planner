@@ -1,12 +1,11 @@
 import dayjs from 'dayjs';
 
-import { AssignedWork } from '..';
-import { MongoDocument } from '../../models';
+import { DbAssignedWork } from '../../shared';
 
-export function assignedWorkDayToDayjs(work: MongoDocument<AssignedWork<string>>): MongoDocument<AssignedWork> {
+export function assignedWorkDayToDayjs(work: DbAssignedWork<string>): DbAssignedWork {
   return { ...work, startDate: dayjs(work.startDate) };
 }
 
-export function assignedWorksDayToDayjs(data: MongoDocument<AssignedWork<string>>[]): MongoDocument<AssignedWork>[] {
+export function assignedWorksDayToDayjs(data: DbAssignedWork<string>[]): DbAssignedWork[] {
   return data.map(assignedWorkDayToDayjs);
 }

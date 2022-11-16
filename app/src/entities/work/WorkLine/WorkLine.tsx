@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { ChipWithTooltip, Tooltip } from '../../../shared';
-import { ifTrue } from '../../../tools';
+import { ifTrue } from '../../../shared';
 import { useWorkIsOverSprint } from '../../days';
 import { WorkContext } from '../work.contexts';
 import classes from './WorkLine.module.scss';

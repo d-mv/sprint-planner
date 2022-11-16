@@ -4,7 +4,7 @@ import { map } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { ifTrue } from '../../../../../tools';
+import { ifTrue } from '../../../../tools';
 import { FormContext, FormItemContext } from '../../contexts';
 
 export default function Selector() {

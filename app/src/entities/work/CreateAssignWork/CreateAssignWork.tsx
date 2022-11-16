@@ -1,18 +1,12 @@
 import clsx from 'clsx';
-import { compose, o, path } from "ramda";
+import { compose, o, path } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
-import { AnyValue, RecordObject } from "../../../models";
-import { Form, FormContext, LazyLoad } from "../../../shared";
-import {
-	getIsLoading,
-	setMessage,
-	useDispatch,
-	useSelector,
-} from "../../../state";
+import { AnyValue, RecordObject, Form, FormContext, LazyLoad } from '../../../shared';
+import { getIsLoading, setMessage, useDispatch, useSelector } from '../../../state';
 import { EngineerContext } from '../../engineer/engineer.contexts';
-import { createWorkFormScenario } from "../createWork.scenario";
-import { useWorks } from "../useWorks.hook";
+import { createWorkFormScenario } from '../createWork.scenario';
+import { useWorks } from '../useWorks.hook';
 import classes from './CreateAssignWork.module.scss';
 
 interface Props {
@@ -24,7 +18,7 @@ export function CreateAssignWork({ onCancel }: Props) {
 
   const dispatch = useDispatch();
 
-  const isLoading = useSelector(getIsLoading)("add-work");
+  const isLoading = useSelector(getIsLoading)('add-work');
 
   const { add } = useWorks();
 
@@ -36,8 +30,8 @@ export function CreateAssignWork({ onCancel }: Props) {
   }
 
   function handleError(message: string) {
-			compose(dispatch, setMessage)(message);
-		}
+    compose(dispatch, setMessage)(message);
+  }
 
   return (
     <div className={clsx('padding-1', classes.container)}>

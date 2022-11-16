@@ -2,7 +2,7 @@ import { compose, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
 import { AppContext, Sprint, sprintDateToDayjs } from '..';
-import { MongoDocument } from '../../models';
+import { MongoDocument } from '../../shared';
 import { setMessage, setIsLoading, setSprints, useDispatch, useSelector } from '../../state';
 
 export function useSprints() {

@@ -4,7 +4,7 @@ import { createContext, useContext } from 'use-context-selector';
 import { Dispatch, State } from '.';
 import { reducer } from './reducer';
 import { INITIAL_STATE } from './initial';
-import { Option } from '../models';
+import { Option } from '../shared';
 
 const StateContext = createContext<Option<State>>(undefined);
 

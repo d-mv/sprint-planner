@@ -1,8 +1,7 @@
 import { Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { MongoDocument } from '../../models';
-import { checkIfBetween, getWorkingDaysDiff } from '../../shared';
+import { MongoDocument, checkIfBetween, getWorkingDaysDiff } from '../../shared';
 import { Sprint } from './sprint.models';
 
 interface Props {

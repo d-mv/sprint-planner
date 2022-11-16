@@ -1,9 +1,9 @@
 import { compose } from 'ramda';
 import { createContext } from 'use-context-selector';
 
-import { query } from '../../adaptors';
+import { query } from '../../shared';
 import { getMessage } from '../../state';
-import { as } from '../../tools';
+import { as } from '../../shared';
 
 export interface AppContextType {
   query: typeof query;

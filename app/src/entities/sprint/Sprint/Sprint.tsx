@@ -1,7 +1,7 @@
 import { Sprint as SprintType } from '../sprint.models';
 import { Days } from '../../days';
 import { SprintName } from '../SprintName';
-import { MongoDocument } from '../../../models';
+import { MongoDocument } from '../../../shared';
 import classes from './Sprint.module.scss';
 
 interface Props {

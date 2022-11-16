@@ -48,6 +48,7 @@ module.exports = {
     'html',
   ],
   rules: {
+    'jsdoc/require-jsdoc': 'off',
     'react/react-in-jsx-scope': 'off',
     'testing-library/await-async-query': 'error',
     'testing-library/no-await-sync-query': 'error',

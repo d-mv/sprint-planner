@@ -2,7 +2,7 @@ import { compose, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
 import { AppContext, AssignedWork, assignedWorkDayToDayjs, assignedWorksDayToDayjs } from '..';
-import { MongoDocument } from '../../models';
+import { DbAssignedWork } from '../../shared';
 import {
   setAssignedWorks,
   setMessage,
@@ -20,7 +20,7 @@ export function useAssignedWork() {
 
   const error = useSelector(getMessage);
 
-  function handleGetPositive(data: MongoDocument<AssignedWork<string>>[]) {
+  function handleGetPositive(data: DbAssignedWork<string>[]) {
     compose(dispatch, setAssignedWorks, assignedWorksDayToDayjs)(data);
     compose(dispatch, setIsLoading)(['get-assigned-work', false]);
   }
@@ -30,7 +30,7 @@ export function useAssignedWork() {
     compose(dispatch, setIsLoading)(['get-assigned-work', false]);
   }
 
-  function handleAddPositive(data: MongoDocument<AssignedWork<string>>) {
+  function handleAddPositive(data: DbAssignedWork<string>) {
     compose(dispatch, addAssignedWork, assignedWorkDayToDayjs)(data);
     compose(dispatch, setIsLoading)(['add-assigned-work', false]);
   }
@@ -45,7 +45,7 @@ export function useAssignedWork() {
 
     if (error) compose(dispatch, setMessage)('');
 
-    query<MongoDocument<AssignedWork<string>>>('assigned_work', 'add', data)
+    query<DbAssignedWork<string>>('assigned_work', 'add', data)
       .then(r => (r.isOK ? handleAddPositive(r.payload) : handleAddNegative(r.message)))
       .catch(err => handleAddNegative(err.message));
   }
@@ -55,7 +55,7 @@ export function useAssignedWork() {
 
     if (error) compose(dispatch, setMessage)('');
 
-    query<MongoDocument<AssignedWork<string>>[]>('assigned_work', 'getAll')
+    query<DbAssignedWork<string>[]>('assigned_work', 'getAll')
       .then(r => (r.isOK ? handleGetPositive(r.payload) : handleGetNegative(r.message)))
       .catch(err => handleGetNegative(err.message));
   }

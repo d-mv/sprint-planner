@@ -1,6 +1,6 @@
 import { compose, isEmpty, isNil, path } from 'ramda';
 import { FormEvent } from 'react';
-import { AnyValue, RecordObject } from '../../../models';
+import { AnyValue, RecordObject } from '../../models';
 import { FormItem, FormScenario, FormSection, SectionFormItem } from './models';
 
 export function validationHasFailed(obj: ValidityState) {

@@ -5,12 +5,12 @@ import clsx from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
 import { CSSProperties, MouseEvent } from 'react';
 
-import { MongoDocument } from '../../../models';
+import { MongoDocument } from '../../../shared';
 import { getIsDayOff, useSelector } from '../../../state';
-import { buildId, ifTrue } from '../../../tools';
+import { buildId, ifTrue } from '../../../shared';
 import { DayType } from '../days.models';
 import classes from './Day.module.scss';
-import { CONFIG } from '../../../config';
+import { CONFIG } from '../../../shared';
 
 interface Props {
   withDate?: boolean;

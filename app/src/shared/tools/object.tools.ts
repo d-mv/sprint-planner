@@ -1,4 +1,4 @@
-import { RecordObject } from '../models';
+import { RecordObject } from '..';
 
 export function makeMatch<T = unknown, K = T>(object: RecordObject<T>, defaultReturn: K) {
   return new Proxy(object, {

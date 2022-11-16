@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 
-import { AssignedWork, Engineer, Sprint, Work } from '../entities';
-import { AnyValue, MongoDocument, RecordObject } from '../models';
+import { Engineer, Sprint, Work } from '../entities';
+import { AnyValue, DbAssignedWork, MongoDocument, RecordObject } from '../shared';
 
 export enum StateActions {
   SET_MESSAGE = 'setMessage',
@@ -41,7 +41,7 @@ export interface State {
   engineers: MongoDocument<Engineer>[];
   addedEngineers: string[];
   works: MongoDocument<Work>[];
-  assignedWorks: MongoDocument<AssignedWork>[];
+  assignedWorks: DbAssignedWork[];
   message: string;
   auth: {
     isConnected: boolean;
