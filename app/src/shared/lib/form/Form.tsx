@@ -1,13 +1,14 @@
+import { Typography } from '@mui/material';
 import { assoc, isEmpty, isNil, map, path } from 'ramda';
-import { FormEvent, lazy, LazyExoticComponent, useCallback, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { RecordObject, AnyValue } from '../../models';
-import { makeMatch, setupText, sortScenarioKeys } from '../../tools';
+import { ifTrue, makeMatch, setupText, sortScenarioKeys } from '../../tools';
 import { lazyLoad } from '../render.tools';
 import { FormContext, FormInternalContext, FormItemContext } from './contexts';
 import { FormItem, FormSection, FormTypes, SectionFormItem } from './models';
-import { Buttons, DateInput, Number, Selector, Text } from './renders';
+import { Buttons, DateInput, DateSet, Divider, Number, Selector, Spacer, Text } from './renders';
 import { TEXT } from './text';
 import {
   buildForm,
@@ -23,15 +24,17 @@ const RENDERS = makeMatch(
     [FormTypes.TEXT]: Text,
     [FormTypes.DATE]: DateInput,
     [FormTypes.SELECTOR]: Selector,
+    [FormTypes.DATE_SET]: DateSet,
+    [FormTypes.H_DIVIDER]: Divider,
+    [FormTypes.V_DIVIDER]: Divider,
+    [FormTypes.H_SPACER]: Spacer,
+    [FormTypes.V_SPACER]: Spacer,
   },
   () => null,
 );
 
 const TXT = setupText(TEXT)(['form']);
 
-/**
- *
- */
 export default function Form() {
   const [scenario, submitForm, submitData, initial, components] = useContextSelector(FormContext, c => [
     c.scenario,
@@ -63,14 +66,7 @@ export default function Form() {
     setRequiredFields(Object.values(required).every(Boolean));
   }, [required]);
 
-  // if initial state provided - update statuses
-  /**
-   *
-   */
   const validateAndUpdateRequired = useCallback(() => {
-    // eslint-disable-next-line no-console
-    console.log(initial);
-
     if (!initial || isEmpty(initial)) return;
 
     Object.keys(initial).forEach(key => {
@@ -98,26 +94,17 @@ export default function Form() {
 
   if (!submitData && !submitForm) throw new Error(TXT('missingFuncs'));
 
-  // handlers
-  /**
-   *
-   * @param element
-   */
   function handleValidated(element: string) {
     return function call(status: boolean) {
-      // eslint-disable-next-line no-console
-      console.log(element, status);
       setValidated(state => assoc(element, status, state));
     };
   }
 
-  /**
-   *
-   * @param key
-   */
   function handleChange(key: string) {
     return function call(value: AnyValue) {
-      setData({ ...data, [key]: value });
+      // eslint-disable-next-line no-console
+      console.log(key, value);
+      setData(state => ({ ...state, [key]: value }));
 
       // if required, update the list of entered required fields
       if (!(key in required)) return;
@@ -127,12 +114,10 @@ export default function Form() {
     };
   }
 
-  /**
-   *
-   * @param e
-   */
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // eslint-disable-next-line no-console
+    console.log(data, required, validated);
 
     if (submitData) return submitData(data);
 
@@ -141,11 +126,6 @@ export default function Form() {
     if (submitForm) submitForm(form);
   }
 
-  /**
-   *
-   * @param dataId
-   * @param type
-   */
   function selectComponent(dataId: string, type: FormTypes) {
     if (type !== FormTypes.CUSTOM) return lazyLoad(RENDERS[type]);
 
@@ -154,11 +134,6 @@ export default function Form() {
     return components[dataId]();
   }
 
-  // renders
-  /**
-   *
-   * @param item
-   */
   function renderFormInputs(item: FormItem | SectionFormItem) {
     const { dataId, type } = item;
 
@@ -180,34 +155,25 @@ export default function Form() {
     );
   }
 
-  /**
-   *
-   * @param items
-   */
   function renderSectionItem(items: RecordObject<SectionFormItem>) {
     return function render(key: string) {
       return renderFormInputs(items[key]);
     };
   }
 
-  /**
-   *
-   * @param sectionKey
-   */
   function renderSection(sectionKey: string) {
     const section = scenario.items[sectionKey] as FormSection;
 
     return (
-      <div id={`form-section-${sectionKey}`} style={section.style}>
-        {map(renderSectionItem(section.items), Object.keys(section.items))}
+      <div style={{ margin: '1rem 0' }}>
+        {ifTrue(section.label, <Typography variant='body2'>{section.label ?? ''}</Typography>)}
+        <div id={`form-section-${sectionKey}`} style={section.style}>
+          {map(renderSectionItem(section.items), Object.keys(section.items))}
+        </div>
       </div>
     );
   }
 
-  /**
-   *
-   * @param key
-   */
   function renderItems(key: string) {
     const maybeSection = scenario.items[key];
 

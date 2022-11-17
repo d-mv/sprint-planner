@@ -1,7 +1,46 @@
 import { compose, isEmpty, isNil, path } from 'ramda';
 import { FormEvent } from 'react';
-import { AnyValue, RecordObject } from '../../models';
+import { AnyValue, RecordObject, Option } from '../../models';
 import { FormItem, FormScenario, FormSection, SectionFormItem } from './models';
+import dayjs, { Dayjs } from 'dayjs';
+import { format } from '../day.tools';
+import { Duration, DurationUnitsObjectType, DurationUnitType } from 'dayjs/plugin/duration';
+
+export function add(nDays: number, item: DurationUnitType) {
+  return function call(day: Dayjs) {
+    return day.add(nDays, item);
+  };
+}
+
+export function subtract(nDays: number, item: DurationUnitType) {
+  return function call(day: Dayjs) {
+    return day.subtract(nDays, item);
+  };
+}
+
+export function checkIfAddDays(value: Option<string>): Option<string> {
+  const plus = value?.match(/\+/);
+
+  if (plus && plus[0] === '+') {
+    const n = parseInt(value?.replace(/\+/, '') ?? '0');
+
+    return compose(format, add(n, 'days'))(dayjs());
+  }
+
+  return undefined;
+}
+
+export function checkIfSubtractDays(value: Option<string>): Option<string> {
+  const minus = value?.match(/-/);
+
+  if (minus && minus[0] === '-') {
+    const n = parseInt(value?.replace(/-/, '') ?? '0');
+
+    return compose(format, subtract(n, 'days'))(dayjs());
+  }
+
+  return undefined;
+}
 
 export function validationHasFailed(obj: ValidityState) {
   return !Object.values(obj).some(Boolean);

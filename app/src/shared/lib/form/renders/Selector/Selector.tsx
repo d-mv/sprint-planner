@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { ifTrue } from '../../../../tools';
+import { format } from '../../../day.tools';
 import { FormContext, FormItemContext } from '../../contexts';
 
 export default function Selector() {
@@ -32,7 +33,7 @@ export default function Selector() {
   const labelId = `select-${item.dataId}`;
 
   function makeDefaultValue() {
-    return defaultValue === 'current' ? dayjs().format('YYYY-M-DD') : dayjs(defaultValue).format('YYYY-M-DD');
+    return defaultValue === 'current' ? format(dayjs()) : format(dayjs(defaultValue));
   }
 
   function sendUpdate(v: string) {

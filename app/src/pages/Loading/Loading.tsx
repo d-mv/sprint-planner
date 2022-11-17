@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
 import { Collapse, Typography } from '@mui/material';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { path } from 'ramda';
 
 import { getAllIsLoading, LoadingActions, useSelector } from '../../state';

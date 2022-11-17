@@ -11,7 +11,7 @@ import { setupText } from '../../../shared';
 import { createEngineer, useDispatch } from '../../../state';
 import { Divider } from '../../../shared';
 import { AddDaysOff } from '../../days';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 const TXT = setupText(TEXT)('engineer');
 

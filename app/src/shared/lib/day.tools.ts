@@ -7,6 +7,10 @@ import { buildArray } from './array.tools';
 dayjs.extend(isBetween);
 dayjs.extend(durationPlugin);
 
+export function format(date: Dayjs) {
+  return date.format('YYYY-MM-DD');
+}
+
 export function duration(start: Dayjs, end: Dayjs): number {
   return end.diff(start, 'days', false);
 }

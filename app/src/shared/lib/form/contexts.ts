@@ -27,7 +27,7 @@ export interface FormItemContextType {
   onChange: (value: AnyValue) => void;
   onValidation: (status: boolean) => void;
   isValidated: boolean;
-  value: string;
+  value: string | string[];
 }
 
 export const FormItemContext = createContext<FormItemContextType>({} as FormItemContextType);

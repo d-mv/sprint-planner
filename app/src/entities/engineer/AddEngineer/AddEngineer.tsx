@@ -9,7 +9,7 @@ import { ifTrue, setupText } from '../../../shared';
 import classes from './AddEngineer.module.scss';
 import { Message, MongoDocument } from '../../../shared';
 import { makeName } from '../engineer.tools';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 const TXT = setupText(TEXT)('engineer');
 

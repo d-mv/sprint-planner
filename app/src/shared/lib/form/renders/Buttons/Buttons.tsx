@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { map, path } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
-import { Spinner } from '../../../../ui/atoms';
+import { Divider, Spinner } from '../../../../ui/atoms';
 import { ifTrue, makeMatch } from '../../../../tools';
 import { FormContext, FormInternalContext } from '../../contexts';
 import { FormButton } from '../../models';
@@ -77,5 +77,10 @@ export function Buttons() {
     );
   }
 
-  return <div className={classes.container}>{map(renderButton, buttons)}</div>;
+  return (
+    <div>
+      <Divider />
+      <div className={classes.container}>{map(renderButton, buttons)}</div>
+    </div>
+  );
 }

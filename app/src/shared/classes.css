@@ -13,6 +13,16 @@
   align-items: center;
 }
 
+.v-scroll {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.h-scroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
 .border {
   border: var(--border);
 }
@@ -90,6 +100,10 @@
 
 .b-top-0 {
   border-top: none;
+}
+
+.b-right-0 {
+  border-right: none;
 }
 
 .w-100 {

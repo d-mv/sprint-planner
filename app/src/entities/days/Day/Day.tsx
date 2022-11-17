@@ -1,16 +1,14 @@
-import { Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
-import { grey, indigo, pink, red } from '@mui/material/colors';
-import clsx from 'clsx';
+import { grey } from '@mui/material/colors';
+import { clsx } from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
 import { CSSProperties, MouseEvent } from 'react';
 
-import { MongoDocument } from '../../../shared';
+import { MongoDocument, buildId, ifTrue, CONFIG } from '../../../shared';
 import { getIsDayOff, useSelector } from '../../../state';
-import { buildId, ifTrue } from '../../../shared';
 import { DayType } from '../days.models';
 import classes from './Day.module.scss';
-import { CONFIG } from '../../../shared';
 
 interface Props {
   withDate?: boolean;
@@ -19,8 +17,6 @@ interface Props {
 }
 
 export function Day({ day, onClick, withDate }: Props) {
-  const theme = useTheme();
-
   const isDayOff = useSelector(getIsDayOff);
 
   const { date, month, isWeekend, isOff, isWork } = day;

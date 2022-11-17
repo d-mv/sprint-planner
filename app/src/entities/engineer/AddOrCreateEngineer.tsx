@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useState } from 'react';
 
 import { TEXT } from '../../shared';

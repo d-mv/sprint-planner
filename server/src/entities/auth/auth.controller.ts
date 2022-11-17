@@ -20,9 +20,6 @@ export const AuthController = makeMatch<(arg: ControllerRequest) => PromisedResu
     disconnect: async ({ context }) => {
       await context.db.disconnect();
       context.state.set('isConnectedToDb', false);
-      // eslint-disable-next-line no-console
-      console.log(context.state.get('isConnectedToDb'));
-
       return success('OK');
     },
   },

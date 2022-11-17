@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { compose, map } from 'ramda';
-import { DayType, Engineer } from '../entities';
+import { DayType, Engineer, Sprint } from '../entities';
 import { buildArray } from './object.tools';
 import durationPlugin from 'dayjs/plugin/duration';
 import { Document, Types } from 'mongoose';
@@ -16,7 +16,13 @@ export function checkIfWeekend(date: Dayjs): boolean {
   return [5, 6].includes(date.day());
 }
 
-export function buildSprintDays(startDate: string, endDate: string): DayType[] {
+export function format(date: Dayjs) {
+  return date.format('YYYY-MM-DD');
+}
+
+export function buildSprintDays(date: Sprint<string> & { daysOff: string[] }): DayType[] {
+  const { startDate, endDate, daysOff } = date;
+
   const start = dayjs(startDate);
 
   const end = dayjs(endDate);
@@ -30,6 +36,7 @@ export function buildSprintDays(startDate: string, endDate: string): DayType[] {
       date: date.toDate(),
       month,
       isWeekend: checkIfWeekend(date),
+      isOff: daysOff.includes(format(date)),
     };
   }
 

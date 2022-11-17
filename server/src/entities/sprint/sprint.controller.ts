@@ -6,6 +6,9 @@ import { incomingSprintToDbFormat } from './sprint.tools';
 export const SprintController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
   {
     add: async ({ query, context }) => {
+      // eslint-disable-next-line no-console
+      console.dir(query.payload, { depth: 15 });
+
       const result = await context.collections.sprint.create(incomingSprintToDbFormat(query.payload));
 
       return success(result);

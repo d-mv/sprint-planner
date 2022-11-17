@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
 import { assoc, compose, o, omit, path, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';

@@ -10,6 +10,7 @@ export enum StateActions {
   LOGIN = 'login',
   BOOT = 'boot',
   SET_SPRINTS = 'setSprints',
+  ADD_SPRINT = 'addSprint',
   SET_ENGINEERS = 'setEngineers',
   UPDATE_ENGINEER = 'updateEngineer',
   SET_ADDED_ENGINEERS = 'setAddedEngineers',
@@ -21,7 +22,7 @@ export enum StateActions {
   UPDATE_WORK = 'updateWork',
   UPDATE_ASSIGNED_WORK = 'updateAssignedWork',
   // to revise
-  ADD_SPRINT = 'addSprint',
+
   ADD_REMOVE_DAY_OFF = 'addRemoveDayOff',
   CREATE_ENGINEER = 'createEngineer',
   ADD_ENGINEER = 'addEngineer',

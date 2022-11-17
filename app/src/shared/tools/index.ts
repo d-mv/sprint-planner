@@ -11,3 +11,4 @@ export * from './object.tools';
 export * from './type.tools';
 
 // export * from '../shared/lib/render.tools';
+export * from './days.tools';

@@ -1,13 +1,13 @@
 import { TextField } from '@mui/material';
 import dayjs from 'dayjs';
+import { compose } from 'ramda';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
+import { format } from '../../../day.tools';
 import { FormContext, FormItemContext } from '../../contexts';
+import { checkIfAddDays, checkIfSubtractDays } from '../../tools';
 
-/**
- *
- */
 export default function DateInput() {
   const { item, isValidated, onValidation, onChange, value } = useContextSelector(FormItemContext, c => c);
 
@@ -17,22 +17,28 @@ export default function DateInput() {
 
   const { isRequired, className, style, label, validation, defaultValue, triggers } = item;
 
-  /**
-   *
-   */
   function makeDefaultValue() {
-    if (value) return dayjs(value).format('YYYY-M-DD');
+    // eslint-disable-next-line no-console
+    console.log(value, compose(format, dayjs)(String(value)));
 
-    if (defaultValue === 'current') return dayjs().format('YYYY-M-DD');
+    if (value) return compose(format, dayjs)(String(value));
 
-    return dayjs(defaultValue).format('YYYY-M-DD');
+    if (defaultValue === 'current') return format(dayjs());
+
+    const plus = checkIfAddDays(defaultValue);
+
+    if (plus) return plus;
+
+    const minus = checkIfSubtractDays(defaultValue);
+
+    if (minus) return minus;
+
+    return compose(format, dayjs)(defaultValue);
   }
 
-  /**
-   *
-   * @param v
-   */
   function sendUpdate(v: string) {
+    // eslint-disable-next-line no-console
+    console.log(v);
     onChange(v);
     onValidation(true);
 
@@ -43,22 +49,23 @@ export default function DateInput() {
   }
 
   useEffect(() => {
-    sendUpdate(makeDefaultValue());
+    // eslint-disable-next-line no-console
+    console.log(label, defaultValue, makeDefaultValue());
+
+    if (!value && defaultValue) {
+      // setIsInitial(false);
+      sendUpdate(makeDefaultValue());
+    }
   }, [defaultValue]);
 
-  /**
-   *
-   * @param e
-   */
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    sendUpdate(e.currentTarget.value);
+    // eslint-disable-next-line no-console
+    // console.log('>', e.target.value);
+    if (e.currentTarget.value) sendUpdate(e.currentTarget.value);
   }
 
-  /**
-   *
-   */
   function handleFocus() {
-    if (!isTouched) setIsTouched(true);
+    // if (!isTouched) setIsTouched(true);
   }
 
   return (

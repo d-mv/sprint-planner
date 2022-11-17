@@ -1,22 +1,21 @@
 import { useEffect } from 'react';
 
-import { CONFIG } from '../shared';
+import { CONFIG, ifTrue } from '../shared';
 import { useLogin } from '../entities';
 import { Loading, Login, Main } from '../pages';
 import { getIsConnected, StateActions, useDispatch, useSelector } from '../state';
-import { ifTrue } from '../shared';
 
 export function App() {
   const dispatch = useDispatch();
 
   const isConnected = useSelector(getIsConnected);
 
-  const { request } = useLogin();
+  const { connect } = useLogin();
 
   useEffect(() => {
     dispatch({ type: StateActions.BOOT });
 
-    if (CONFIG.mongoDb) request(CONFIG.mongoDb);
+    if (CONFIG.mongoDb) connect(CONFIG.mongoDb);
   }, []);
 
   const renderLogin = () => <Login />;

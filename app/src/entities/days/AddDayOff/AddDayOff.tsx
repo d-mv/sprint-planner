@@ -1,10 +1,9 @@
 import { Button, ListItem, TextField } from '@mui/material';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
 import { ChangeEvent, useState } from 'react';
 
-import { TEXT } from '../../../shared';
-import { setupText } from '../../../shared';
+import { TEXT, setupText, format } from '../../../shared';
 import classes from './AddDayOff.module.scss';
 
 const TXT = setupText(TEXT)('days');
@@ -38,7 +37,7 @@ export function AddDayOff({ daysOff, setDaysOff, onClose }: Props) {
         id='date'
         className='w-auto'
         type='date'
-        defaultValue={dayjs().format('YYYY-M-DD')}
+        defaultValue={format(dayjs())}
         sx={{ width: 220 }}
         InputLabelProps={{
           shrink: true,

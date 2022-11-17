@@ -5,6 +5,7 @@ export enum FormTypes {
   CUSTOM = 'custom',
   PERIOD = 'period',
   DATE = 'date',
+  DATE_SET = 'date_set',
   NUMBER = 'number',
   EMAIL = 'email',
   PASSWORD = 'password',
@@ -12,6 +13,10 @@ export enum FormTypes {
   TEXTAREA = 'textarea',
   DROPZONE = 'dropzone',
   SELECTOR = 'selector',
+  V_DIVIDER = 'v_divider',
+  H_DIVIDER = 'h_divider',
+  V_SPACER = 'v_spacer',
+  H_SPACER = 'h_spacer',
 }
 
 export type Version = `${number}${number | ''}.${number}${number | ''}.${number}${number | ''}`;
@@ -91,6 +96,7 @@ export type SectionFormItem = Omit<FormItem, 'order'>;
 export interface FormSection {
   style?: CSSProperties;
   order: number;
+  label?: string;
   items: RecordObject<SectionFormItem>;
 }
 

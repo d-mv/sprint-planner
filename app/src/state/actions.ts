@@ -29,6 +29,11 @@ export const setSprints = (payload: MongoDocument<Sprint<Dayjs>>[]): Action => (
   payload,
 });
 
+export const addSprint = (payload: MongoDocument<Sprint<Dayjs>>): Action => ({
+  type: StateActions.ADD_SPRINT,
+  payload,
+});
+
 export const setEngineers = (payload: MongoDocument<Engineer>[]): Action => ({
   type: StateActions.SET_ENGINEERS,
   payload,
@@ -78,13 +83,8 @@ export const updateAssignedWork = (payload: DbAssignedWork): Action => ({
   type: StateActions.UPDATE_ASSIGNED_WORK,
   payload,
 });
+
 // to revise:
-
-export const addSprint = (payload: Sprint): Action => ({
-  type: StateActions.ADD_SPRINT,
-  payload,
-});
-
 export const addRemoveDayOff = (payload: Dayjs): Action => ({
   type: StateActions.ADD_REMOVE_DAY_OFF,
   payload,

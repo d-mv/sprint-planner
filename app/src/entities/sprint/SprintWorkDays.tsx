@@ -1,5 +1,5 @@
 import { Popover } from '@mui/material';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { Dayjs } from 'dayjs';
 import { map } from 'ramda';
 import { MouseEvent, useState } from 'react';

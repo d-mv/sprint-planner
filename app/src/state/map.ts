@@ -2,7 +2,8 @@ import { Dayjs } from 'dayjs';
 import { assoc } from 'ramda';
 
 import { Engineer, Sprint, Work } from '../entities';
-import { DbAssignedWork, MongoDocument } from '../shared';
+import { DbAssignedWork, DbSprint, MongoDocument } from '../shared';
+import { INITIAL_STATE } from './initial';
 import { Action, MappedReducerFns, StateActions, State } from './types';
 
 export const MAP: MappedReducerFns = new Map();
@@ -11,9 +12,9 @@ MAP.set(StateActions.SET_MESSAGE, (state: State, action: Action<string>) => {
   return assoc('message', action.payload ?? '', state);
 });
 MAP.set(StateActions.SET_IS_CONNECTED, (state: State, action: Action<boolean>) => {
-  if (!action.payload) return state;
+  if (action.payload === undefined) return state;
 
-  return assoc('auth', assoc('isConnected', action.payload, state.auth), state);
+  return action.payload ? assoc('auth', assoc('isConnected', action.payload, state.auth), state) : INITIAL_STATE;
 });
 MAP.set(StateActions.SET_IS_LOADING, (state: State, action: Action<[key: string, value: boolean]>) => {
   if (!action.payload) return state;
@@ -23,10 +24,16 @@ MAP.set(StateActions.SET_IS_LOADING, (state: State, action: Action<[key: string,
   return assoc('isLoading', assoc(key, value, state.isLoading), state);
 });
 
-MAP.set(StateActions.SET_SPRINTS, (state: State, action: Action<MongoDocument<Sprint>[]>) => {
+MAP.set(StateActions.SET_SPRINTS, (state: State, action: Action<DbSprint[]>) => {
   if (!action.payload) return state;
 
   return { ...state, sprints: action.payload };
+});
+
+MAP.set(StateActions.ADD_SPRINT, (state: State, action: Action<DbSprint>) => {
+  if (!action.payload) return state;
+
+  return { ...state, sprints: [...state.sprints, action.payload] };
 });
 
 MAP.set(StateActions.SET_ENGINEERS, (state: State, action: Action<MongoDocument<Engineer>[]>) => {
@@ -108,13 +115,6 @@ MAP.set(StateActions.UPDATE_ASSIGNED_WORK, (state: State, action: Action<DbAssig
   return assoc('assignedWorks', works, state);
 });
 // to revise
-
-MAP.set(StateActions.ADD_SPRINT, (state: State, action: Action<MongoDocument<Sprint<Dayjs>>>) => {
-  if (!action.payload) return state;
-
-  return { ...state, sprints: [...state.sprints, action.payload] };
-});
-
 MAP.set(StateActions.ADD_REMOVE_DAY_OFF, (state: State, action: Action<Dayjs>) => {
   if (!action.payload) return state;
 

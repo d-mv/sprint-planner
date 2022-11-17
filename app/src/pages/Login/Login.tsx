@@ -2,13 +2,11 @@ import { Button, IconButton, Input, InputAdornment, Typography } from '@mui/mate
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { ChangeEvent, useState } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
-import { ErrorMessage, Tooltip } from '../../shared';
+import { ErrorMessage, Tooltip, setupText, TEXT } from '../../shared';
 import classes from './Login.module.scss';
 import { getMessage, getIsLoading, useSelector } from '../../state';
-import { setupText } from '../../shared';
-import { TEXT } from '../../shared';
 import { useLogin } from '../../entities';
 
 const TXT = setupText(TEXT)('login');
@@ -22,7 +20,7 @@ export function Login() {
 
   const isLoading = useSelector(getIsLoading)('login');
 
-  const { request } = useLogin();
+  const { connect } = useLogin();
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setValue(e.currentTarget.value);
@@ -37,7 +35,7 @@ export function Login() {
   }
 
   function handleSubmit() {
-    request(value);
+    connect(value);
   }
 
   function renderMessage() {

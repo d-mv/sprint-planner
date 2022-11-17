@@ -22,10 +22,6 @@ export default function Text() {
 
   const { isRequired, className, style, label, validation, defaultValue } = item;
 
-  /**
-   *
-   * @param v
-   */
   function sendUpdate(v: string) {
     if (validation) onValidation(validateText(item, v));
     else onValidation(true);
@@ -66,7 +62,7 @@ export default function Text() {
       onBlur={handleFocus}
       placeholder={item.placeholder}
       required={isRequired}
-      style={style}
+      style={{ width: '100%', ...style }}
       variant='standard'
       value={value ?? ''}
     />

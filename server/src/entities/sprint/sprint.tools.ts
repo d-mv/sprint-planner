@@ -1,7 +1,7 @@
 import { buildSprintDays } from '../../tools';
 import { Sprint } from './sprint.models';
 
-export function incomingSprintToDbFormat(data: Sprint<string>): Sprint {
+export function incomingSprintToDbFormat(data: Sprint<string> & { daysOff: string[] }): Sprint {
   const sprint = {
     ...data,
     startDate: new Date(data.startDate),
@@ -9,5 +9,5 @@ export function incomingSprintToDbFormat(data: Sprint<string>): Sprint {
     days: [],
   };
 
-  return { ...sprint, days: buildSprintDays(data.startDate, data.endDate) };
+  return { ...sprint, days: buildSprintDays(data) };
 }

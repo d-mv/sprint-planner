@@ -21,7 +21,7 @@ export function useLogin() {
     compose(dispatch, setIsLoading)(['login', false]);
   }
 
-  function request(url: string) {
+  function connect(url: string) {
     compose(dispatch, setIsLoading)(['login', true]);
 
     if (error) compose(dispatch, setMessage)('');
@@ -31,5 +31,25 @@ export function useLogin() {
       .catch(err => handleNegative(err.message));
   }
 
-  return { request };
+  function handleDisconnectPositive() {
+    compose(dispatch, setIsConnected)(false);
+    compose(dispatch, setIsLoading)(['logout', false]);
+  }
+
+  function handleDisconnectNegative(message: string) {
+    compose(dispatch, setMessage)(message);
+    compose(dispatch, setIsLoading)(['logout', false]);
+  }
+
+  function disconnect() {
+    compose(dispatch, setIsLoading)(['logout', true]);
+
+    if (error) compose(dispatch, setMessage)('');
+
+    query<'OK'>('auth', 'disconnect')
+      .then(r => (r.isOK ? handleDisconnectPositive() : handleDisconnectNegative(r.message)))
+      .catch(err => handleDisconnectNegative(err.message));
+  }
+
+  return { connect, disconnect };
 }

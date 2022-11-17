@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 import { CONFIG } from '../../../shared';
 import classes from './ColorLegend.module.scss';

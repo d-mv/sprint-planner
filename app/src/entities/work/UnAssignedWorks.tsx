@@ -22,15 +22,7 @@ export function UnAssignedWorks() {
 
     const window = globalThis.window.outerHeight;
 
-    // eslint-disable-next-line no-console
-    console.log(
-      window,
-      sprints.offsetHeight,
-      sprintWorks.offsetHeight,
-      window - sprints.offsetHeight - sprintWorks.offsetHeight - 100,
-    );
-
-    return (window - sprints.offsetHeight - sprintWorks.offsetHeight - 50 - 50 - 20) / 10;
+    return (window - sprints.offsetHeight - sprintWorks.offsetHeight - 20) / 10;
   }
 
   const [height, setHeight] = useState(0);
@@ -56,7 +48,7 @@ export function UnAssignedWorks() {
   }
 
   return (
-    <div ref={containerRef} id='unassigned-works' className={'column border b-top-0'}>
+    <div ref={containerRef} id='unassigned-works' className={'column  w-fit b-right-0'}>
       <Typography variant='h5' fontWeight={600} className='padding-1'>
         Unassigned Works
       </Typography>

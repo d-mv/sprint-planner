@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { PropsWithChildren } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
