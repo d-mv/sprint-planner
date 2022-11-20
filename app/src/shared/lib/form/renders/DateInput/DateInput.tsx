@@ -18,12 +18,9 @@ export default function DateInput() {
   const { isRequired, className, style, label, validation, defaultValue, triggers } = item;
 
   function makeDefaultValue() {
-    // eslint-disable-next-line no-console
-    console.log(value, compose(format, dayjs)(String(value)));
+    if (value) return compose(format(), dayjs)(String(value));
 
-    if (value) return compose(format, dayjs)(String(value));
-
-    if (defaultValue === 'current') return format(dayjs());
+    if (defaultValue === 'current') return compose(format(), dayjs)();
 
     const plus = checkIfAddDays(defaultValue);
 
@@ -33,7 +30,7 @@ export default function DateInput() {
 
     if (minus) return minus;
 
-    return compose(format, dayjs)(defaultValue);
+    return compose(format(), dayjs)(defaultValue);
   }
 
   function sendUpdate(v: string) {

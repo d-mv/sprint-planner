@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { useContextSelector } from 'use-context-selector';
 
-import { Option } from '../../shared';
+import { DbDate, Option } from '../../shared';
 import { useSelector, getSprintDays, getIsDayOff, getCurrentSprint, getWorkById } from '../../state';
 import { Engineer } from '../engineer';
 import { WorkContext, WorkToRender } from '../work';
@@ -12,11 +12,11 @@ export interface UseWorkDaysProps {
 }
 
 export function useWorkDays({ workToRender, engineer }: UseWorkDaysProps) {
-  if (!workToRender || !engineer) return { days: [], lastDay: dayjs(), isOverSprint: false };
-
   const sprintDays = useSelector(getSprintDays);
 
   const isDayOff = useSelector(getIsDayOff);
+
+  if (!workToRender || !engineer) return { days: [], lastDay: dayjs(), isOverSprint: false };
 
   const { daysOff } = engineer;
 
@@ -35,14 +35,16 @@ export function useWorkDays({ workToRender, engineer }: UseWorkDaysProps) {
 
   const isOverSprint = false;
 
-  const result = days.map(day => {
-    const { date, isWeekend, isOff } = day;
+  const shouldReturnDay = ({ date, isWeekend, isOff }: DbDate): boolean => {
+    if (!pointsLeft || isOff || isWeekend || isDayOff(date)) return true;
 
-    if (!pointsLeft) return day;
+    return false;
+  };
 
-    if (isOff || isWeekend) return day;
+  const mapper = (day: DbDate) => {
+    const { date } = day;
 
-    if (isDayOff(date)) return day;
+    if (shouldReturnDay(day)) return day;
 
     const isSameAsStart = date.isSame(startDate, 'date');
 
@@ -59,7 +61,9 @@ export function useWorkDays({ workToRender, engineer }: UseWorkDaysProps) {
     }
 
     return day;
-  });
+  };
+
+  const result = days.map(mapper);
 
   return { days: result, lastDay, isOverSprint };
 }

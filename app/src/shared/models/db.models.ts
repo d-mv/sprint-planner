@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-import { AssignedWork, Sprint, Work, WorkToRender } from '../../entities';
+import { AssignedWork, DayType, Sprint, Work, WorkToRender } from '../../entities';
 
 export type MongoDocument<T> = T & { _id: string; createdAt: Date; updatedAt: Date };
 
@@ -11,3 +11,5 @@ export type DbWorkToRender = MongoDocument<WorkToRender>;
 export type DbWork = MongoDocument<Work>;
 
 export type DbSprint<T = Dayjs> = MongoDocument<Sprint<T>>;
+
+export type DbDate<T = Dayjs> = MongoDocument<DayType<T>>;

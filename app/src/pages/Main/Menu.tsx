@@ -1,36 +1,25 @@
 import { Divider, Drawer, ListItemIcon, ListItemText, MenuItem, MenuList } from '@mui/material';
-import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
-import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
-import MeetingRoomRoundedIcon from '@mui/icons-material/MeetingRoomRounded';
-import UpdateRoundedIcon from '@mui/icons-material/UpdateRounded';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
 
-import { AnyValue, ifTrue, mapWithIndex } from '../../shared';
-
-interface MenuItemType {
-  label: string;
-  Icon: OverridableComponent<AnyValue>;
-}
-
-const MENU_ITEMS: MenuItemType[] = [
-  { label: 'Add Sprint', Icon: UpdateRoundedIcon },
-  { label: 'Create Engineer', Icon: PersonAddAltRoundedIcon },
-  { label: 'Add Engineer', Icon: GroupAddRoundedIcon },
-  { label: 'Logout', Icon: MeetingRoomRoundedIcon },
-];
+import { MENU_ITEMS, ifTrue, mapWithIndex, MenuItemType, MenuItemIds } from '../../shared';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onAction: (arg0: string) => () => void;
+  onAction: (arg0: MenuItemIds) => void;
 }
 
 export function Menu({ isOpen, onClose, onAction }: Props) {
-  function renderMenuItem({ label, Icon }: MenuItemType, index: number) {
+  function handleAction(id: MenuItemIds) {
+    return function call() {
+      onAction(id);
+    };
+  }
+
+  function renderMenuItem({ id, label, Icon }: MenuItemType, index: number) {
     return (
       <span>
         {ifTrue(index === MENU_ITEMS.length - 1, <Divider />)}
-        <MenuItem onClick={onAction(label)}>
+        <MenuItem onClick={handleAction(id)}>
           <ListItemIcon>
             <Icon fontSize='large' />
           </ListItemIcon>

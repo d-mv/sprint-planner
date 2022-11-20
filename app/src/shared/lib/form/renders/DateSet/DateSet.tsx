@@ -1,25 +1,28 @@
-import { Button, TextField, Typography, useTheme } from '@mui/material';
-import dayjs, { Dayjs } from 'dayjs';
-import { map } from 'ramda';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { Button, TextField, Typography } from '@mui/material';
+import dayjs from 'dayjs';
+import { compose, pick } from 'ramda';
+import { ChangeEvent, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
-import { AnyValue, Option } from '../../../../models';
+
+import { Option } from '../../../../models';
 import { ifTrue } from '../../../../tools';
-import { IconButton, Message } from '../../../../ui';
+import { Message } from '../../../../ui';
+import { format } from '../../../day.tools';
 import { FormItemContext } from '../../contexts';
+import { ListOfDays } from './ListOfDays';
 
 export default function DateSet() {
-  const { item, onValidation, isValidated, onChange, value } = useContextSelector(FormItemContext, c => c);
+  const { item, onValidation, onChange, value } = useContextSelector(FormItemContext, c =>
+    pick(['item', 'onValidation', 'onChange', 'value'], c),
+  );
 
-  const { type, isRequired, className, style, label, validation, defaultValue } = item;
+  const { style, label } = item;
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const theme = useTheme();
-
-  const dates = [dayjs()];
-
   const [date, setDate] = useState<Option<string>>(null);
+
+  const [error, setError] = useState('');
 
   function toggleAddDate() {
     if (date) setDate(null);
@@ -28,12 +31,16 @@ export default function DateSet() {
   }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    if (error) setError('');
+
+    if (value && Array.isArray(value) && value.includes(e.currentTarget.value)) setError('Already added');
+
     setDate(e.currentTarget.value);
-    // onChange(e.currentTarget.value);
-    // onValidation(true);
   }
 
   function handleSubmit() {
+    if (error) return;
+
     onChange([...((value as string[]) ?? []), date]);
     onValidation(true);
     toggleAddDate();
@@ -46,7 +53,7 @@ export default function DateSet() {
           required={true}
           variant='standard'
           onChange={handleChange}
-          value={date}
+          value={date ?? compose(format(), dayjs)()}
           style={{ width: '100%', margin: '1rem 0' }}
           type='date'
           InputLabelProps={{
@@ -55,7 +62,7 @@ export default function DateSet() {
         />
         <Button
           variant='text'
-          disabled={!date}
+          disabled={!date || !!error}
           onClick={handleSubmit}
           style={{ whiteSpace: 'nowrap', marginInlineStart: '1rem' }}
         >
@@ -65,39 +72,23 @@ export default function DateSet() {
     );
   }
 
-  function handleRemove(v: string) {
-    return function call() {
-      onChange(((value as string[]) ?? []).filter(d => d !== v));
-    };
-  }
-
-  function renderAddedDate(v: string) {
-    return (
-      <div
-        id='added-date'
-        className='line s-between a-center'
-        style={{ width: '40%', margin: '0 auto', marginBlockEnd: '1rem' }}
-      >
-        <Typography variant='body2'>{dayjs(v).format('MMM D').toString()}</Typography>
-        <IconButton variant='delete' onClick={handleRemove(v)} />
-      </div>
-    );
-  }
-
   function renderNoDatesMessage() {
     return <Message className='margin-center width-fit txt-center' message={'No days off'} />;
   }
 
-  function renderListOfAddedDates() {
-    return <div className='padding-1'>{map(renderAddedDate, value ? (value as string[]) : [])}</div>;
-  }
+  const renderListOfDates = () => <ListOfDays />;
 
   return (
     <div style={style}>
       <Typography variant='body1'>{label}</Typography>
-      {ifTrue(value?.length, renderListOfAddedDates)}
+      {ifTrue(value?.length, renderListOfDates)}
       {ifTrue(!isOpen && !value?.length, renderNoDatesMessage)}
       {ifTrue(isOpen, renderAddDate)}
+      <div style={{ height: '2.2rem' }}>
+        <Typography variant='subtitle1' color='error'>
+          {error}
+        </Typography>
+      </div>
       <div className='w-100 center padding-1'>
         <Button variant='outlined' onClick={toggleAddDate}>
           {isOpen ? 'Close' : 'Add Date'}

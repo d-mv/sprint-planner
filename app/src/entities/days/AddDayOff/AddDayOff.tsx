@@ -1,6 +1,7 @@
 import { Button, ListItem, TextField } from '@mui/material';
 import { clsx } from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
+import { compose } from 'ramda';
 import { ChangeEvent, useState } from 'react';
 
 import { TEXT, setupText, format } from '../../../shared';
@@ -37,7 +38,7 @@ export function AddDayOff({ daysOff, setDaysOff, onClose }: Props) {
         id='date'
         className='w-auto'
         type='date'
-        defaultValue={format(dayjs())}
+        defaultValue={compose(format(), dayjs)()}
         sx={{ width: 220 }}
         InputLabelProps={{
           shrink: true,

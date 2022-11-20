@@ -10,7 +10,7 @@ export function checkIfAddDays(value: Option<string>): Option<string> {
   if (plus && plus[0] === '+') {
     const n = parseInt(value?.replace(/\+/, '') ?? '0');
 
-    return compose(format, add(n, 'days'))(dayjs());
+    return compose(format(), add(n, 'days'))(dayjs());
   }
 
   return undefined;

@@ -1,6 +1,6 @@
 import { InputLabel, Select, SelectChangeEvent } from '@mui/material';
 import dayjs from 'dayjs';
-import { map } from 'ramda';
+import { compose, map } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
@@ -33,7 +33,7 @@ export default function Selector() {
   const labelId = `select-${item.dataId}`;
 
   function makeDefaultValue() {
-    return defaultValue === 'current' ? format(dayjs()) : format(dayjs(defaultValue));
+    return defaultValue === 'current' ? compose(format(), dayjs)() : compose(format(), dayjs)(defaultValue);
   }
 
   function sendUpdate(v: string) {

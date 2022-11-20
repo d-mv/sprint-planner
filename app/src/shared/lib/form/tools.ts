@@ -24,7 +24,7 @@ export function checkIfAddDays(value: Option<string>): Option<string> {
   if (plus && plus[0] === '+') {
     const n = parseInt(value?.replace(/\+/, '') ?? '0');
 
-    return compose(format, add(n, 'days'))(dayjs());
+    return compose(format(), add(n, 'days'))(dayjs());
   }
 
   return undefined;
@@ -36,7 +36,7 @@ export function checkIfSubtractDays(value: Option<string>): Option<string> {
   if (minus && minus[0] === '-') {
     const n = parseInt(value?.replace(/-/, '') ?? '0');
 
-    return compose(format, subtract(n, 'days'))(dayjs());
+    return compose(format(), subtract(n, 'days'))(dayjs());
   }
 
   return undefined;
