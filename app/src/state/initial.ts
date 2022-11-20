@@ -1,13 +1,14 @@
 import { State } from '.';
 
 export const INITIAL_STATE: State = {
-  isLoading: {},
-  sprints: [],
+  addedEngineers: [],
+  assignedWorks: [],
+  auth: { isConnected: false },
   daysOff: [],
   engineers: [],
-  addedEngineers: [],
-  works: [],
-  assignedWorks: [],
+  isLoading: {},
   message: '',
-  auth: { isConnected: false },
+  scenarios: {},
+  sprints: [],
+  works: [],
 };

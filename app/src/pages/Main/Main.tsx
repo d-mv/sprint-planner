@@ -2,18 +2,20 @@ import { clsx } from 'clsx';
 import { map } from 'ramda';
 import { useState } from 'react';
 
-import { Sprints, Engineers, useLogin } from '../../entities';
+import { Sprints, Engineers, useLogin, useScenario } from '../../entities';
 import classes from './Main.module.scss';
 import { Header } from './Header';
 import { Menu } from './Menu';
 import { makeMatch, MenuItemType, MenuItemIds, Option, MENU_ITEMS } from '../../shared';
 import { AddEngineer } from './AddEngineer';
 import { AddSprint } from './AddSprint';
+import { CreateEngineer } from './CreateEngineer';
 
 const DIALOGS = makeMatch(
   {
     [MenuItemIds.ADD_SPRINT]: AddSprint,
     [MenuItemIds.ADD_ENGINEER]: AddEngineer,
+    [MenuItemIds.CREATE_ENGINEER]: CreateEngineer,
   },
   () => null,
 );
@@ -24,6 +26,8 @@ export function Main() {
   const [isOpen, setIsOpen] = useState<Option<MenuItemIds>>(undefined);
 
   const { disconnect } = useLogin();
+
+  useScenario();
 
   function toggleDrawer() {
     setDrawerIsOpen(state => !state);

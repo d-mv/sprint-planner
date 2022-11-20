@@ -25,8 +25,20 @@ export const theme = createTheme({
   },
   typography: {
     allVariants: { fontFamily: 'Roboto', color: blueGrey['800'] },
+    h3: {
+      fontSize: '1.8rem',
+      fontWeight: 500,
+    },
+    h4: {
+      fontSize: '1.8rem',
+      fontWeight: 600,
+    },
+    h5: {
+      fontSize: '1.6rem',
+    },
     h6: {
       fontSize: '1.6rem',
+      fontWeight: 'normal',
     },
     body1: {
       fontSize: '1.6rem',

@@ -79,7 +79,7 @@ export function Buttons() {
 
   return (
     <div>
-      <Divider />
+      <Divider width='100%' />
       <div className={classes.container}>{map(renderButton, buttons)}</div>
     </div>
   );

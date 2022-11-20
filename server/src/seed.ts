@@ -1,14 +1,16 @@
 import { faker } from '@faker-js/faker';
 import dayjs, { Dayjs } from 'dayjs';
 import { compose } from 'ramda';
+import serializeJavascript from 'serialize-javascript';
+import { createSprintScenario } from './data';
 import {
   AppCollection,
   AssignedWorkCollection,
   EngineerCollection,
+  ScenarioCollection,
   SprintCollection,
   WorkCollection,
 } from './entities';
-// import { DayType } from './entities/sprint/sprint.models';
 import { incomingSprintToDbFormat } from './entities/sprint/sprint.tools';
 import { buildArray, capitalize } from './tools';
 
@@ -33,6 +35,7 @@ export async function seed() {
   await WorkCollection.deleteMany();
   await AssignedWorkCollection.deleteMany();
   await AppCollection.deleteMany();
+  await ScenarioCollection.deleteMany();
 
   // seed
 
@@ -48,6 +51,7 @@ export async function seed() {
       startDate: startDate.toString(),
       endDate: endDate.toString(),
       days: [],
+      daysOff: [],
     };
 
     await SprintCollection.create(incomingSprintToDbFormat(sprint));
@@ -101,5 +105,15 @@ export async function seed() {
         engineerId,
         startDate: dayjs().add(id, 'days'),
       });
+  }
+
+  const SCENARIOS = [
+    { label: 'createSprint', stringified: serializeJavascript(createSprintScenario, { isJSON: true }) },
+  ];
+
+  for await (const scenario of SCENARIOS) {
+    // eslint-disable-next-line no-console
+    console.log(`Adding ${scenario.label} scenario...`);
+    await ScenarioCollection.create(scenario);
   }
 }

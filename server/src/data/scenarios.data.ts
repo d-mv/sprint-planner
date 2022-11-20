@@ -1,6 +1,5 @@
-import { FormScenario, FormTypes } from '../../shared';
+import { FormScenario, FormTypes } from '../models';
 
-// in DB, remove
 export const createSprintScenario: FormScenario = {
   _form: {
     style: {
@@ -59,13 +58,3 @@ export const createSprintScenario: FormScenario = {
     { label: 'Cancel', variant: 'text', type: 'secondary', id: 'cancel' },
   ],
 };
-
-// (async function main() {
-//   const r = await query('scenario', 'add', {
-//     label: 'createSprint',
-//     stringified: serialize(createSprintScenario, { isJSON: true }),
-//   });
-
-//   // eslint-disable-next-line no-console
-//   console.log(r);
-// })();

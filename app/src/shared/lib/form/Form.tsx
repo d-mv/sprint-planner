@@ -8,6 +8,7 @@ import { ifTrue, makeMatch, setupText, sortScenarioKeys } from '../../tools';
 import { lazyLoad } from '../render.tools';
 import { FormContext, FormInternalContext, FormItemContext } from './contexts';
 import { FormItem, FormSection, FormTypes, SectionFormItem } from './models';
+import { Divider as LineDivider } from '../../ui';
 import { Buttons, DateInput, DateSet, Divider, Number, Selector, Spacer, Text } from './renders';
 import { TEXT } from './text';
 import {
@@ -182,8 +183,20 @@ export default function Form() {
     return renderFormInputs(maybeSection);
   }
 
+  function renderFormLabel() {
+    return (
+      <>
+        <div style={{ padding: '1rem 0' }}>
+          <Typography variant='h3'>{scenario._form?.label}</Typography>
+        </div>
+        <LineDivider width='100%' />
+      </>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} style={scenario._form?.style}>
+      {ifTrue(scenario._form?.label, renderFormLabel)}
       <FormInternalContext.Provider value={{ statuses }}>
         {map(renderItems, Object.keys(sortScenarioKeys(scenario.items)))}
         <Buttons />

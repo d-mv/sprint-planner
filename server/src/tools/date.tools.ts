@@ -1,9 +1,10 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { compose, map } from 'ramda';
-import { DayType, Engineer, Sprint } from '../entities';
-import { buildArray } from './object.tools';
 import durationPlugin from 'dayjs/plugin/duration';
 import { Document, Types } from 'mongoose';
+
+import { DayType, Engineer, Sprint } from '../entities';
+import { buildArray } from './object.tools';
 import { AnyValue } from '../models';
 
 dayjs.extend(durationPlugin);

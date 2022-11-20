@@ -5,7 +5,7 @@ import { makeMatch } from '../../tools';
 export const AppController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
   {
     addEngineer: async ({ query, context }) => {
-      const app = (await context.collections.app.find({}))[0];
+      const app = await context.collections.app.findOne({});
 
       if (app) {
         const addedEngineers = [...app.addedEngineers, query.payload];

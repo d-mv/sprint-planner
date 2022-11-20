@@ -9,3 +9,5 @@ export * from './days';
 export * from './result';
 
 export * from './app';
+
+export * from './scenario';

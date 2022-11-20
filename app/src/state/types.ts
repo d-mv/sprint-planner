@@ -1,9 +1,10 @@
 import { Dayjs } from 'dayjs';
 
 import { Engineer, Sprint, Work } from '../entities';
-import { AnyValue, DbAssignedWork, MongoDocument, RecordObject } from '../shared';
+import { AnyValue, DbAssignedWork, FormScenario, MongoDocument, RecordObject } from '../shared';
 
 export enum StateActions {
+  SET_SCENARIOS = 'setScenarios',
   SET_MESSAGE = 'setMessage',
   SET_IS_CONNECTED = 'setIsConnected',
   SET_IS_LOADING = 'setIsLoading',
@@ -44,6 +45,7 @@ export interface State {
   works: MongoDocument<Work>[];
   assignedWorks: DbAssignedWork[];
   message: string;
+  scenarios: RecordObject<FormScenario>;
   auth: {
     isConnected: boolean;
   };
@@ -54,6 +56,7 @@ export type Dispatch<T = unknown> = (action: Action<T>) => void;
 export type MappedReducerFns = Map<StateActions, (state: State, action: Action) => State>;
 
 export enum LoadingActions {
+  GET_SCENARIOS = 'get-scenarios',
   GET_ADDED_ENGINEERS = 'get-added-engineers',
   GET_ASSIGNED_WORK = 'get-assigned-work',
   GET_ENGINEERS = 'get-engineers',

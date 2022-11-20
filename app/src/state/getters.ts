@@ -4,7 +4,19 @@ import { omit, path, sum } from 'ramda';
 
 import { State } from '.';
 import { Work, WorkToRender } from '../entities';
-import { DbWorkToRender, MongoDocument, Option } from '../shared';
+import { DbWorkToRender, FormScenario, MongoDocument, Option } from '../shared';
+
+export const getScenarios = (state: State) => state.scenarios;
+
+export const getScenarioByLabel =
+  (label: string) =>
+  (state: State): Option<FormScenario> => {
+    const result = Object.entries(state.scenarios).find(([key]) => key === label);
+
+    if (!result || !result[1]) return undefined;
+
+    return result[1];
+  };
 
 export const getSprints = (state: State) => state.sprints;
 

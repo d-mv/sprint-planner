@@ -8,7 +8,7 @@ export function LoadingIndication() {
     .filter(el => Boolean(el[1]))
     .some(Boolean);
 
-  if (isAnyLoading) return null;
+  if (!isAnyLoading) return null;
 
   return (
     <div className='w-fit m-h-1'>

@@ -16,7 +16,7 @@ export default function DateSet() {
     pick(['item', 'onValidation', 'onChange', 'value'], c),
   );
 
-  const { style, label } = item;
+  const { style, label, buttons, defaultValue } = item;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -46,6 +46,14 @@ export default function DateSet() {
     toggleAddDate();
   }
 
+  function makeDefaultValue() {
+    if (date) return date;
+
+    if (defaultValue === 'current') return compose(format(), dayjs)();
+
+    return '';
+  }
+
   function renderAddDate() {
     return (
       <div className='line' style={style}>
@@ -53,7 +61,7 @@ export default function DateSet() {
           required={true}
           variant='standard'
           onChange={handleChange}
-          value={date ?? compose(format(), dayjs)()}
+          value={makeDefaultValue()}
           style={{ width: '100%', margin: '1rem 0' }}
           type='date'
           InputLabelProps={{
@@ -76,6 +84,22 @@ export default function DateSet() {
     return <Message className='margin-center width-fit txt-center' message={'No days off'} />;
   }
 
+  function getPrimaryLabel() {
+    const primary = buttons?.find(b => b.id === 'primary');
+
+    if (!primary) return 'Add Date';
+
+    return primary.label;
+  }
+
+  function getSecondaryLabel() {
+    const secondary = buttons?.find(b => b.id === 'secondary');
+
+    if (!secondary) return 'Close';
+
+    return secondary.label;
+  }
+
   const renderListOfDates = () => <ListOfDays />;
 
   return (
@@ -91,7 +115,7 @@ export default function DateSet() {
       </div>
       <div className='w-100 center padding-1'>
         <Button variant='outlined' onClick={toggleAddDate}>
-          {isOpen ? 'Close' : 'Add Date'}
+          {isOpen ? getSecondaryLabel() : getPrimaryLabel()}
         </Button>
       </div>
     </div>

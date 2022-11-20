@@ -13,3 +13,5 @@ export type DbWork = MongoDocument<Work>;
 export type DbSprint<T = Dayjs> = MongoDocument<Sprint<T>>;
 
 export type DbDate<T = Dayjs> = MongoDocument<DayType<T>>;
+
+export type DbScenario = MongoDocument<{ label: string; stringified: string }>;

@@ -1,5 +1,4 @@
-import { CSSProperties } from 'react';
-import { RecordObject } from '../../models';
+import { RecordObject } from './general.models';
 
 export enum FormTypes {
   CUSTOM = 'custom',
@@ -61,7 +60,7 @@ export interface FormItem {
   className?: string;
   dataId: string;
   type: FormTypes;
-  style?: CSSProperties;
+  style?: RecordObject;
   defaultValue?: string;
   label?: string;
   hint?: string;
@@ -89,19 +88,19 @@ export interface FormButton {
   type: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
   id: string;
   role?: 'submit' | 'reset';
-  style?: CSSProperties;
+  style?: RecordObject;
 }
 
 export interface FormOptions {
-  style: CSSProperties;
-  inputLineStyle: CSSProperties;
+  style: RecordObject;
+  inputLineStyle: RecordObject;
   label?: string;
 }
 
 export type SectionFormItem = Omit<FormItem, 'order'>;
 
 export interface FormSection {
-  style?: CSSProperties;
+  style?: RecordObject;
   order: number;
   label?: string;
   items: RecordObject<SectionFormItem>;

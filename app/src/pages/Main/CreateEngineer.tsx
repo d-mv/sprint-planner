@@ -1,18 +1,14 @@
 import { AnyValue, Dialog, Form, FormContext, LazyLoad, RecordObject } from '../../shared';
 import { useSprints } from '../../entities/sprint/useSprints.hook';
-import { getScenarioByLabel, useSelector } from '../../state';
+import { createEngineerScenario } from '../../entities/engineer/createEngineer.scenario';
 
 interface Props {
   onClose: () => void;
   isOpen: boolean;
 }
 
-export function AddSprint({ onClose, isOpen }: Props) {
+export function CreateEngineer({ onClose, isOpen }: Props) {
   const { add } = useSprints();
-
-  const scenario = useSelector(getScenarioByLabel('createSprint'));
-
-  if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
     add(form);
@@ -23,7 +19,7 @@ export function AddSprint({ onClose, isOpen }: Props) {
       <LazyLoad>
         <FormContext.Provider
           value={{
-            scenario,
+            scenario: createEngineerScenario,
             submitData: handleSubmit,
             actions: {
               cancel: onClose,

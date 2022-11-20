@@ -1,8 +1,13 @@
 import { Dayjs } from 'dayjs';
 
 import { AssignedWork, Engineer, Sprint, Work } from '../entities';
-import { DbAssignedWork, MongoDocument } from '../shared';
+import { DbAssignedWork, FormScenario, MongoDocument, RecordObject } from '../shared';
 import { Action, StateActions } from './types';
+
+export const setScenarios = (payload: RecordObject<FormScenario>): Action => ({
+  type: StateActions.SET_SCENARIOS,
+  payload,
+});
 
 export const setIsLoading = (payload: [key: string, value: boolean]): Action => ({
   type: StateActions.SET_IS_LOADING,

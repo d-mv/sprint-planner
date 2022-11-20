@@ -1,21 +1,27 @@
 import { Dayjs } from 'dayjs';
 import { assoc } from 'ramda';
 
-import { Engineer, Sprint, Work } from '../entities';
-import { DbAssignedWork, DbSprint, MongoDocument } from '../shared';
+import { Engineer, Work } from '../entities';
+import { DbAssignedWork, DbSprint, FormScenario, MongoDocument, RecordObject } from '../shared';
 import { INITIAL_STATE } from './initial';
 import { Action, MappedReducerFns, StateActions, State } from './types';
 
 export const MAP: MappedReducerFns = new Map();
 
+MAP.set(StateActions.SET_SCENARIOS, (state: State, action: Action<RecordObject<FormScenario>>) => {
+  return assoc('scenarios', action.payload ?? {}, state);
+});
+
 MAP.set(StateActions.SET_MESSAGE, (state: State, action: Action<string>) => {
   return assoc('message', action.payload ?? '', state);
 });
+
 MAP.set(StateActions.SET_IS_CONNECTED, (state: State, action: Action<boolean>) => {
   if (action.payload === undefined) return state;
 
   return action.payload ? assoc('auth', assoc('isConnected', action.payload, state.auth), state) : INITIAL_STATE;
 });
+
 MAP.set(StateActions.SET_IS_LOADING, (state: State, action: Action<[key: string, value: boolean]>) => {
   if (!action.payload) return state;
 

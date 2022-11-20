@@ -15,6 +15,7 @@ const MESSAGES = makeMatch(
     [LoadingActions.GET_SPRINT]: 'sprints',
     [LoadingActions.GET_WORKS]: 'works',
     [LoadingActions.GET_LOGIN]: 'DB',
+    [LoadingActions.GET_SCENARIOS]: 'scenarios',
   },
   '',
 );

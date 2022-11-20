@@ -1,12 +1,14 @@
 import { Mongoose } from 'mongoose';
+
 import {
   AppCollection,
   AssignedWorkCollection,
   EngineerCollection,
   SprintCollection,
   WorkCollection,
+  ScenarioCollection,
+  STATE,
 } from '../entities';
-import { STATE } from '../entities/state/state';
 import { Query } from './query.models';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,6 +22,7 @@ export interface Collections {
   work: typeof WorkCollection;
   assignedWork: typeof AssignedWorkCollection;
   app: typeof AppCollection;
+  scenario: typeof ScenarioCollection;
 }
 
 export interface ControllerRequest<QueryPayload = AnyValue> {

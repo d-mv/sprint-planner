@@ -6,6 +6,7 @@ import {
   WorkController,
   AssignedWorkController,
   AppController,
+  ScenarioController,
 } from '../entities';
 import { makeMatch } from '../tools';
 import { GlobalController } from './global.controller';
@@ -19,6 +20,7 @@ export const QueryController = makeMatch(
     work: WorkController,
     assigned_work: AssignedWorkController,
     app: AppController,
+    scenario: ScenarioController,
   },
   () => failure('Domain is not found', 400),
 );
