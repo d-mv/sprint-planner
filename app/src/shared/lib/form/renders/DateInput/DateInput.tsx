@@ -6,7 +6,7 @@ import { useContextSelector } from 'use-context-selector';
 
 import { format } from '../../../day.tools';
 import { FormContext, FormItemContext } from '../../contexts';
-import { checkIfAddDays, checkIfSubtractDays } from '../../tools';
+import { checkIfAddDays, checkIfSubtractDays, makeDefaultValue } from '../../tools';
 
 export default function DateInput() {
   const { item, isValidated, onValidation, onChange, value } = useContextSelector(FormItemContext, c => c);
@@ -15,27 +15,11 @@ export default function DateInput() {
 
   const [isTouched, setIsTouched] = useState(false);
 
-  const { isRequired, className, style, label, validation, defaultValue, triggers } = item;
+  const { isRequired, className, style, label, validation, triggers } = item;
 
-  function makeDefaultValue() {
-    if (value) return compose(format(), dayjs)(String(value));
-
-    if (defaultValue === 'current') return compose(format(), dayjs)();
-
-    const plus = checkIfAddDays(defaultValue);
-
-    if (plus) return plus;
-
-    const minus = checkIfSubtractDays(defaultValue);
-
-    if (minus) return minus;
-
-    return compose(format(), dayjs)(defaultValue);
-  }
+  const defaultValue = makeDefaultValue(item.defaultValue);
 
   function sendUpdate(v: string) {
-    // eslint-disable-next-line no-console
-    console.log(v);
     onChange(v);
     onValidation(true);
 
@@ -46,18 +30,12 @@ export default function DateInput() {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(label, defaultValue, makeDefaultValue());
-
-    if (!value && defaultValue) {
-      // setIsInitial(false);
-      sendUpdate(makeDefaultValue());
+    if (!value && item.defaultValue) {
+      sendUpdate(defaultValue);
     }
-  }, [defaultValue]);
+  }, [item]);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    // eslint-disable-next-line no-console
-    // console.log('>', e.target.value);
     if (e.currentTarget.value) sendUpdate(e.currentTarget.value);
   }
 
@@ -75,7 +53,7 @@ export default function DateInput() {
       onChange={handleChange}
       onBlur={handleFocus}
       error={validation && !isValidated}
-      value={makeDefaultValue()}
+      value={defaultValue}
       style={style}
       type='date'
       InputLabelProps={{

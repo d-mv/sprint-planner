@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { FormItemContext } from '../../contexts';
+import { makeDefaultValue } from '../../tools';
 import { validateNumber } from '../../validators';
 
 /**
@@ -14,12 +15,10 @@ export default function Number() {
 
   const [isTouched, setIsTouched] = useState(false);
 
-  const { isRequired, className, style, label, validation, defaultValue } = item;
+  const { isRequired, className, style, label, validation } = item;
 
-  /**
-   *
-   * @param v
-   */
+  const defaultValue = makeDefaultValue(item.defaultValue);
+
   function sendUpdate(v: string) {
     if (validation) onValidation(validateNumber(item, v));
 
@@ -27,20 +26,13 @@ export default function Number() {
   }
 
   useEffect(() => {
-    if (!isNil(defaultValue)) sendUpdate(defaultValue);
-  }, [defaultValue, sendUpdate]);
+    if (!isNil(item.defaultValue)) sendUpdate(defaultValue);
+  }, [item, sendUpdate]);
 
-  /**
-   *
-   * @param e
-   */
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     sendUpdate(e.currentTarget.value);
   }
 
-  /**
-   *
-   */
   function handleFocus() {
     if (!isTouched) setIsTouched(true);
   }
@@ -50,7 +42,7 @@ export default function Number() {
       autoComplete={item.autoComplete}
       autoFocus={item.autoFocus}
       className={className}
-      defaultValue={item.defaultValue}
+      defaultValue={defaultValue}
       error={validation && isTouched && !isValidated}
       id={item.dataId}
       label={label}

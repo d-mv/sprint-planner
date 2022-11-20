@@ -11,7 +11,7 @@ export function Header({ toggle }: Props) {
     <AppBar component='nav' position='fixed' sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
       <Toolbar>
         <IconButton variant='menu' size='large' sx={{ mr: 2 }} color='inherit' onClick={toggle} />
-        <Typography variant='h6' component='div' color='white' sx={{ flexGrow: 1 }}>
+        <Typography variant='h1' component='div' color='white' sx={{ flexGrow: 1 }}>
           Sprint Planner
         </Typography>
         <LoadingIndication />

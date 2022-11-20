@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import { map, path } from 'ramda';
+import { map, path, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
 import { Divider, Spinner } from '../../../../ui/atoms';
@@ -16,7 +16,9 @@ const SPINNER_COLOR = makeMatch(
 );
 
 export function Buttons() {
-  const [buttons, actions, process] = useContextSelector(FormContext, c => [c.scenario.buttons, c.actions, c.process]);
+  const { scenario, actions, process, disabled } = useContextSelector(FormContext, c =>
+    pick(['scenario', 'actions', 'process', 'disabled'], c),
+  );
 
   const statuses = useContextSelector(FormInternalContext, c => c.statuses);
 
@@ -65,7 +67,7 @@ export function Buttons() {
         key={buttonItem.label}
         onClick={action}
         type={ifTrue(noAction, 'submit')}
-        disabled={buttonItem.isDisabled ?? getStatus(buttonItem.id, 'disabled')}
+        disabled={buttonItem.isDisabled ?? disabled?.includes(buttonItem.id) ?? getStatus(buttonItem.id, 'disabled')}
         className={ifTrue(isProcess(buttonItem), classes.processing)}
         variant={buttonItem.variant ?? 'contained'}
         size={buttonItem.size ?? 'medium'}
@@ -80,7 +82,7 @@ export function Buttons() {
   return (
     <div>
       <Divider width='100%' />
-      <div className={classes.container}>{map(renderButton, buttons)}</div>
+      <div className={classes.container}>{map(renderButton, scenario.buttons)}</div>
     </div>
   );
 }

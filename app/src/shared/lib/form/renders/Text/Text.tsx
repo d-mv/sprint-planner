@@ -4,11 +4,9 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { FormItemContext } from '../../contexts';
+import { makeDefaultValue } from '../../tools';
 import { validateText } from '../../validators';
 
-/**
- *
- */
 export default function Text() {
   const [item, onValidation, isValidated, onChange, value] = useContextSelector(FormItemContext, c => [
     c.item,
@@ -20,7 +18,9 @@ export default function Text() {
 
   const [isTouched, setIsTouched] = useState(false);
 
-  const { isRequired, className, style, label, validation, defaultValue } = item;
+  const { isRequired, className, style, label, validation } = item;
+
+  const defaultValue = makeDefaultValue(item.defaultValue);
 
   function sendUpdate(v: string) {
     if (validation) onValidation(validateText(item, v));
@@ -30,31 +30,26 @@ export default function Text() {
   }
 
   useEffect(() => {
-    if (!isNil(defaultValue)) sendUpdate(defaultValue);
-  }, [defaultValue, sendUpdate]);
+    if (!isNil(item.defaultValue)) sendUpdate(defaultValue);
+  }, [item, sendUpdate]);
 
-  /**
-   *
-   * @param e
-   */
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     sendUpdate(e.currentTarget.value);
   }
 
-  /**
-   *
-   */
   function handleFocus() {
     if (!isTouched) setIsTouched(true);
   }
 
+  // eslint-disable-next-line no-console
+  console.log(item.autoFocus, item.label);
   return (
     <TextField
       autoCapitalize={item.autoCapitalize}
       autoComplete={item.autoComplete}
       autoFocus={item.autoFocus}
       className={className}
-      defaultValue={item.defaultValue}
+      defaultValue={defaultValue}
       error={validation && isTouched && !isValidated}
       id={item.dataId}
       label={label}

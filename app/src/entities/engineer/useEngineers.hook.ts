@@ -1,8 +1,16 @@
 import { compose, pick } from 'ramda';
 
-import { AppContext, Engineer, engineerDaysOffToDayjs } from '..';
-import { MongoDocument } from '../../shared';
-import { setMessage, setEngineers, setIsLoading, useDispatch, useSelector, updateEngineer } from '../../state';
+import { AppContext, Engineer, engineerDaysOffToDayjs, engineersDaysOffToDayjs } from '..';
+import { AnyValue, DbEngineer, MongoDocument, RecordObject, useCommon } from '../../shared';
+import {
+  setMessage,
+  setEngineers,
+  setIsLoading,
+  useDispatch,
+  useSelector,
+  updateEngineer,
+  addEngineer,
+} from '../../state';
 import { useContextSelector } from 'use-context-selector';
 
 export function useEngineers() {
@@ -10,31 +18,18 @@ export function useEngineers() {
 
   const dispatch = useDispatch();
 
+  const { updateIsLoading, handleNegative } = useCommon();
+
   const error = useSelector(getMessage);
 
-  function handleGetPositive(data: MongoDocument<Engineer<string>>[]) {
-    compose(dispatch, setEngineers, engineerDaysOffToDayjs)(data);
+  function handleAddPositive(data: DbEngineer<string>) {
+    compose(dispatch, addEngineer, engineerDaysOffToDayjs)(data);
+    updateIsLoading('add-engineer');
+  }
+
+  function handleGetPositive(data: DbEngineer<string>[]) {
+    compose(dispatch, setEngineers, engineersDaysOffToDayjs)(data);
     compose(dispatch, setIsLoading)(['get-engineers', false]);
-  }
-
-  function handleGetNegative(message: string) {
-    compose(dispatch, setMessage)(message);
-    compose(dispatch, setIsLoading)(['get-engineers', false]);
-  }
-
-  function create() {
-    // eslint-disable-next-line no-console
-    console.log('create');
-  }
-
-  function get() {
-    compose(dispatch, setIsLoading)(['get-engineers', true]);
-
-    if (error) compose(dispatch, setMessage)('');
-
-    query<MongoDocument<Engineer<string>>[]>('engineer', 'getAll')
-      .then(r => (r.isOK ? handleGetPositive(r.payload) : handleGetNegative(r.message)))
-      .catch(err => handleGetNegative(err.message));
   }
 
   function handleUpdatePositive(data: Partial<MongoDocument<Engineer>>) {
@@ -42,19 +37,40 @@ export function useEngineers() {
     compose(dispatch, setIsLoading)(['update-engineer', false]);
   }
 
-  function handleUpdateNegative(message: string) {
-    compose(dispatch, setMessage)(message);
-    compose(dispatch, setIsLoading)(['update-engineer', false]);
+  function add(data: RecordObject<AnyValue>) {
+    const item = 'add-engineer';
+
+    updateIsLoading(item, true);
+
+    if (error) compose(dispatch, setMessage)('');
+
+    query<DbEngineer<string>>('engineer', 'add', data)
+      .then(r => (r.isOK ? handleAddPositive(r.payload) : handleNegative(r.message, item)))
+      .catch(err => handleNegative(err.message, item));
+  }
+
+  function get() {
+    const item = 'get-engineers';
+
+    updateIsLoading(item, true);
+
+    if (error) compose(dispatch, setMessage)('');
+
+    query<DbEngineer<string>[]>('engineer', 'getAll')
+      .then(r => (r.isOK ? handleGetPositive(r.payload) : handleNegative(r.message, item)))
+      .catch(err => handleNegative(err.message, item));
   }
 
   function update(data: Partial<MongoDocument<Engineer>>) {
-    compose(dispatch, setIsLoading)(['update-engineer', true]);
+    const item = 'update-engineer';
+
+    updateIsLoading(item, true);
 
     if (error) compose(dispatch, setMessage)('');
 
     query<'OK'>('engineer', 'update', data)
-      .then(r => (r.isOK ? handleUpdatePositive(data) : handleUpdateNegative(r.message)))
-      .catch(err => handleUpdateNegative(err.message));
+      .then(r => (r.isOK ? handleUpdatePositive(data) : handleNegative(r.message, item)))
+      .catch(err => handleNegative(err.message, item));
   }
 
   function remove() {
@@ -62,5 +78,5 @@ export function useEngineers() {
     console.log('remove');
   }
 
-  return { create, get, update, remove };
+  return { add, get, update, remove };
 }

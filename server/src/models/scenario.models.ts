@@ -55,15 +55,27 @@ export interface FormItemButton {
   label: string | string[];
 }
 
+export enum FormItemValueTypes {
+  DATE = 'date',
+  DATA_SET = 'dataSet',
+}
+
+export interface FormItemValue {
+  type: FormItemValueTypes;
+  value: string;
+}
+
 export interface FormItem {
   order: number;
   className?: string;
   dataId: string;
   type: FormTypes;
-  style?: RecordObject;
-  defaultValue?: string;
+  style?: RecordObject; // whole item style
+  individualStyles?: RecordObject<RecordObject>; // dictionary of individual styles
+  defaultValue?: string | FormItemValue;
   label?: string;
   hint?: string;
+  missingDataMessage?: string; // for item with provided data, message to show when empty
   placeholder?: string;
   isRequired?: boolean;
   autoFocus?: boolean;

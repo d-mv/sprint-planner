@@ -1,21 +1,29 @@
 import { clsx } from 'clsx';
-import { map } from 'ramda';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Sprints, Engineers, useLogin, useScenario } from '../../entities';
+import {
+  Sprints,
+  Engineers,
+  useLogin,
+  useScenario,
+  useAssignedWork,
+  useWorks,
+  useApp,
+  useEngineers,
+} from '../../entities';
 import classes from './Main.module.scss';
 import { Header } from './Header';
 import { Menu } from './Menu';
-import { makeMatch, MenuItemType, MenuItemIds, Option, MENU_ITEMS } from '../../shared';
+import { makeMatch, MenuItemIds, Option, Dialog, LazyLoad, ifTrue } from '../../shared';
 import { AddEngineer } from './AddEngineer';
 import { AddSprint } from './AddSprint';
-import { CreateEngineer } from './CreateEngineer';
+import { AssignEngineer } from './AssignEngineer';
 
 const DIALOGS = makeMatch(
   {
     [MenuItemIds.ADD_SPRINT]: AddSprint,
     [MenuItemIds.ADD_ENGINEER]: AddEngineer,
-    [MenuItemIds.CREATE_ENGINEER]: CreateEngineer,
+    [MenuItemIds.ASSIGN_ENGINEER]: AssignEngineer,
   },
   () => null,
 );
@@ -29,6 +37,21 @@ export function Main() {
 
   useScenario();
 
+  const engineers = useEngineers();
+
+  const app = useApp();
+
+  const works = useWorks();
+
+  const assignedWork = useAssignedWork();
+
+  useEffect(() => {
+    engineers.get();
+    app.getAssignedEngineers();
+    works.get();
+    assignedWork.get();
+  }, []);
+
   function toggleDrawer() {
     setDrawerIsOpen(state => !state);
   }
@@ -41,17 +64,23 @@ export function Main() {
     toggleDrawer();
   }
 
-  function toggleDialogOpen(id: MenuItemIds) {
-    return function call() {
-      if (id === isOpen) setIsOpen(undefined);
-      else setIsOpen(isOpen);
-    };
+  function handleClose() {
+    setIsOpen(undefined);
   }
 
-  function renderDialogs(item: MenuItemType) {
-    const Dialog = DIALOGS[item.id];
+  function renderDialogContent() {
+    if (!isOpen) return null;
 
-    if (Dialog) return <Dialog isOpen={isOpen === item.id} onClose={toggleDialogOpen(item.id)} />;
+    const Content = DIALOGS[isOpen];
+
+    if (Content)
+      return (
+        <Dialog onClose={handleClose} isOpen={true}>
+          <LazyLoad>
+            <Content onClose={handleClose} />
+          </LazyLoad>
+        </Dialog>
+      );
 
     return null;
   }
@@ -59,7 +88,7 @@ export function Main() {
   return (
     <>
       <Header toggle={toggleDrawer} />
-      {map(renderDialogs, MENU_ITEMS)}
+      {ifTrue(isOpen, renderDialogContent)}
       <div className={clsx('line v-scroll', classes.container)}>
         <Engineers />
         <Sprints />

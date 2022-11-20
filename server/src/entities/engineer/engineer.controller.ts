@@ -36,5 +36,5 @@ export const EngineerController = makeMatch<(arg: ControllerRequest) => Promised
       return compose(success, map(sortDaysOff))(result);
     },
   },
-  () => failure('EngineerController action is not found', 400),
+  () => failure('Engineer controller action is not found', 400),
 );

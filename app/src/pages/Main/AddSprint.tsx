@@ -1,13 +1,12 @@
-import { AnyValue, Dialog, Form, FormContext, LazyLoad, RecordObject } from '../../shared';
+import { AnyValue, Form, FormContext, RecordObject } from '../../shared';
 import { useSprints } from '../../entities/sprint/useSprints.hook';
 import { getScenarioByLabel, useSelector } from '../../state';
 
 interface Props {
   onClose: () => void;
-  isOpen: boolean;
 }
 
-export function AddSprint({ onClose, isOpen }: Props) {
+export function AddSprint({ onClose }: Props) {
   const { add } = useSprints();
 
   const scenario = useSelector(getScenarioByLabel('createSprint'));
@@ -19,20 +18,16 @@ export function AddSprint({ onClose, isOpen }: Props) {
   }
 
   return (
-    <Dialog onClose={onClose} isOpen={isOpen}>
-      <LazyLoad>
-        <FormContext.Provider
-          value={{
-            scenario,
-            submitData: handleSubmit,
-            actions: {
-              cancel: onClose,
-            },
-          }}
-        >
-          <Form />
-        </FormContext.Provider>
-      </LazyLoad>
-    </Dialog>
+    <FormContext.Provider
+      value={{
+        scenario,
+        submitData: handleSubmit,
+        actions: {
+          cancel: onClose,
+        },
+      }}
+    >
+      <Form />
+    </FormContext.Provider>
   );
 }

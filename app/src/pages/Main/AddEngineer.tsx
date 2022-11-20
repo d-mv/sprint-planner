@@ -1,34 +1,36 @@
-import { AnyValue, Dialog, Form, FormContext, LazyLoad, RecordObject } from '../../shared';
-import { createSprintScenario } from '../../entities/sprint/createSprint.scenario';
-import { useSprints } from '../../entities/sprint/useSprints.hook';
+import { AnyValue, Form, FormContext, RecordObject } from '../../shared';
+import { createEngineerScenario } from '../../entities/engineer/createEngineer.scenario';
+import { makeNewEngineerObject, useEngineers } from '../../entities';
+import { getIsLoading, useSelector } from '../../state';
 
 interface Props {
   onClose: () => void;
-  isOpen: boolean;
 }
 
-export function AddEngineer({ onClose, isOpen }: Props) {
-  const { add } = useSprints();
+export function AddEngineer({ onClose }: Props) {
+  const isLoading = useSelector(getIsLoading);
+
+  const { add } = useEngineers();
 
   function handleSubmit(form: RecordObject<AnyValue>) {
-    add(form);
+    add(makeNewEngineerObject(form));
+    onClose();
   }
 
   return (
-    <Dialog onClose={onClose} isOpen={isOpen}>
-      <LazyLoad>
-        <FormContext.Provider
-          value={{
-            scenario: createSprintScenario,
-            submitData: handleSubmit,
-            actions: {
-              cancel: onClose,
-            },
-          }}
-        >
-          <Form />
-        </FormContext.Provider>
-      </LazyLoad>
-    </Dialog>
+    <FormContext.Provider
+      value={{
+        scenario: createEngineerScenario,
+        submitData: handleSubmit,
+        actions: {
+          cancel: onClose,
+        },
+        process: {
+          submit: isLoading('add-engineer'),
+        },
+      }}
+    >
+      <Form />
+    </FormContext.Provider>
   );
 }

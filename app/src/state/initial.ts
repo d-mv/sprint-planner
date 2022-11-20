@@ -1,7 +1,7 @@
 import { State } from '.';
 
 export const INITIAL_STATE: State = {
-  addedEngineers: [],
+  assignedEngineers: [],
   assignedWorks: [],
   auth: { isConnected: false },
   daysOff: [],

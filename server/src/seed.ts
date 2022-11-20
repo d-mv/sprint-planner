@@ -2,7 +2,8 @@ import { faker } from '@faker-js/faker';
 import dayjs, { Dayjs } from 'dayjs';
 import { compose } from 'ramda';
 import serializeJavascript from 'serialize-javascript';
-import { createSprintScenario } from './data';
+
+import { assignEngineerScenario, createSprintScenario } from './data';
 import {
   AppCollection,
   AssignedWorkCollection,
@@ -71,9 +72,9 @@ export async function seed() {
     engineerIds.push(_id.toString());
   }
 
-  const addedEngineers = engineerIds.slice(0, 5);
+  const assignedEngineers = engineerIds.slice(0, 5);
 
-  await AppCollection.create({ addedEngineers });
+  await AppCollection.create({ assignedEngineers });
 
   const workIds: string[] = [];
 
@@ -109,6 +110,7 @@ export async function seed() {
 
   const SCENARIOS = [
     { label: 'createSprint', stringified: serializeJavascript(createSprintScenario, { isJSON: true }) },
+    { label: 'assignEngineer', stringified: serializeJavascript(assignEngineerScenario, { isJSON: true }) },
   ];
 
   for await (const scenario of SCENARIOS) {

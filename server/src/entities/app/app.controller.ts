@@ -4,17 +4,17 @@ import { makeMatch } from '../../tools';
 
 export const AppController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
   {
-    addEngineer: async ({ query, context }) => {
+    assignEngineer: async ({ query, context }) => {
       const app = await context.collections.app.findOne({});
 
       if (app) {
-        const addedEngineers = [...app.addedEngineers, query.payload];
+        const assignedEngineers = [...app.assignedEngineers, query.payload];
 
-        await app.updateOne({ addedEngineers });
-        return success([addedEngineers]);
+        await app.updateOne({ assignedEngineers });
+        return success([assignedEngineers]);
       }
 
-      await context.collections.app.create({ addedEngineers: [query.payload] });
+      await context.collections.app.create({ assignedEngineers: [query.payload] });
       return success([query.payload]);
     },
     removeEngineer: async ({ query, context }) => {
@@ -22,18 +22,18 @@ export const AppController = makeMatch<(arg: ControllerRequest) => PromisedResul
 
       if (!app) return success('OK');
 
-      const addedEngineers = app.addedEngineers.filter(engineer => engineer !== query.payload);
+      const assignedEngineers = app.assignedEngineers.filter(engineer => engineer !== query.payload);
 
-      await app.updateOne({ addedEngineers });
+      await app.updateOne({ assignedEngineers });
       return success('OK');
     },
-    getAddedEngineers: async ({ context }) => {
+    getAssignedEngineers: async ({ context }) => {
       const app = (await context.collections.app.find({}))[0];
 
-      if (app) return success(app.addedEngineers);
+      if (app) return success(app.assignedEngineers);
 
       return success([]);
     },
   },
-  () => failure('EngineerController action is not found', 400),
+  () => failure('Engineer controller action is not found', 400),
 );

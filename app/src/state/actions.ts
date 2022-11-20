@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 
 import { AssignedWork, Engineer, Sprint, Work } from '../entities';
-import { DbAssignedWork, FormScenario, MongoDocument, RecordObject } from '../shared';
+import { DbAssignedWork, DbEngineer, FormScenario, MongoDocument, RecordObject } from '../shared';
 import { Action, StateActions } from './types';
 
 export const setScenarios = (payload: RecordObject<FormScenario>): Action => ({
@@ -39,18 +39,28 @@ export const addSprint = (payload: MongoDocument<Sprint<Dayjs>>): Action => ({
   payload,
 });
 
-export const setEngineers = (payload: MongoDocument<Engineer>[]): Action => ({
+export const setEngineers = (payload: DbEngineer[]): Action => ({
   type: StateActions.SET_ENGINEERS,
   payload,
 });
 
-export const updateEngineer = (payload: Partial<MongoDocument<Engineer>>): Action => ({
+export const addEngineer = (payload: DbEngineer): Action => ({
+  type: StateActions.ADD_ENGINEER,
+  payload,
+});
+
+export const updateEngineer = (payload: Partial<DbEngineer>): Action => ({
   type: StateActions.UPDATE_ENGINEER,
   payload,
 });
 
-export const setAddedEngineers = (payload: string[]): Action => ({
+export const setAssignedEngineers = (payload: string[]): Action => ({
   type: StateActions.SET_ADDED_ENGINEERS,
+  payload,
+});
+
+export const assignEngineer = (payload: string): Action => ({
+  type: StateActions.ASSIGN_ENGINEER,
   payload,
 });
 
@@ -92,16 +102,6 @@ export const updateAssignedWork = (payload: DbAssignedWork): Action => ({
 // to revise:
 export const addRemoveDayOff = (payload: Dayjs): Action => ({
   type: StateActions.ADD_REMOVE_DAY_OFF,
-  payload,
-});
-
-export const createEngineer = (payload: Engineer): Action => ({
-  type: StateActions.CREATE_ENGINEER,
-  payload,
-});
-
-export const addEngineer = (payload: string): Action => ({
-  type: StateActions.ADD_ENGINEER,
   payload,
 });
 

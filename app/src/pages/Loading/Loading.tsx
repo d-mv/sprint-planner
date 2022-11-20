@@ -9,7 +9,7 @@ import classes from './Loading.module.scss';
 
 const MESSAGES = makeMatch(
   {
-    [LoadingActions.GET_ADDED_ENGINEERS]: 'added engineers',
+    [LoadingActions.GET_ASSIGNED_ENGINEERS]: 'assigned engineers',
     [LoadingActions.GET_ASSIGNED_WORK]: 'assigned works',
     [LoadingActions.GET_ENGINEERS]: 'engineers',
     [LoadingActions.GET_SPRINT]: 'sprints',

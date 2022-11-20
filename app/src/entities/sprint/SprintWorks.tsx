@@ -2,14 +2,14 @@ import { map } from 'ramda';
 import { Fragment } from 'react';
 
 import { MongoDocument, DbWorkToRender, mapWithIndex } from '../../shared';
-import { getAddedEngineers, getWorksForEngineer, useSelector } from '../../state';
+import { getAssignedEngineers, getWorksForEngineer, useSelector } from '../../state';
 import { CONSTANTS } from '../../shared';
 import { ifTrue } from '../../shared';
 import { Engineer } from '../engineer';
 import { SprintWorkDays } from './SprintWorkDays';
 
 export function SprintWorks() {
-  const engineers = useSelector(getAddedEngineers);
+  const engineers = useSelector(getAssignedEngineers);
 
   const works = useSelector(getWorksForEngineer);
 

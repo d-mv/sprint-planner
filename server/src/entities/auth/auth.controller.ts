@@ -23,5 +23,5 @@ export const AuthController = makeMatch<(arg: ControllerRequest) => PromisedResu
       return success('OK');
     },
   },
-  () => failure('AuthController action is not found', 400),
+  () => failure('Auth controller action is not found', 400),
 );

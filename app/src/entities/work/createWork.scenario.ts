@@ -1,4 +1,4 @@
-import { FormScenario, FormTypes } from '../../shared';
+import { FormItemValueTypes, FormScenario, FormTypes } from '../../shared';
 
 export const createWorkFormScenario: FormScenario = {
   _form: {
@@ -60,7 +60,7 @@ export const createWorkFormScenario: FormScenario = {
           label: 'Start Date',
           type: FormTypes.DATE,
           isRequired: true,
-          defaultValue: 'current',
+          defaultValue: { type: FormItemValueTypes.DATE, value: 'current' },
         },
       },
     },

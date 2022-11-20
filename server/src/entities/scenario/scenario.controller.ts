@@ -33,5 +33,5 @@ export const ScenarioController = makeMatch<(arg: ControllerRequest) => Promised
       return success(scenarios);
     },
   },
-  () => failure('EngineerController action is not found', 400),
+  () => failure('Scenario controller action is not found', 400),
 );

@@ -42,15 +42,15 @@ export const getDaysOffForEngineer = (state: State) => (engineerId: string) =>
 export const getIsEngineerAdded = (state: State) => (engineerId: string) =>
   Boolean(state.engineers.find(engineer => engineer._id === engineerId));
 
-const addedEngineers = (state: State) =>
-  state.engineers.filter(engineer => state.addedEngineers.includes(engineer._id));
+const assignedEngineers = (state: State) =>
+  state.engineers.filter(engineer => state.assignedEngineers.includes(engineer._id));
 
-const notAddedEngineers = (state: State) =>
-  state.engineers.filter(engineer => !state.addedEngineers.includes(engineer._id));
+const unassignedEngineers = (state: State) =>
+  state.engineers.filter(engineer => !state.assignedEngineers.includes(engineer._id));
 
-export const getAddedEngineers = memoizeOne(addedEngineers);
+export const getAssignedEngineers = memoizeOne(assignedEngineers);
 
-export const getNotAddedEngineers = memoizeOne(notAddedEngineers);
+export const getUnassignedEngineers = memoizeOne(unassignedEngineers);
 
 export function getWorksForEngineer(state: State) {
   return function call(engineerId: string): DbWorkToRender[] {

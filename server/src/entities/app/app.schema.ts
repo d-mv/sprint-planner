@@ -4,7 +4,7 @@ import { App } from './app.models';
 
 const AppSchema = new Schema<App>(
   {
-    addedEngineers: { type: [String], default: [] },
+    assignedEngineers: { type: [String], default: [] },
   },
   { timestamps: true },
 );

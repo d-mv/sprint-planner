@@ -1,10 +1,12 @@
 import { compose, isEmpty, isNil, path } from 'ramda';
 import { FormEvent } from 'react';
 import { AnyValue, RecordObject, Option } from '../../models';
-import { FormItem, FormScenario, FormSection, SectionFormItem } from './models';
+import { FormItem, FormItemValue, FormItemValueTypes, FormScenario, FormSection, SectionFormItem } from './models';
 import dayjs, { Dayjs } from 'dayjs';
 import { format } from '../day.tools';
 import { Duration, DurationUnitsObjectType, DurationUnitType } from 'dayjs/plugin/duration';
+import { isObject } from '../object.tools';
+import { makeMatch } from '../../tools';
 
 export function add(nDays: number, item: DurationUnitType) {
   return function call(day: Dayjs) {
@@ -145,4 +147,39 @@ export async function buildForm(scenario: FormScenario, e: FormEvent<HTMLFormEle
   }
 
   return form;
+}
+
+const ARRAY_METHODS = makeMatch(
+  {
+    first: (data: unknown[]) => data[0],
+  },
+  () => undefined,
+);
+
+function makeDefaultValueFromObject({ type, value }: FormItemValue, data?: unknown[]) {
+  if (type === FormItemValueTypes.DATE) {
+    if (value === 'current') return compose(format(), dayjs)();
+
+    const plus = checkIfAddDays(value);
+
+    if (plus) return plus;
+
+    const minus = checkIfSubtractDays(value);
+
+    if (minus) return minus;
+
+    return compose(format(), dayjs)(value);
+  } else if (type === FormItemValueTypes.DATA_SET) {
+    return ARRAY_METHODS[value](data ?? []) ?? '';
+  }
+
+  return '';
+}
+
+export function makeDefaultValue(defaultValue: Option<string | FormItemValue>, data?: unknown[]): AnyValue {
+  if (!defaultValue) return '';
+
+  if (isObject(defaultValue)) return makeDefaultValueFromObject(defaultValue as FormItemValue, data);
+
+  return defaultValue as string;
 }

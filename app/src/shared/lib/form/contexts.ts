@@ -16,6 +16,7 @@ export interface FormContextType {
   initial?: RecordObject<AnyValue>;
   components?: RecordObject<() => JSX.Element>;
   triggers?: RecordObject<(arg0: string) => void>;
+  disabled?: string[];
 }
 
 export const FormContext = createContext<FormContextType>({} as FormContextType);

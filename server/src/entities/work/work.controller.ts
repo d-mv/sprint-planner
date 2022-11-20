@@ -80,5 +80,5 @@ export const WorkController = makeMatch<(arg: ControllerRequest) => PromisedResu
       return success(result);
     },
   },
-  () => failure('WorkController action is not found', 400),
+  () => failure('Work controller action is not found', 400),
 );

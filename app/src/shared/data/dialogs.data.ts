@@ -7,7 +7,7 @@ import { AnyValue } from '../models';
 
 export enum MenuItemIds {
   ADD_SPRINT = 'addSprint',
-  CREATE_ENGINEER = 'createEngineer',
+  ASSIGN_ENGINEER = 'assignEngineer',
   ADD_ENGINEER = 'addEngineer',
   LOGOUT = 'logout',
 }
@@ -20,7 +20,7 @@ export interface MenuItemType {
 
 export const MENU_ITEMS: MenuItemType[] = [
   { id: MenuItemIds.ADD_SPRINT, label: 'Add Sprint', Icon: UpdateRoundedIcon },
-  { id: MenuItemIds.CREATE_ENGINEER, label: 'Create Engineer', Icon: PersonAddAltRoundedIcon },
-  { id: MenuItemIds.ADD_ENGINEER, label: 'Add Engineer', Icon: GroupAddRoundedIcon },
+  { id: MenuItemIds.ADD_ENGINEER, label: 'Add Engineer', Icon: PersonAddAltRoundedIcon },
+  { id: MenuItemIds.ASSIGN_ENGINEER, label: 'Assign Engineer', Icon: GroupAddRoundedIcon },
   { id: MenuItemIds.LOGOUT, label: 'Logout', Icon: MeetingRoomRoundedIcon },
 ];

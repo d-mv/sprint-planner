@@ -2,7 +2,7 @@ import { Dayjs } from 'dayjs';
 import { assoc } from 'ramda';
 
 import { Engineer, Work } from '../entities';
-import { DbAssignedWork, DbSprint, FormScenario, MongoDocument, RecordObject } from '../shared';
+import { DbAssignedWork, DbEngineer, DbSprint, FormScenario, MongoDocument, RecordObject } from '../shared';
 import { INITIAL_STATE } from './initial';
 import { Action, MappedReducerFns, StateActions, State } from './types';
 
@@ -42,13 +42,25 @@ MAP.set(StateActions.ADD_SPRINT, (state: State, action: Action<DbSprint>) => {
   return { ...state, sprints: [...state.sprints, action.payload] };
 });
 
-MAP.set(StateActions.SET_ENGINEERS, (state: State, action: Action<MongoDocument<Engineer>[]>) => {
+MAP.set(StateActions.SET_ENGINEERS, (state: State, action: Action<DbEngineer[]>) => {
   if (!action.payload) return state;
 
   return { ...state, engineers: action.payload };
 });
 
-MAP.set(StateActions.UPDATE_ENGINEER, (state: State, action: Action<Partial<MongoDocument<Engineer>>>) => {
+MAP.set(StateActions.ADD_ENGINEER, (state: State, action: Action<DbEngineer>) => {
+  if (!action.payload) return state;
+
+  return assoc('engineers', [...state.engineers, action.payload], state);
+});
+
+MAP.set(StateActions.ASSIGN_ENGINEER, (state: State, action: Action<string>) => {
+  if (!action.payload) return state;
+
+  return assoc('assignedEngineers', [...state.assignedEngineers, action.payload], state);
+});
+
+MAP.set(StateActions.UPDATE_ENGINEER, (state: State, action: Action<Partial<DbEngineer>>) => {
   if (!action.payload || !action.payload._id) return state;
 
   return {
@@ -64,7 +76,7 @@ MAP.set(StateActions.UPDATE_ENGINEER, (state: State, action: Action<Partial<Mong
 MAP.set(StateActions.SET_ADDED_ENGINEERS, (state: State, action: Action<string[]>) => {
   if (!action.payload) return state;
 
-  return { ...state, addedEngineers: action.payload };
+  return { ...state, assignedEngineers: action.payload };
 });
 
 MAP.set(StateActions.SET_ASSIGNED_WORKS, (state: State, action: Action<DbAssignedWork[]>) => {
@@ -142,11 +154,6 @@ MAP.set(StateActions.ADD_REMOVE_DAY_OFF, (state: State, action: Action<Dayjs>) =
 //   return assoc('engineers', [...state.engineers, action.payload], state);
 // });
 
-MAP.set(StateActions.ADD_ENGINEER, (state: State, action: Action<string>) => {
-  if (!action.payload) return state;
-
-  return assoc('addedEngineers', [...state.addedEngineers, action.payload], state);
-});
 MAP.set(StateActions.ASSIGN_WORK, (state: State, action: Action<DbAssignedWork>) => {
   if (!action.payload) return state;
 

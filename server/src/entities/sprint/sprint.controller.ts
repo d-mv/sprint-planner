@@ -37,5 +37,5 @@ export const SprintController = makeMatch<(arg: ControllerRequest) => PromisedRe
       return success(result);
     },
   },
-  () => failure('SprintController action is not found', 400),
+  () => failure('Sprint controller action is not found', 400),
 );

@@ -13,6 +13,7 @@ export enum StateActions {
   SET_SPRINTS = 'setSprints',
   ADD_SPRINT = 'addSprint',
   SET_ENGINEERS = 'setEngineers',
+  ASSIGN_ENGINEER = 'assignEngineer',
   UPDATE_ENGINEER = 'updateEngineer',
   SET_ADDED_ENGINEERS = 'setAddedEngineers',
   SET_ASSIGNED_WORKS = 'setAssignedWorks',
@@ -41,7 +42,7 @@ export interface State {
   sprints: MongoDocument<Sprint<Dayjs>>[];
   daysOff: Dayjs[];
   engineers: MongoDocument<Engineer>[];
-  addedEngineers: string[];
+  assignedEngineers: string[];
   works: MongoDocument<Work>[];
   assignedWorks: DbAssignedWork[];
   message: string;
@@ -57,7 +58,7 @@ export type MappedReducerFns = Map<StateActions, (state: State, action: Action) 
 
 export enum LoadingActions {
   GET_SCENARIOS = 'get-scenarios',
-  GET_ADDED_ENGINEERS = 'get-added-engineers',
+  GET_ASSIGNED_ENGINEERS = 'getAssignedEngineers',
   GET_ASSIGNED_WORK = 'get-assigned-work',
   GET_ENGINEERS = 'get-engineers',
   GET_SPRINT = 'get-sprint',
