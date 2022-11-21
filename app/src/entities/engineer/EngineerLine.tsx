@@ -19,7 +19,7 @@ export function EngineerLine({ showActions, isOpen, toggleIsOpen }: Props) {
       style={{ backgroundColor: CONSTANTS.engineerLineColor, height: '4rem' }}
     >
       <EngineerName />
-      {ifTrue(showActions, renderActions())}
+      {ifTrue(showActions, renderActions)}
       <CountOfCount />
     </div>
   );

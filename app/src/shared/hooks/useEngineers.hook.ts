@@ -47,15 +47,19 @@ export function useEngineers() {
       .catch(err => handleNegative(err.message, item));
   }
 
-  function update(data: Partial<DbEngineer>, callback: () => void) {
+  function update(data: RecordObject<AnyValue>, callback: () => void) {
     const item = 'update-engineer';
 
     updateIsLoading(item, true);
 
     if (error) compose(dispatch, setMessage)('');
 
-    query<'OK'>('engineer', 'update', data)
-      .then(r => (r.isOK ? handlePositive(data, updateEngineer, item, callback) : handleNegative(r.message, item)))
+    query<DbEngineer<string>>('engineer', 'update', data)
+      .then(r =>
+        r.isOK
+          ? handlePositive(engineerDaysOffToDayjs(r.payload), updateEngineer, item, callback)
+          : handleNegative(r.message, item),
+      )
       .catch(err => handleNegative(err.message, item));
   }
 

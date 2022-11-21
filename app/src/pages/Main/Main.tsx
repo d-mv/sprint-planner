@@ -94,9 +94,9 @@ export function Main() {
       <Header toggle={toggleDrawer} />
       {ifTrue(isOpen, renderDialogContent)}
       <div className={clsx('line v-scroll', classes.container)}>
-        <ErrorBoundary componentId='engineers'>
-          <Engineers />
-        </ErrorBoundary>
+        {/* <ErrorBoundary componentId='engineers'> */}
+        <Engineers />
+        {/* </ErrorBoundary> */}
         <Sprints />
       </div>
       <Menu isOpen={drawerIsOpen} onClose={toggleDrawer} onAction={handleAction} />

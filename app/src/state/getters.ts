@@ -3,8 +3,8 @@ import memoizeOne from 'memoize-one';
 import { omit, path, sum } from 'ramda';
 
 import { State } from '.';
-import { Work, WorkToRender } from '../entities';
-import { DbWork, DbWorkToRender, FormScenario, MongoDocument, Option } from '../shared';
+import { WorkToRender } from '../entities';
+import { DbWork, DbWorkToRender, FormScenario, Option } from '../shared';
 
 export const getScenarios = (state: State) => state.scenarios;
 

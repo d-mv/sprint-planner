@@ -26,7 +26,11 @@ export const EngineerController = makeMatch<(arg: ControllerRequest) => Promised
 
       const result = await context.collections.engineer.updateOne({ _id }, { daysOff });
 
-      if (result.modifiedCount) return success('OK');
+      if (result.modifiedCount) {
+        const engineer = await context.collections.engineer.findOne({ _id });
+
+        return success(engineer);
+      }
 
       return failure('Failed to update record', 500);
     },

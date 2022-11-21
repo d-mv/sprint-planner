@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useContextSelector } from 'use-context-selector';
 
 import { IconButton, Option } from '../../../shared';

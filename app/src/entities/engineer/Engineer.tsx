@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Message, CONSTANTS, Option } from '../../shared';
+import { Message, CONSTANTS, Option, LazyLoad, Container } from '../../shared';
 import { ifTrue } from '../../shared/tools/logic.tools';
 import { setupText } from '../../shared/tools/text.tools';
 import { getUnAssignedWorksQty, useSelector } from '../../state';
@@ -21,24 +21,28 @@ export function Engineer() {
   const [showActions, setShowActions] = useState(false);
 
   function toggleIsOpen(item: string) {
-    return function call() {
-      if (isOpen === item) setIsOpen(undefined);
-      else setIsOpen(item);
+    if (isOpen === item) setIsOpen(undefined);
+    else setIsOpen(item);
+  }
+
+  function handleToggle(item: string) {
+    return function click() {
+      toggleIsOpen(item);
     };
   }
 
   function renderCreate() {
-    return <CreateAssignWork onCancel={toggleIsOpen('create')} />;
+    return <CreateAssignWork onCancel={handleToggle('create')} />;
   }
 
   function renderAssign() {
     if (!unassignedWorksQty) return <Message className='txt-center' message={TXT('noUnAssigned')} />;
 
-    return <AssignWork onCancel={toggleIsOpen('assign')} />;
+    return <AssignWork onCancel={handleToggle('assign')} />;
   }
 
   function renderDaysOff() {
-    return <EngineerDaysOff onClose={toggleIsOpen('daysOff')} />;
+    return <EngineerDaysOff onClose={handleToggle('daysOff')} />;
   }
 
   function closeActions() {
@@ -53,11 +57,13 @@ export function Engineer() {
 
   function renderForms() {
     return (
-      <div className='padding-1'>
-        {ifTrue(isOpen === 'create', renderCreate)}
-        {ifTrue(isOpen === 'assign', renderAssign)}
-        {ifTrue(isOpen === 'daysOff', renderDaysOff)}
-      </div>
+      <Container style={{ paddingInline: '2rem' }}>
+        <LazyLoad>
+          {ifTrue(isOpen === 'create', renderCreate)}
+          {ifTrue(isOpen === 'assign', renderAssign)}
+          {ifTrue(isOpen === 'daysOff', renderDaysOff)}
+        </LazyLoad>
+      </Container>
     );
   }
 

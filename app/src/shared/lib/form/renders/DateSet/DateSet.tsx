@@ -16,7 +16,7 @@ export default function DateSet() {
     pick(['item', 'onValidation', 'onChange', 'value'], c),
   );
 
-  const { style, label, buttons, defaultValue } = item;
+  const { style, label, buttons, defaultValue, individualStyles } = item;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,6 +32,9 @@ export default function DateSet() {
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     if (error) setError('');
+
+    // eslint-disable-next-line no-console
+    console.log(e.currentTarget.value, value);
 
     if (value && Array.isArray(value) && value.includes(e.currentTarget.value)) setError('Already added');
 
@@ -62,7 +65,7 @@ export default function DateSet() {
           variant='standard'
           onChange={handleChange}
           value={makeDefaultValue()}
-          style={{ width: '100%', margin: '1rem 0' }}
+          style={{ width: '100%', margin: '1rem 0', ...(individualStyles ?? {})['input'] }}
           type='date'
           InputLabelProps={{
             shrink: true,
@@ -108,7 +111,7 @@ export default function DateSet() {
       {ifTrue(value?.length, renderListOfDates)}
       {ifTrue(!isOpen && !value?.length, renderNoDatesMessage)}
       {ifTrue(isOpen, renderAddDate)}
-      <div style={{ height: '2.2rem' }}>
+      <div style={{ height: '2.2rem', ...(individualStyles ?? {})['error'] }}>
         <Typography variant='subtitle1' color='error'>
           {error}
         </Typography>

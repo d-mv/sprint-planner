@@ -4,8 +4,8 @@ export const createWorkScenario: FormScenario = {
   id: 'createWork',
   _form: {
     style: {
-      width: '90%',
-      margin: '0 auto',
+      width: '100%',
+      // margin: '0 auto',
     },
   },
   items: {

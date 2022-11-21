@@ -4,9 +4,9 @@ export const assignWorkScenario: FormScenario = {
   id: 'assignWork',
   _form: {
     style: {
-      width: '95%',
-      margin: '0 auto',
-      justifyContent: 'center',
+      width: '100%',
+      //   margin: '0 auto',
+      //   justifyContent: 'center',
     },
     inputLineStyle: {
       display: 'flex',
