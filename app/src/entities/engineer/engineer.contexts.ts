@@ -1,12 +1,11 @@
 import { compose } from 'ramda';
 import { createContext } from 'use-context-selector';
 
-import { MongoDocument } from '../../shared';
-import { as } from '../../shared';
-import { Engineer } from './engineer.models';
+import { DbEngineer } from '../../shared/models/db.models';
+import { as } from '../../shared/tools/type.tools';
 
 export interface EngineerContextType {
-  engineer: MongoDocument<Engineer>;
+  engineer: DbEngineer;
 }
 
 export const EngineerContext = compose(createContext<EngineerContextType>, as<EngineerContextType>)({});

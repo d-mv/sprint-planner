@@ -1,6 +1,7 @@
-import { AnyValue, Form, FormContext, RecordObject } from '../../shared';
-import { useSprints } from '../../entities/sprint/useSprints.hook';
-import { getScenarioByLabel, useSelector } from '../../state';
+import { useSprints } from '../../../entities';
+import { useSelector, getScenarioByLabel } from '../../../state';
+import { FormContext, Form } from '../../lib';
+import { RecordObject, AnyValue } from '../../models';
 
 interface Props {
   onClose: () => void;

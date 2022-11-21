@@ -4,16 +4,15 @@ import { Dayjs } from 'dayjs';
 import { map } from 'ramda';
 import { MouseEvent, useState } from 'react';
 
-import { MongoDocument, Option } from '../../shared';
-import { CONSTANTS } from '../../shared';
-import { DayPopup, DayType, useWorkDays } from '../days';
+import { MongoDocument, Option, CONSTANTS, DayPopup, useWorkDays, DbEngineer } from '../../shared';
+import { DayType } from '../days';
 import { Day } from '../days/Day';
-import { Engineer, useEngineers } from '../engineer';
+import { useEngineers } from '../engineer';
 import { WorkToRender } from '../work';
 
 interface Props {
   workToRender: WorkToRender;
-  engineer: Engineer;
+  engineer: DbEngineer;
 }
 
 export function SprintWorkDays({ workToRender, engineer }: Props) {
@@ -50,10 +49,8 @@ export function SprintWorkDays({ workToRender, engineer }: Props) {
       if (v) daysOff.push(day);
       else daysOff = daysOff.filter(d => !d.isSame(day, 'date'));
 
-      update({ ...engineer, daysOff });
+      update({ ...engineer, daysOff }, handleClose);
     }
-
-    handleClose();
   }
 
   function renderWorkDay(day: MongoDocument<DayType>) {

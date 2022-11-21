@@ -1,15 +1,11 @@
 import { InputLabel, Select, SelectChangeEvent } from '@mui/material';
-import dayjs from 'dayjs';
-import { compose, map } from 'ramda';
+import { map } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { ifTrue } from '../../../../tools';
+import { ifTrue } from '../../../../tools/logic.tools';
 import { Message } from '../../../../ui';
-import { format } from '../../../day.tools';
-import { isObject } from '../../../object.tools';
 import { FormContext, FormItemContext } from '../../contexts';
-import { FormItemValue, FormItemValueTypes } from '../../models';
 import { makeDefaultValue } from '../../tools';
 
 export default function Selector() {

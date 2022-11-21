@@ -1,12 +1,10 @@
-import { clsx } from 'clsx';
-import { compose, o, path } from 'ramda';
+import { compose, path } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
-import { AnyValue, RecordObject, Form, FormContext, LazyLoad } from '../../../shared';
-import { getIsLoading, getScenarioByLabel, setMessage, useDispatch, useSelector } from '../../../state';
-import { EngineerContext } from '../../engineer/engineer.contexts';
-import { useWorks } from '../useWorks.hook';
-import classes from './CreateAssignWork.module.scss';
+import { AnyValue, RecordObject, Form, FormContext } from '../../shared';
+import { getIsLoading, getScenarioByLabel, setMessage, useDispatch, useSelector } from '../../state';
+import { EngineerContext } from './engineer.contexts';
+import { useWorks } from '../work/useWorks.hook';
 
 interface Props {
   onCancel: () => void;

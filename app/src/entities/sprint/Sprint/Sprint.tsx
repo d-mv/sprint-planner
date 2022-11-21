@@ -1,5 +1,5 @@
 import { Sprint as SprintType } from '../sprint.models';
-import { Days } from '../../days';
+import { Days } from '../Days';
 import { SprintName } from '../SprintName';
 import { MongoDocument } from '../../../shared';
 import classes from './Sprint.module.scss';

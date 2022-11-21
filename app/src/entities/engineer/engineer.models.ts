@@ -5,7 +5,7 @@ export interface Person {
   lastName: string;
 }
 
-export interface Engineer<Day = Dayjs> {
+export interface EngineerType<Day = Dayjs> {
   person: Person;
   daysOff: Day[];
 }

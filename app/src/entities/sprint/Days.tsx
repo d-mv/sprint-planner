@@ -2,13 +2,12 @@ import { Dayjs } from 'dayjs';
 import { compose, map } from 'ramda';
 import { MouseEvent, useState } from 'react';
 
-import { Sprint } from '../sprint';
-import { Day } from './Day';
-import { DayType } from './days.models';
+import { Sprint } from '.';
+import { Day } from '../days/Day';
+import { DayType } from '../days/days.models';
 import { Popover } from '@mui/material';
-import { DayPopup } from './DayPopup';
+import { DayPopup, MongoDocument, Option } from '../../shared';
 import { addRemoveDayOff, getIsDayOff, useDispatch, useSelector } from '../../state';
-import { MongoDocument, Option } from '../../shared';
 
 interface Props {
   sprint: Sprint;

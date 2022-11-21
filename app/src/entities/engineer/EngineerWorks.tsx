@@ -1,19 +1,12 @@
 import { map, omit } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
-import { DbWorkToRender, Spinner, MongoDocument } from '../../shared';
+import { DbWorkToRender, Spinner } from '../../shared';
 
 import { getIsLoading, getWorksForEngineer, useSelector } from '../../state';
 import { WorkContext } from '../work';
-import { AssignedWork } from '../work/AssignedWork';
+import { AssignedWork } from './AssignedWork';
 import { EngineerContext } from './engineer.contexts';
 
-/**
- * Renders individual line
- *
- * @function
- * @param {MongoDocument} work compound object work + assigned work
- * @returns Element
- */
 function renderWork(work: DbWorkToRender) {
   if (!work.work) return null;
 
@@ -24,12 +17,6 @@ function renderWork(work: DbWorkToRender) {
   );
 }
 
-/**
- * Renders works, assigned to the engineer
- *
- * @function
- * @returns Element
- */
 export function EngineerWorks() {
   const engineer = useContextSelector(EngineerContext, c => c.engineer);
 

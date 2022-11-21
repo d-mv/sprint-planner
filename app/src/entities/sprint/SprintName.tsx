@@ -1,11 +1,10 @@
 import { Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { MongoDocument, checkIfBetween, getWorkingDaysDiff } from '../../shared';
-import { Sprint } from './sprint.models';
+import { checkIfBetween, getWorkingDaysDiff, DbSprint } from '../../shared';
 
 interface Props {
-  sprint: MongoDocument<Sprint>;
+  sprint: DbSprint;
 }
 
 export function SprintName({ sprint }: Props) {
@@ -21,7 +20,7 @@ export function SprintName({ sprint }: Props) {
 
   return (
     <div className='center margin-center w-100' style={{ padding: '.5rem 0' }}>
-      <Typography variant='body1'>{makeString()}</Typography>
+      <Typography variant='h5'>{makeString()}</Typography>
     </div>
   );
 }

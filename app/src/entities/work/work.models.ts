@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-import { MongoDocument } from '../../shared';
+import { DbWork } from '../../shared';
 
 export interface Work {
   jiraTicket: string;
@@ -16,7 +16,7 @@ export interface AssignedWork<Day = Dayjs> {
 }
 
 export interface WorkToRender {
-  work: MongoDocument<Work>;
+  work: DbWork;
   engineerId: string;
   startDate: Dayjs;
 }

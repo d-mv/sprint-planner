@@ -4,7 +4,7 @@ import { compose } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { AnyValue, MongoDocument, Option, RecordObject, Form, FormContext, LazyLoad, ifTrue } from '../../../shared';
+import { AnyValue, Option, RecordObject, Form, FormContext, useUnassignedWorkIsOverSprint, DbWork } from '../../shared';
 import {
   getIsLoading,
   getScenarioByLabel,
@@ -12,13 +12,11 @@ import {
   setMessage,
   useDispatch,
   useSelector,
-} from '../../../state';
-import { useUnassignedWorkIsOverSprint } from '../../days';
-import { EngineerContext } from '../../engineer/engineer.contexts';
-import { useAssignedWork } from '../useAssignedWorks.hook';
-import { Work } from '../work.models';
-import { WorkNextSprintMessage } from '../WorkNextSprintMessage';
-import classes from './AssignWork.module.scss';
+} from '../../state';
+import { EngineerContext } from './engineer.contexts';
+import { useAssignedWork } from '../work/useAssignedWorks.hook';
+import { WorkNextSprintMessage } from './WorkNextSprintMessage';
+import { ifTrue } from '../../shared/tools/logic.tools';
 
 interface Props {
   onCancel: () => void;
@@ -53,7 +51,7 @@ export function AssignWork({ onCancel }: Props) {
 
   const getWorks = () => unassignedWorks;
 
-  function renderWork(work: MongoDocument<Work>) {
+  function renderWork(work: DbWork) {
     return (
       <MenuItem key={work._id} value={work._id}>
         {`${work.jiraTicket} (${work.estimate}) ${work.title}`}

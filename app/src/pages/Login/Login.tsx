@@ -4,10 +4,12 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { ChangeEvent, useState } from 'react';
 import { clsx } from 'clsx';
 
-import { ErrorMessage, Tooltip, setupText, TEXT } from '../../shared';
+import { ErrorMessage, Tooltip } from '../../shared';
 import classes from './Login.module.scss';
 import { getMessage, getIsLoading, useSelector } from '../../state';
 import { useLogin } from '../../entities';
+import { setupText } from '../../shared/tools/text.tools';
+import { TEXT } from '../../shared/data/text.data';
 
 const TXT = setupText(TEXT)('login');
 

@@ -1,11 +1,13 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs, extend } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import durationPlugin from 'dayjs/plugin/duration';
+import durationPlugin, { DurationUnitType } from 'dayjs/plugin/duration';
 
 import { buildArray } from './array.tools';
+import { Option } from '../models';
+import { compose } from 'ramda';
 
-dayjs.extend(isBetween);
-dayjs.extend(durationPlugin);
+extend(isBetween);
+extend(durationPlugin);
 
 export function format(format = 'YYYY-MM-DD') {
   return function call(date: Dayjs) {
@@ -39,4 +41,40 @@ export function getWorkingDaysDiff(from: Dayjs, till: Dayjs): number {
   buildArray(totalDays).forEach(forEachFn);
 
   return counter;
+}
+
+export function add(nDays: number, item: DurationUnitType) {
+  return function call(day: Dayjs) {
+    return day.add(nDays, item);
+  };
+}
+
+export function subtract(nDays: number, item: DurationUnitType) {
+  return function call(day: Dayjs) {
+    return day.subtract(nDays, item);
+  };
+}
+
+export function checkIfAddDays(value: Option<string>): Option<string> {
+  const plus = value?.match(/\+/);
+
+  if (plus && plus[0] === '+') {
+    const n = parseInt(value?.replace(/\+/, '') ?? '0');
+
+    return compose(format(), add(n, 'days'))(dayjs());
+  }
+
+  return undefined;
+}
+
+export function checkIfSubtractDays(value: Option<string>): Option<string> {
+  const minus = value?.match(/-/);
+
+  if (minus && minus[0] === '-') {
+    const n = parseInt(value?.replace(/-/, '') ?? '0');
+
+    return compose(format(), subtract(n, 'days'))(dayjs());
+  }
+
+  return undefined;
 }

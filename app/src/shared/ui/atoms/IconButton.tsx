@@ -6,9 +6,8 @@ import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import SettingsSystemDaydreamRoundedIcon from '@mui/icons-material/SettingsSystemDaydreamRounded';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { makeMatch } from '../../tools';
-
 import { Tooltip } from './Tooltip';
+import { makeMatch } from '../../tools/object.tools';
 
 const VARIANTS = makeMatch(
   {

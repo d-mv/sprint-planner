@@ -1,7 +1,7 @@
-import { AnyValue, Form, FormContext, RecordObject } from '../../shared';
+import { AnyValue, Form, FormContext, RecordObject } from '../..';
 // import { createEngineerScenario } from '../../entities/engineer/createEngineer.scenario';
-import { makeNewEngineerObject, useEngineers } from '../../entities';
-import { getIsLoading, getScenarioByLabel, useSelector } from '../../state';
+import { makeNewEngineerObject, useEngineers } from '../../../entities';
+import { getIsLoading, getScenarioByLabel, useSelector } from '../../../state';
 
 interface Props {
   onClose: () => void;

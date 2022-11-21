@@ -5,7 +5,7 @@ import { ChangeEvent, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { Option } from '../../../../models';
-import { ifTrue } from '../../../../tools';
+import { ifTrue } from '../../../../tools/logic.tools';
 import { Message } from '../../../../ui';
 import { format } from '../../../day.tools';
 import { FormItemContext } from '../../contexts';

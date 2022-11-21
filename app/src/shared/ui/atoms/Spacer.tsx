@@ -6,20 +6,11 @@ const hStyle: CSSProperties = { height: '.1rem', width: '1rem' };
 
 interface Props {
   vertical: boolean;
-  horizontal: boolean;
+  // horizontal: boolean;
   style: CSSProperties;
   className: string;
 }
-export function Spacer({
-  vertical,
-  horizontal,
-  style,
-  className,
-}: Partial<Props>) {
-  return (
-    <div
-      style={{ ...(vertical ? vStyle : hStyle), ...style }}
-      className={className}
-    />
-  );
+
+export function Spacer({ vertical, style, className }: Partial<Props>) {
+  return <div style={{ ...(vertical ? vStyle : hStyle), ...style }} className={className} />;
 }

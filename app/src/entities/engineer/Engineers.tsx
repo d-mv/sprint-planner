@@ -1,18 +1,19 @@
 import { map } from 'ramda';
+import { useEffect } from 'react';
 
-import { Engineer as EngineerType } from './engineer.models';
 import { getAssignedEngineers, getMessage, useSelector } from '../../state';
 import { Engineer } from './Engineer';
-import { MongoDocument, ErrorMessage, CONSTANTS, ifTrue } from '../../shared';
+import { ErrorMessage, CONSTANTS, DbEngineer, Message, Container } from '../../shared';
 import { EngineerContext } from './engineer.contexts';
 import { ColorLegend } from './ColorLegend';
+import { ifTrue } from '../../shared/tools/logic.tools';
 
 export function Engineers() {
   const assignedEngineers = useSelector(getAssignedEngineers);
 
   const message = useSelector(getMessage);
 
-  function renderEngineer(engineer: MongoDocument<EngineerType>) {
+  function renderEngineer(engineer: DbEngineer) {
     return (
       <EngineerContext.Provider key={engineer._id} value={{ engineer }}>
         <Engineer />
@@ -24,12 +25,19 @@ export function Engineers() {
 
   const renderLegend = () => <ColorLegend />;
 
+  const renderNoEngineersMessage = () => (
+    <Container>
+      <Message message='No engineers assigned' />
+    </Container>
+  );
+
   return (
     <div id='engineers' style={{ width: CONSTANTS.engineersWidth }}>
       <div id='header' className='center padding-1' style={{ height: CONSTANTS.subHeaderHeight }}>
         {ifTrue(Boolean(message), renderMessage, renderLegend)}
       </div>
       {map(renderEngineer, assignedEngineers)}
+      {ifTrue(!assignedEngineers.length, renderNoEngineersMessage)}
     </div>
   );
 }

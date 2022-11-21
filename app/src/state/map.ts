@@ -1,8 +1,7 @@
 import { Dayjs } from 'dayjs';
 import { assoc } from 'ramda';
 
-import { Engineer, Work } from '../entities';
-import { DbAssignedWork, DbEngineer, DbSprint, FormScenario, MongoDocument, RecordObject } from '../shared';
+import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario, RecordObject } from '../shared';
 import { INITIAL_STATE } from './initial';
 import { Action, MappedReducerFns, StateActions, State } from './types';
 
@@ -97,19 +96,19 @@ MAP.set(StateActions.ADD_ASSIGNED_WORK, (state: State, action: Action<DbAssigned
   return { ...state, assignedWorks: [...state.assignedWorks, action.payload] };
 });
 
-MAP.set(StateActions.SET_WORKS, (state: State, action: Action<MongoDocument<Work>[]>) => {
+MAP.set(StateActions.SET_WORKS, (state: State, action: Action<DbWork[]>) => {
   if (!action.payload) return state;
 
   return { ...state, works: action.payload };
 });
 
-MAP.set(StateActions.ADD_WORK, (state: State, action: Action<MongoDocument<Work>>) => {
+MAP.set(StateActions.ADD_WORK, (state: State, action: Action<DbWork>) => {
   if (!action.payload) return state;
 
   return assoc('works', [...state.works, action.payload], state);
 });
 
-MAP.set(StateActions.UPDATE_WORK, (state: State, action: Action<MongoDocument<Work>>) => {
+MAP.set(StateActions.UPDATE_WORK, (state: State, action: Action<DbWork>) => {
   if (!action.payload) return state;
 
   const works = state.works.map(work => {

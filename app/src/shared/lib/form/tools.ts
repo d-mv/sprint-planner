@@ -1,48 +1,12 @@
 import { compose, isEmpty, isNil, path } from 'ramda';
 import { FormEvent } from 'react';
+import dayjs from 'dayjs';
+
 import { AnyValue, RecordObject, Option } from '../../models';
 import { FormItem, FormItemValue, FormItemValueTypes, FormScenario, FormSection, SectionFormItem } from './models';
-import dayjs, { Dayjs } from 'dayjs';
-import { format } from '../day.tools';
-import { Duration, DurationUnitsObjectType, DurationUnitType } from 'dayjs/plugin/duration';
+import { checkIfAddDays, checkIfSubtractDays, format } from '../day.tools';
 import { isObject } from '../object.tools';
-import { makeMatch } from '../../tools';
-
-export function add(nDays: number, item: DurationUnitType) {
-  return function call(day: Dayjs) {
-    return day.add(nDays, item);
-  };
-}
-
-export function subtract(nDays: number, item: DurationUnitType) {
-  return function call(day: Dayjs) {
-    return day.subtract(nDays, item);
-  };
-}
-
-export function checkIfAddDays(value: Option<string>): Option<string> {
-  const plus = value?.match(/\+/);
-
-  if (plus && plus[0] === '+') {
-    const n = parseInt(value?.replace(/\+/, '') ?? '0');
-
-    return compose(format(), add(n, 'days'))(dayjs());
-  }
-
-  return undefined;
-}
-
-export function checkIfSubtractDays(value: Option<string>): Option<string> {
-  const minus = value?.match(/-/);
-
-  if (minus && minus[0] === '-') {
-    const n = parseInt(value?.replace(/-/, '') ?? '0');
-
-    return compose(format(), subtract(n, 'days'))(dayjs());
-  }
-
-  return undefined;
-}
+import { makeMatch } from '../../tools/object.tools';
 
 export function validationHasFailed(obj: ValidityState) {
   return !Object.values(obj).some(Boolean);

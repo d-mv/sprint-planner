@@ -10,14 +10,15 @@ import {
   useWorks,
   useApp,
   useEngineers,
+  useSprints,
 } from '../../entities';
 import classes from './Main.module.scss';
 import { Header } from './Header';
 import { Menu } from './Menu';
-import { makeMatch, MenuItemIds, Option, Dialog, LazyLoad, ifTrue } from '../../shared';
-import { AddEngineer } from './AddEngineer';
-import { AddSprint } from './AddSprint';
-import { AssignEngineer } from './AssignEngineer';
+import { MenuItemIds, Option, Dialog, LazyLoad, AddEngineer, AddSprint, AssignEngineer } from '../../shared';
+import { ErrorBoundary } from '../../shared/tools/ErrorBoundary';
+import { ifTrue } from '../../shared/tools/logic.tools';
+import { makeMatch } from '../../shared/tools/object.tools';
 
 const DIALOGS = makeMatch(
   {
@@ -45,11 +46,14 @@ export function Main() {
 
   const assignedWork = useAssignedWork();
 
+  const sprints = useSprints();
+
   useEffect(() => {
     engineers.get();
     app.getAssignedEngineers();
     works.get();
     assignedWork.get();
+    sprints.get();
   }, []);
 
   function toggleDrawer() {
@@ -90,7 +94,9 @@ export function Main() {
       <Header toggle={toggleDrawer} />
       {ifTrue(isOpen, renderDialogContent)}
       <div className={clsx('line v-scroll', classes.container)}>
-        <Engineers />
+        <ErrorBoundary componentId='engineers'>
+          <Engineers />
+        </ErrorBoundary>
         <Sprints />
       </div>
       <Menu isOpen={drawerIsOpen} onClose={toggleDrawer} onAction={handleAction} />

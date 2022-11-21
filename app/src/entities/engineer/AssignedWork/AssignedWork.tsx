@@ -1,23 +1,19 @@
 import { clsx } from 'clsx';
+import { useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { IconButton } from '../../../shared';
-import { TEXT } from '../../../shared';
-import { CONSTANTS } from '../../../shared';
-import { ifTrue, setupText } from '../../../shared';
-import { useAssignedWork } from '../useAssignedWorks.hook';
-import { WorkContext } from '../work.contexts';
-import { WorkLine } from '../WorkLine';
+import { IconButton, CONSTANTS } from '../../../shared';
+import { useAssignedWork } from '../../work/useAssignedWorks.hook';
+import { WorkContext } from '../../work/work.contexts';
+import { WorkLine } from '../../work/WorkLine';
 import classes from './AssignedWork.module.scss';
-import { useState } from 'react';
-import { EditWork } from '../EditWork';
-import { pick } from 'ramda';
+import { TEXT } from '../../../shared/data/text.data';
+import { setupText } from '../../../shared/tools/text.tools';
+import { EditWork } from '../../work/EditWork';
+import { ifTrue } from '../../../shared/tools/logic.tools';
 
 const TXT = setupText(TEXT)('work');
 
-/**
- *
- */
 export function AssignedWork() {
   const assigned = useContextSelector(WorkContext, c => c.assigned);
 
@@ -25,23 +21,14 @@ export function AssignedWork() {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  /**
-   *
-   */
   function toggleEdit() {
     setIsEditOpen(state => !state);
   }
 
-  /**
-   *
-   */
   function handleUnassign() {
     if (assigned) remove(assigned._id);
   }
 
-  /**
-   *
-   */
   function renderActions() {
     return (
       <div className={classes.actions}>
@@ -51,9 +38,6 @@ export function AssignedWork() {
     );
   }
 
-  /**
-   *
-   */
   function renderEdit() {
     return <EditWork onCancel={toggleEdit} />;
   }

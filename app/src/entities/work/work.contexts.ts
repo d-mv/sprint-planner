@@ -1,12 +1,11 @@
 import { compose } from 'ramda';
 import { createContext } from 'use-context-selector';
 
-import { DbWorkToRender, MongoDocument } from '../../shared';
-import { as } from '../../shared';
-import { Work } from './work.models';
+import { DbWorkToRender, DbWork } from '../../shared';
+import { as } from '../../shared/tools/type.tools';
 
 export interface WorkContextType {
-  work: MongoDocument<Work>;
+  work: DbWork;
   assigned?: Omit<DbWorkToRender, 'work'>;
 }
 

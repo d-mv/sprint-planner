@@ -1,7 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-import { AssignedWork, Engineer, Sprint, Work } from '../entities';
-import { DbAssignedWork, DbEngineer, FormScenario, MongoDocument, RecordObject } from '../shared';
+import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario, RecordObject } from '../shared';
 import { Action, StateActions } from './types';
 
 export const setScenarios = (payload: RecordObject<FormScenario>): Action => ({
@@ -29,12 +28,12 @@ export const login = (payload: string): Action => ({
   payload,
 });
 
-export const setSprints = (payload: MongoDocument<Sprint<Dayjs>>[]): Action => ({
+export const setSprints = (payload: DbSprint[]): Action => ({
   type: StateActions.SET_SPRINTS,
   payload,
 });
 
-export const addSprint = (payload: MongoDocument<Sprint<Dayjs>>): Action => ({
+export const addSprint = (payload: DbSprint): Action => ({
   type: StateActions.ADD_SPRINT,
   payload,
 });
@@ -79,17 +78,17 @@ export const addAssignedWork = (payload: DbAssignedWork): Action => ({
   payload,
 });
 
-export const setWorks = (payload: MongoDocument<Work>[]): Action => ({
+export const setWorks = (payload: DbWork[]): Action => ({
   type: StateActions.SET_WORKS,
   payload,
 });
 
-export const addWork = (payload: MongoDocument<Work>): Action => ({
+export const addWork = (payload: DbWork): Action => ({
   type: StateActions.ADD_WORK,
   payload,
 });
 
-export const updateWork = (payload: MongoDocument<Work>): Action => ({
+export const updateWork = (payload: DbWork): Action => ({
   type: StateActions.UPDATE_WORK,
   payload,
 });
@@ -105,7 +104,7 @@ export const addRemoveDayOff = (payload: Dayjs): Action => ({
   payload,
 });
 
-export const assignWork = (payload: AssignedWork): Action => ({
+export const assignWork = (payload: DbAssignedWork): Action => ({
   type: StateActions.ASSIGN_WORK,
   payload,
 });

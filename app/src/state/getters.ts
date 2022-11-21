@@ -4,7 +4,7 @@ import { omit, path, sum } from 'ramda';
 
 import { State } from '.';
 import { Work, WorkToRender } from '../entities';
-import { DbWorkToRender, FormScenario, MongoDocument, Option } from '../shared';
+import { DbWork, DbWorkToRender, FormScenario, MongoDocument, Option } from '../shared';
 
 export const getScenarios = (state: State) => state.scenarios;
 
@@ -20,9 +20,10 @@ export const getScenarioByLabel =
 
 export const getSprints = (state: State) => state.sprints;
 
-const currentSprint = (state: State) => state.sprints.find(sprint => dayjs().isBefore(sprint.endDate.add(1, 'day')));
+export const getCurrentSprint = (state: State) =>
+  state.sprints.find(sprint => dayjs().isBefore(sprint.endDate.add(1, 'day')));
 
-export const getCurrentSprint = memoizeOne(currentSprint);
+// export const getCurrentSprint = memoizeOne(currentSprint);
 
 export const getItemsLength = memoizeOne(getSprints);
 
@@ -58,7 +59,7 @@ export function getWorksForEngineer(state: State) {
 
     return assignedWorks.map(assignedWork => ({
       ...omit(['workId'], assignedWork),
-      work: state.works.find(work => work._id === assignedWork.workId) as MongoDocument<Work>,
+      work: state.works.find(work => work._id === assignedWork.workId) as DbWork,
     }));
   };
 }

@@ -1,9 +1,8 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
-import { MongoDocument } from '../../shared';
-import { Sprint } from './sprint.models';
+import { DbSprint } from '../../shared';
 
-export function sprintDateToDayjs(sprint: MongoDocument<Sprint>): MongoDocument<Sprint<Dayjs>> {
+export function sprintDateToDayjs(sprint: DbSprint<string>): DbSprint {
   return {
     ...sprint,
     startDate: dayjs(sprint.startDate),
@@ -12,7 +11,7 @@ export function sprintDateToDayjs(sprint: MongoDocument<Sprint>): MongoDocument<
   };
 }
 
-export function sprintDateToDayjsArray(sprints: MongoDocument<Sprint>[]): MongoDocument<Sprint<Dayjs>>[] {
+export function sprintDateToDayjsArray(sprints: DbSprint<string>[]): DbSprint[] {
   return sprints.map(sprint => ({
     ...sprint,
     startDate: dayjs(sprint.startDate),

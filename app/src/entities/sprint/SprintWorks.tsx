@@ -1,11 +1,9 @@
 import { map } from 'ramda';
 import { Fragment } from 'react';
 
-import { MongoDocument, DbWorkToRender, mapWithIndex } from '../../shared';
+import { DbWorkToRender, mapWithIndex, DbEngineer, CONSTANTS } from '../../shared';
+import { ifTrue } from '../../shared/tools/logic.tools';
 import { getAssignedEngineers, getWorksForEngineer, useSelector } from '../../state';
-import { CONSTANTS } from '../../shared';
-import { ifTrue } from '../../shared';
-import { Engineer } from '../engineer';
 import { SprintWorkDays } from './SprintWorkDays';
 
 export function SprintWorks() {
@@ -13,7 +11,7 @@ export function SprintWorks() {
 
   const works = useSelector(getWorksForEngineer);
 
-  function renderAssignedWork(engineer: Engineer) {
+  function renderAssignedWork(engineer: DbEngineer) {
     return function call(work: DbWorkToRender) {
       if (!work.work) return null;
 
@@ -21,7 +19,7 @@ export function SprintWorks() {
     };
   }
 
-  function renderEngineerWorks(engineer: MongoDocument<Engineer>, index: number) {
+  function renderEngineerWorks(engineer: DbEngineer, index: number) {
     const w = works(engineer._id);
 
     return (

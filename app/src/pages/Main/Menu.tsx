@@ -1,6 +1,7 @@
 import { Divider, Drawer, ListItemIcon, ListItemText, MenuItem, MenuList } from '@mui/material';
 
-import { MENU_ITEMS, ifTrue, mapWithIndex, MenuItemType, MenuItemIds } from '../../shared';
+import { MENU_ITEMS, mapWithIndex, MenuItemType, MenuItemIds } from '../../shared';
+import { ifTrue } from '../../shared/tools/logic.tools';
 
 interface Props {
   isOpen: boolean;

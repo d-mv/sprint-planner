@@ -3,11 +3,11 @@ import { Dayjs } from 'dayjs';
 import { useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { TEXT } from '../../shared';
-import { setupText } from '../../shared';
-import { AddDaysOff } from '../days';
 import { EngineerContext } from './engineer.contexts';
-import { useEngineers } from './useEngineers.hook';
+import { useEngineers } from '../../shared/hooks/useEngineers.hook';
+import { AddDaysOff } from './AddDaysOff';
+import { TEXT } from '../../shared/data/text.data';
+import { setupText } from '../../shared/tools/text.tools';
 
 const TXT = setupText(TEXT)('engineer');
 
@@ -24,10 +24,13 @@ export function EngineerDaysOff({ onClose }: Props) {
 
   const { update } = useEngineers();
 
-  function handleUpdate() {
+  function handleClose() {
     onClose();
     setDaysOffUpdated(false);
-    update({ ...engineer, daysOff });
+  }
+
+  function handleUpdate() {
+    update({ ...engineer, daysOff }, handleClose);
   }
 
   function handleSetDaysOff(days: Dayjs[]) {

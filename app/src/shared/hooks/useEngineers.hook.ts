@@ -1,9 +1,10 @@
 import { compose, pick } from 'ramda';
-
-import { AppContext, Engineer, engineerDaysOffToDayjs, engineersDaysOffToDayjs } from '..';
-import { AnyValue, DbEngineer, MongoDocument, RecordObject, useCommon } from '../../shared';
-import { setMessage, setEngineers, useDispatch, useSelector, updateEngineer, addEngineer } from '../../state';
 import { useContextSelector } from 'use-context-selector';
+
+import { AnyValue, DbEngineer, RecordObject, useCommon } from '..';
+import { AppContext } from '../../entities/app/app.contexts';
+import { setMessage, setEngineers, useDispatch, useSelector, updateEngineer, addEngineer } from '../../state';
+import { engineerDaysOffToDayjs, engineersDaysOffToDayjs } from '../tools/days.tools';
 
 export function useEngineers() {
   const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
@@ -46,7 +47,7 @@ export function useEngineers() {
       .catch(err => handleNegative(err.message, item));
   }
 
-  function update(data: Partial<MongoDocument<Engineer>>) {
+  function update(data: Partial<DbEngineer>, callback: () => void) {
     const item = 'update-engineer';
 
     updateIsLoading(item, true);
@@ -54,7 +55,7 @@ export function useEngineers() {
     if (error) compose(dispatch, setMessage)('');
 
     query<'OK'>('engineer', 'update', data)
-      .then(r => (r.isOK ? handlePositive(data, updateEngineer, item) : handleNegative(r.message, item)))
+      .then(r => (r.isOK ? handlePositive(data, updateEngineer, item, callback) : handleNegative(r.message, item)))
       .catch(err => handleNegative(err.message, item));
   }
 

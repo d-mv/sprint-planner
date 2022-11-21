@@ -7,9 +7,6 @@ import { FormItemContext } from '../../contexts';
 import { makeDefaultValue } from '../../tools';
 import { validateNumber } from '../../validators';
 
-/**
- *
- */
 export default function Number() {
   const { item, onValidation, isValidated, onChange, value } = useContextSelector(FormItemContext, c => c);
 

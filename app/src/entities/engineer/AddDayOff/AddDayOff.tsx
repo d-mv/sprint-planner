@@ -4,7 +4,9 @@ import dayjs, { Dayjs } from 'dayjs';
 import { compose } from 'ramda';
 import { ChangeEvent, useState } from 'react';
 
-import { TEXT, setupText, format } from '../../../shared';
+import { TEXT } from '../../../shared/data/text.data';
+import { format } from '../../../shared/lib/day.tools';
+import { setupText } from '../../../shared/tools/text.tools';
 import classes from './AddDayOff.module.scss';
 
 const TXT = setupText(TEXT)('days');

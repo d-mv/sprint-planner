@@ -4,7 +4,6 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { RecordObject, AnyValue } from '../../models';
-import { ifTrue, makeMatch, setupText, sortScenarioKeys } from '../../tools';
 import { lazyLoad } from '../render.tools';
 import { FormContext, FormInternalContext, FormItemContext } from './contexts';
 import { FormItem, FormSection, FormTypes, SectionFormItem } from './models';
@@ -18,6 +17,9 @@ import {
   getAllEnteredDataIsValid,
   getAllRequiredAreValid,
 } from './tools';
+import { makeMatch, sortScenarioKeys } from '../../tools/object.tools';
+import { setupText } from '../../tools/text.tools';
+import { ifTrue } from '../../tools/logic.tools';
 
 const RENDERS = makeMatch(
   {

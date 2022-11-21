@@ -1,8 +1,11 @@
 import { MenuItem } from '@mui/material';
 
-import { AnyValue, DbEngineer, Form, FormContext, ifTrue, RecordObject } from '../../shared';
-import { useApp } from '../../entities';
-import { getIsLoading, getScenarioByLabel, getUnassignedEngineers, useSelector } from '../../state';
+import { useApp } from '../../../entities';
+import { useSelector, getUnassignedEngineers, getScenarioByLabel, getIsLoading } from '../../../state';
+import { FormContext, Form } from '../../lib';
+import { RecordObject, AnyValue, DbEngineer } from '../../models';
+import { ifTrue } from '../../tools/logic.tools';
+
 interface Props {
   onClose: () => void;
 }

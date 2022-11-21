@@ -1,8 +1,8 @@
 import { compose, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
-import { AppContext, Sprint, sprintDateToDayjs, sprintDateToDayjsArray } from '..';
-import { AnyValue, MongoDocument, RecordObject } from '../../shared';
+import { AppContext, sprintDateToDayjs, sprintDateToDayjsArray } from '..';
+import { AnyValue, DbSprint, RecordObject } from '../../shared';
 import { setMessage, setIsLoading, setSprints, useDispatch, useSelector, addSprint } from '../../state';
 
 export function useSprints() {
@@ -14,7 +14,7 @@ export function useSprints() {
 
   const updateIsLoading = (item: string, status = false) => compose(dispatch, setIsLoading)([item, status]);
 
-  function handleAddPositive(data: MongoDocument<Sprint>) {
+  function handleAddPositive(data: DbSprint<string>) {
     compose(dispatch, addSprint, sprintDateToDayjs)(data);
     updateIsLoading('add-sprint');
   }
@@ -29,12 +29,12 @@ export function useSprints() {
 
     if (error) compose(dispatch, setMessage)('');
 
-    query<MongoDocument<Sprint>>('sprint', 'add', data)
+    query<DbSprint<string>>('sprint', 'add', data)
       .then(r => (r.isOK ? handleAddPositive(r.payload) : handleAddNegative(r.message)))
       .catch(err => handleAddNegative(err.message));
   }
 
-  function handleGetPositive(data: MongoDocument<Sprint>[]) {
+  function handleGetPositive(data: DbSprint<string>[]) {
     compose(dispatch, setSprints, sprintDateToDayjsArray)(data);
     updateIsLoading('get-sprint');
   }
@@ -49,7 +49,7 @@ export function useSprints() {
 
     if (error) compose(dispatch, setMessage)('');
 
-    query<MongoDocument<Sprint>[]>('sprint', 'getAll')
+    query<DbSprint<string>[]>('sprint', 'getAll')
       .then(r => (r.isOK ? handleGetPositive(r.payload) : handleGetNegative(r.message)))
       .catch(err => handleGetNegative(err.message));
   }

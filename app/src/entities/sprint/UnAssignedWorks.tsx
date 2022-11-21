@@ -2,11 +2,10 @@ import { List, Typography } from '@mui/material';
 import { map } from 'ramda';
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 
-import { Divider, MongoDocument } from '../../shared';
+import { DbWork, Divider } from '../../shared';
 import { useSelector, getUnAssignedWorks } from '../../state';
-import { WorkContext } from './work.contexts';
-import { Work } from './work.models';
-import { WorkLine } from './WorkLine';
+import { WorkContext } from '../work/work.contexts';
+import { WorkLine } from '../work/WorkLine';
 
 export function UnAssignedWorks() {
   const unAssignedWorks = useSelector(getUnAssignedWorks);
@@ -33,7 +32,7 @@ export function UnAssignedWorks() {
 
   if (!unAssignedWorks.length) return null;
 
-  function renderWork(work: MongoDocument<Work>) {
+  function renderWork(work: DbWork) {
     return (
       <WorkContext.Provider key={work._id} value={{ work }}>
         <WorkLine />

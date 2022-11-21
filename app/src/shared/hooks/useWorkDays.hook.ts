@@ -1,14 +1,12 @@
-import dayjs, { Dayjs } from 'dayjs';
-import { useContextSelector } from 'use-context-selector';
+import dayjs from 'dayjs';
 
-import { DbDate, Option } from '../../shared';
-import { useSelector, getSprintDays, getIsDayOff, getCurrentSprint, getWorkById } from '../../state';
-import { Engineer } from '../engineer';
-import { WorkContext, WorkToRender } from '../work';
+import { WorkToRender } from '../../entities/work/work.models';
+import { useSelector, getSprintDays, getIsDayOff } from '../../state';
+import { DbDate, DbEngineer } from '../models';
 
 export interface UseWorkDaysProps {
   workToRender: WorkToRender;
-  engineer: Engineer;
+  engineer: DbEngineer;
 }
 
 export function useWorkDays({ workToRender, engineer }: UseWorkDaysProps) {
@@ -66,34 +64,4 @@ export function useWorkDays({ workToRender, engineer }: UseWorkDaysProps) {
   const result = days.map(mapper);
 
   return { days: result, lastDay, isOverSprint };
-}
-
-export function useWorkIsOverSprint() {
-  const { work, assigned } = useContextSelector(WorkContext, c => c);
-
-  const sprint = useSelector(getCurrentSprint);
-
-  if (!assigned || !sprint) return false;
-
-  const endDate = assigned.startDate.add(work.estimate, 'days');
-
-  return endDate.isAfter(sprint.endDate, 'days');
-}
-
-export function useUnassignedWorkIsOverSprint() {
-  const sprint = useSelector(getCurrentSprint);
-
-  const getter = useSelector(getWorkById);
-
-  return function call(startDate: Option<Dayjs>, workId: string) {
-    if (!startDate || !workId) return false;
-
-    const work = getter(workId);
-
-    if (!work || !sprint) return false;
-
-    const endDate = startDate.add(work.estimate, 'days');
-
-    return endDate.isAfter(sprint.endDate);
-  };
 }

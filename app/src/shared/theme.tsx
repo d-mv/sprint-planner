@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { blue, blueGrey, lightGreen } from '@mui/material/colors';
+import { blue, blueGrey, grey, lightBlue, lightGreen } from '@mui/material/colors';
 
 export const CONSTANTS = {
   daysLineHeight: '4rem',
@@ -22,6 +22,13 @@ export const theme = createTheme({
       dark: lightGreen[600],
       contrastText: blueGrey['800'],
     },
+    primary: {
+      light: lightBlue[600],
+      main: lightBlue[700],
+      dark: lightBlue[800],
+      contrastText: grey[50],
+    },
+    background: { default: grey[50], paper: grey[100] },
   },
   typography: {
     allVariants: { fontFamily: 'Roboto', color: blueGrey['800'] },
@@ -43,6 +50,7 @@ export const theme = createTheme({
     },
     h5: {
       fontSize: '1.6rem',
+      fontWeight: 500,
     },
     h6: {
       fontSize: '1.6rem',

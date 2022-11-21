@@ -3,8 +3,11 @@ import { Dayjs } from 'dayjs';
 import { map } from 'ramda';
 import { useState } from 'react';
 
-import { IconButton, Message, TEXT, ifTrue, setupText } from '../../shared';
+import { IconButton, Message } from '../../shared';
+import { setupText } from '../../shared/tools/text.tools';
+import { TEXT } from '../../shared/data/text.data';
 import { AddDayOff } from './AddDayOff';
+import { ifTrue } from '../../shared/tools/logic.tools';
 
 const TXT = setupText(TEXT)('days');
 

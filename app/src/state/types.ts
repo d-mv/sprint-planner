@@ -1,7 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-import { Engineer, Sprint, Work } from '../entities';
-import { AnyValue, DbAssignedWork, FormScenario, MongoDocument, RecordObject } from '../shared';
+import { AnyValue, DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario, RecordObject } from '../shared';
 
 export enum StateActions {
   SET_SCENARIOS = 'setScenarios',
@@ -39,11 +38,11 @@ export interface Action<T = AnyValue> {
 
 export interface State {
   isLoading: RecordObject<boolean>;
-  sprints: MongoDocument<Sprint<Dayjs>>[];
+  sprints: DbSprint[];
   daysOff: Dayjs[];
-  engineers: MongoDocument<Engineer>[];
+  engineers: DbEngineer[];
   assignedEngineers: string[];
-  works: MongoDocument<Work>[];
+  works: DbWork[];
   assignedWorks: DbAssignedWork[];
   message: string;
   scenarios: RecordObject<FormScenario>;

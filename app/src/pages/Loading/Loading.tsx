@@ -3,8 +3,8 @@ import { Collapse, Typography } from '@mui/material';
 import { clsx } from 'clsx';
 import { path } from 'ramda';
 
+import { makeMatch } from '../../shared/tools/object.tools';
 import { getAllIsLoading, LoadingActions, useSelector } from '../../state';
-import { makeMatch } from '../../shared';
 import classes from './Loading.module.scss';
 
 const MESSAGES = makeMatch(

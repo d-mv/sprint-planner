@@ -5,14 +5,15 @@ import { clsx } from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
 import { CSSProperties, MouseEvent } from 'react';
 
-import { MongoDocument, buildId, ifTrue, CONFIG } from '../../../shared';
+import { CONFIG, DbDate } from '../../../shared';
 import { getIsDayOff, useSelector } from '../../../state';
-import { DayType } from '../days.models';
 import classes from './Day.module.scss';
+import { buildId } from '../../../shared/tools/text.tools';
+import { ifTrue } from '../../../shared/tools/logic.tools';
 
 interface Props {
   withDate?: boolean;
-  day: MongoDocument<DayType>;
+  day: DbDate;
   onClick?: (date: Dayjs) => (event: MouseEvent<HTMLButtonElement>) => void;
 }
 

@@ -1,8 +1,8 @@
 import { Typography } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 
-import { TEXT } from '../../shared';
-import { setupText } from '../../shared';
+import { TEXT } from '../../shared/data/text.data';
+import { setupText } from '../../shared/tools/text.tools';
 
 const TXT = setupText(TEXT)(['work']);
 

@@ -1,8 +1,8 @@
 import { compose, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
-import { AppContext, assignedWorkDayToDayjs, Work } from '..';
-import { AnyValue, MongoDocument, RecordObject, DbAssignedWork, useCommon } from '../../shared';
+import { AppContext, assignedWorkDayToDayjs } from '..';
+import { AnyValue, RecordObject, DbAssignedWork, useCommon, DbWork } from '../../shared';
 import {
   setMessage,
   setWorks,
@@ -23,14 +23,14 @@ export function useWorks() {
 
   const { updateIsLoading, handleNegative, handlePositive } = useCommon();
 
-  type MixedAddResult = { work: MongoDocument<Work>; assignedWork: DbAssignedWork<string> };
+  type MixedAddResult = { work: DbWork; assignedWork: DbAssignedWork<string> };
 
-  function handleAddPositive(data: MongoDocument<Work>): void;
+  function handleAddPositive(data: DbWork): void;
   function handleAddPositive(data: MixedAddResult, withAssign: boolean, callback?: () => void): void;
 
-  function handleAddPositive(data: MongoDocument<Work> | MixedAddResult, withAssign = false, callback?: () => void) {
+  function handleAddPositive(data: DbWork | MixedAddResult, withAssign = false, callback?: () => void) {
     if (!withAssign) {
-      compose(dispatch, addWork)(data as MongoDocument<Work>);
+      compose(dispatch, addWork)(data as DbWork);
     } else if ('work' in data && 'assignedWork' in data) {
       compose(dispatch, addWork)(data.work);
       compose(dispatch, addAssignedWork, assignedWorkDayToDayjs)(data.assignedWork);
@@ -66,7 +66,7 @@ export function useWorks() {
 
     if (error) compose(dispatch, setMessage)('');
 
-    query<MongoDocument<Work>[]>('work', 'getAll')
+    query<DbWork[]>('work', 'getAll')
       .then(r => (r.isOK ? handlePositive(r.payload, setWorks, item) : handleNegative(r.message, item)))
       .catch(err => handleNegative(err.message, item));
   }

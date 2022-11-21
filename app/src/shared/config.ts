@@ -1,5 +1,5 @@
-import { blueGrey, grey, indigo, pink, red } from '@mui/material/colors';
-import { env } from '.';
+import { blueGrey, grey, indigo, pink } from '@mui/material/colors';
+import { env } from './tools/env.tools';
 
 export const CONFIG = {
   mongoDb: env('REACT_APP_MONGODB_URL').value ?? '',
