@@ -103,8 +103,6 @@ export default function Form() {
 
   function handleChange(key: string) {
     return function call(value: AnyValue) {
-      // eslint-disable-next-line no-console
-      console.log(key, value);
       setData(state => ({ ...state, [key]: value }));
 
       // if required, update the list of entered required fields
@@ -117,8 +115,6 @@ export default function Form() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log(data, required, validated);
 
     if (submitData) return submitData(data);
 
@@ -139,7 +135,7 @@ export default function Form() {
     const { dataId, type } = item;
 
     return (
-      <div style={{ padding: '1rem 0', ...scenario._form?.inputLineStyle }}>
+      <div key={item.dataId} style={{ padding: '1rem 0', ...scenario._form?.inputLineStyle }}>
         <FormItemContext.Provider
           key={dataId}
           value={{
@@ -166,7 +162,7 @@ export default function Form() {
     const section = scenario.items[sectionKey] as FormSection;
 
     return (
-      <div style={{ margin: '1rem 0' }}>
+      <div key={sectionKey} style={{ margin: '1rem 0' }}>
         {ifTrue(section.label, <Typography variant='body2'>{section.label ?? ''}</Typography>)}
         <div id={`form-section-${sectionKey}`} style={section.style}>
           {map(renderSectionItem(section.items), Object.keys(section.items))}
@@ -195,7 +191,7 @@ export default function Form() {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={scenario._form?.style}>
+    <form id={scenario.id} onSubmit={handleSubmit} style={scenario._form?.style}>
       {ifTrue(scenario._form?.label, renderFormLabel)}
       <FormInternalContext.Provider value={{ statuses }}>
         {map(renderItems, Object.keys(sortScenarioKeys(scenario.items)))}

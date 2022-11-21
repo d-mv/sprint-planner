@@ -124,6 +124,7 @@ export interface FormItems {
 }
 
 export interface FormScenario {
+  id: string;
   _form?: Partial<FormOptions>;
   items: { [key: string]: FormItem | FormSection };
   buttons: FormButton[];

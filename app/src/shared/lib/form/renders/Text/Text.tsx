@@ -41,15 +41,12 @@ export default function Text() {
     if (!isTouched) setIsTouched(true);
   }
 
-  // eslint-disable-next-line no-console
-  console.log(item.autoFocus, item.label);
   return (
     <TextField
       autoCapitalize={item.autoCapitalize}
       autoComplete={item.autoComplete}
       autoFocus={item.autoFocus}
       className={className}
-      defaultValue={defaultValue}
       error={validation && isTouched && !isValidated}
       id={item.dataId}
       label={label}
@@ -59,7 +56,7 @@ export default function Text() {
       required={isRequired}
       style={{ width: '100%', ...style }}
       variant='standard'
-      value={value ?? ''}
+      value={value ?? defaultValue}
     />
   );
 }

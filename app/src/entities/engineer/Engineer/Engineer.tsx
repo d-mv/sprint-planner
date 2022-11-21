@@ -1,13 +1,10 @@
-import { Collapse, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { clsx } from 'clsx';
 import { useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { CountOfCount, IconButton, Message } from '../../../shared';
-import { TEXT } from '../../../shared';
+import { CountOfCount, IconButton, Message, TEXT, CONSTANTS, ifTrue, setupText, LazyLoad } from '../../../shared';
 import { getUnAssignedWorksQty, getWorkDaysLeft, getWorkDaysPerEngineer, useSelector } from '../../../state';
-import { CONSTANTS } from '../../../shared';
-import { ifTrue, setupText } from '../../../shared';
 import { AssignWork } from '../../work';
 import { CreateAssignWork } from '../../work/CreateAssignWork';
 import { EngineerContext } from '../engineer.contexts';
@@ -113,6 +110,18 @@ export function Engineer() {
     );
   }
 
+  function renderForms() {
+    return (
+      <div className='padding-1'>
+        <LazyLoad>
+          {ifTrue(isCreateOpen, renderCreate)}
+          {ifTrue(isAssignOpen, renderAssign)}
+          {ifTrue(isDaysOffOpen, renderDaysOff)}
+        </LazyLoad>
+      </div>
+    );
+  }
+
   return (
     <div className='column s-between'>
       <div
@@ -132,9 +141,7 @@ export function Engineer() {
           {ifTrue(showActions, renderActions())}
           <CountOfCount total={workDays.length} left={workDaysLeft} tooltip='Points available of total' />
         </div>
-        {ifTrue(isCreateOpen, renderCreate)}
-        {ifTrue(isAssignOpen, renderAssign)}
-        {ifTrue(isDaysOffOpen, renderDaysOff)}
+        {ifTrue(isAssignOpen || isCreateOpen || isDaysOffOpen, renderForms)}
       </div>
       <EngineerWorks />
     </div>

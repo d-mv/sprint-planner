@@ -36,20 +36,16 @@ export function CreateAssignWork({ onCancel }: Props) {
   }
 
   return (
-    <div className={clsx('padding-1', classes.container)}>
-      <LazyLoad>
-        <FormContext.Provider
-          value={{
-            scenario,
-            submitData: handleSubmit,
-            onError: handleError,
-            process: { submit: isLoading('add-work') },
-            actions: { cancel: onCancel },
-          }}
-        >
-          <Form />
-        </FormContext.Provider>
-      </LazyLoad>
-    </div>
+    <FormContext.Provider
+      value={{
+        scenario,
+        submitData: handleSubmit,
+        onError: handleError,
+        process: { submit: isLoading('add-work') },
+        actions: { cancel: onCancel },
+      }}
+    >
+      <Form />
+    </FormContext.Provider>
   );
 }

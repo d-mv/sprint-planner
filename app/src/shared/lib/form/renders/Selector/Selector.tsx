@@ -98,9 +98,6 @@ export default function Selector() {
     return <Message className='margin-center width-fit txt-center' message={missingDataMessage ?? 'No data'} />;
   }
 
-  // eslint-disable-next-line no-console
-  console.log('>>', defaultValue);
-
   function renderSelector() {
     return (
       <>

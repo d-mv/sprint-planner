@@ -1,19 +1,14 @@
 import { TextField } from '@mui/material';
-import dayjs from 'dayjs';
-import { compose } from 'ramda';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { format } from '../../../day.tools';
 import { FormContext, FormItemContext } from '../../contexts';
-import { checkIfAddDays, checkIfSubtractDays, makeDefaultValue } from '../../tools';
+import { makeDefaultValue } from '../../tools';
 
 export default function DateInput() {
   const { item, isValidated, onValidation, onChange, value } = useContextSelector(FormItemContext, c => c);
 
   const triggerFns = useContextSelector(FormContext, c => c.triggers);
-
-  const [isTouched, setIsTouched] = useState(false);
 
   const { isRequired, className, style, label, validation, triggers } = item;
 
@@ -39,10 +34,6 @@ export default function DateInput() {
     if (e.currentTarget.value) sendUpdate(e.currentTarget.value);
   }
 
-  function handleFocus() {
-    // if (!isTouched) setIsTouched(true);
-  }
-
   return (
     <TextField
       id={item.dataId}
@@ -51,7 +42,6 @@ export default function DateInput() {
       label={label}
       variant='standard'
       onChange={handleChange}
-      onBlur={handleFocus}
       error={validation && !isValidated}
       value={defaultValue}
       style={style}

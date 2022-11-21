@@ -43,7 +43,7 @@ export function AssignWork({ onCancel }: Props) {
 
   const isLoading = useSelector(getIsLoading)('add-assigned-work');
 
-  const scenario = useSelector(getScenarioByLabel('createWork'));
+  const scenario = useSelector(getScenarioByLabel('assignWork'));
 
   useEffect(() => {
     setIsOverSprint(checkIfIsOverSprint(startDate, selected));
@@ -78,36 +78,32 @@ export function AssignWork({ onCancel }: Props) {
   }
 
   return (
-    <div className={classes.container}>
-      <LazyLoad>
-        <FormContext.Provider
-          value={{
-            scenario,
-            submitData: handleSubmit,
-            onError: handleError,
-            process: { submit: isLoading },
-            actions: { cancel: onCancel },
-            dataSources: {
-              workId: getWorks,
-            },
-            renders: {
-              workId: renderWork,
-            },
-            initial: {
-              workId: unassignedWorks[0]._id,
-            },
-            components: {
-              message: () => ifTrue(isOverSprint, () => <WorkNextSprintMessage />, <div style={{ width: '30rem' }} />),
-            },
-            triggers: {
-              date: dateTrigger,
-              workId: workIdTrigger,
-            },
-          }}
-        >
-          <Form />
-        </FormContext.Provider>
-      </LazyLoad>
-    </div>
+    <FormContext.Provider
+      value={{
+        scenario,
+        submitData: handleSubmit,
+        onError: handleError,
+        process: { submit: isLoading },
+        actions: { cancel: onCancel },
+        dataSources: {
+          workId: getWorks,
+        },
+        renders: {
+          workId: renderWork,
+        },
+        initial: {
+          workId: unassignedWorks[0]._id,
+        },
+        components: {
+          message: () => ifTrue(isOverSprint, () => <WorkNextSprintMessage />, <div style={{ width: '30rem' }} />),
+        },
+        triggers: {
+          date: dateTrigger,
+          workId: workIdTrigger,
+        },
+      }}
+    >
+      <Form />
+    </FormContext.Provider>
   );
 }

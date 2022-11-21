@@ -1,6 +1,7 @@
-import { FormScenario, FormTypes } from '../models';
+import { FormItemValueTypes, FormScenario, FormTypes } from '../models';
 
 export const createSprintScenario: FormScenario = {
+  id: 'createSprint',
   _form: {
     style: {
       width: 'fit-content',
@@ -28,7 +29,7 @@ export const createSprintScenario: FormScenario = {
           label: 'Start Date',
           type: FormTypes.DATE,
           isRequired: true,
-          defaultValue: 'current',
+          defaultValue: { type: FormItemValueTypes.DATE, value: 'current' },
         },
         _spacer1: {
           dataId: '',
@@ -40,7 +41,7 @@ export const createSprintScenario: FormScenario = {
           label: 'End Date',
           type: FormTypes.DATE,
           isRequired: true,
-          defaultValue: '+14',
+          defaultValue: { type: FormItemValueTypes.DATE, value: '+14' },
         },
       },
     },

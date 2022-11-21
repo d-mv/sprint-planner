@@ -1,6 +1,7 @@
 import { FormScenario, FormTypes } from '../models';
 
 export const assignEngineerScenario: FormScenario = {
+  id: 'assignEngineer',
   _form: {
     style: {
       width: '40rem',
