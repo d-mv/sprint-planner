@@ -1,12 +1,10 @@
 import { clsx } from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
-import { assoc, compose, o, omit, path, pick } from 'ramda';
+import { assoc, compose, omit, path, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
 import { AnyValue, RecordObject, Form, FormContext, LazyLoad } from '../../../shared';
-import { getIsLoading, setMessage, useDispatch, useSelector } from '../../../state';
-import { EngineerContext } from '../../engineer/engineer.contexts';
-import { createWorkFormScenario } from '../createWork.scenario';
+import { getIsLoading, getScenarioByLabel, setMessage, useDispatch, useSelector } from '../../../state';
 import { useWorks } from '../useWorks.hook';
 import { WorkContext } from '../work.contexts';
 import classes from './EditWork.module.scss';
@@ -15,18 +13,8 @@ interface Props {
   onCancel: () => void;
 }
 
-/**
- *
- * @param root0
- * @param root0.onCancel
- */
 export function EditWork({ onCancel }: Props) {
-  const engineerId = useContextSelector(EngineerContext, c => c.engineer._id);
-
   const { assigned, work } = useContextSelector(WorkContext, c => c);
-
-  // eslint-disable-next-line no-console
-  console.log(work);
 
   const dispatch = useDispatch();
 
@@ -34,29 +22,18 @@ export function EditWork({ onCancel }: Props) {
 
   const { update } = useWorks();
 
-  /**
-   *
-   * @param form
-   */
-  function handleSubmit(form: RecordObject<AnyValue>) {
-    const startDate = String(path(['startDate'], form));
+  const scenario = useSelector(getScenarioByLabel('createWork'));
 
-    update(form);
-    onCancel();
+  if (!scenario) return null;
+
+  function handleSubmit(form: RecordObject<AnyValue>) {
+    update(form, onCancel);
   }
 
-  /**
-   *
-   * @param message
-   */
   function handleError(message: string) {
     compose(dispatch, setMessage)(message);
   }
 
-  /**
-   *
-   * @param work
-   */
   function getWorkToEdit(work: RecordObject<AnyValue>) {
     let picked = pick(['_id', 'estimate', 'jiraEpic', 'jiraTicket', 'startDate', 'title'], work);
 
@@ -76,7 +53,7 @@ export function EditWork({ onCancel }: Props) {
       <LazyLoad>
         <FormContext.Provider
           value={{
-            scenario: createWorkFormScenario,
+            scenario,
             submitData: handleSubmit,
             onError: handleError,
             process: { submit: isLoading },

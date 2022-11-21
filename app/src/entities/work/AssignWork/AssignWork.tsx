@@ -4,12 +4,17 @@ import { compose } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { AnyValue, MongoDocument, Option, RecordObject, Form, FormContext, LazyLoad } from '../../../shared';
-import { getIsLoading, getUnAssignedWorks, setMessage, useDispatch, useSelector } from '../../../state';
-import { ifTrue } from '../../../shared';
+import { AnyValue, MongoDocument, Option, RecordObject, Form, FormContext, LazyLoad, ifTrue } from '../../../shared';
+import {
+  getIsLoading,
+  getScenarioByLabel,
+  getUnAssignedWorks,
+  setMessage,
+  useDispatch,
+  useSelector,
+} from '../../../state';
 import { useUnassignedWorkIsOverSprint } from '../../days';
 import { EngineerContext } from '../../engineer/engineer.contexts';
-import { assignWorkFormScenario } from '../assignWork.scenario';
 import { useAssignedWork } from '../useAssignedWorks.hook';
 import { Work } from '../work.models';
 import { WorkNextSprintMessage } from '../WorkNextSprintMessage';
@@ -38,9 +43,13 @@ export function AssignWork({ onCancel }: Props) {
 
   const isLoading = useSelector(getIsLoading)('add-assigned-work');
 
+  const scenario = useSelector(getScenarioByLabel('createWork'));
+
   useEffect(() => {
     setIsOverSprint(checkIfIsOverSprint(startDate, selected));
-  }, [selected, startDate]);
+  }, [checkIfIsOverSprint, selected, startDate]);
+
+  if (!scenario) return null;
 
   const getWorks = () => unassignedWorks;
 
@@ -53,9 +62,7 @@ export function AssignWork({ onCancel }: Props) {
   }
 
   function handleSubmit(form: RecordObject<AnyValue>) {
-    add({ ...form, engineerId });
-
-    onCancel();
+    add({ ...form, engineerId }, onCancel);
   }
 
   function handleError(message: string) {
@@ -75,7 +82,7 @@ export function AssignWork({ onCancel }: Props) {
       <LazyLoad>
         <FormContext.Provider
           value={{
-            scenario: assignWorkFormScenario,
+            scenario,
             submitData: handleSubmit,
             onError: handleError,
             process: { submit: isLoading },

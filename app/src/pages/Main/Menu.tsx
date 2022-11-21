@@ -17,7 +17,7 @@ export function Menu({ isOpen, onClose, onAction }: Props) {
 
   function renderMenuItem({ id, label, Icon }: MenuItemType, index: number) {
     return (
-      <span>
+      <span key={id}>
         {ifTrue(index === MENU_ITEMS.length - 1, <Divider />)}
         <MenuItem onClick={handleAction(id)}>
           <ListItemIcon>

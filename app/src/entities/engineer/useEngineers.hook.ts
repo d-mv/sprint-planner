@@ -2,15 +2,7 @@ import { compose, pick } from 'ramda';
 
 import { AppContext, Engineer, engineerDaysOffToDayjs, engineersDaysOffToDayjs } from '..';
 import { AnyValue, DbEngineer, MongoDocument, RecordObject, useCommon } from '../../shared';
-import {
-  setMessage,
-  setEngineers,
-  setIsLoading,
-  useDispatch,
-  useSelector,
-  updateEngineer,
-  addEngineer,
-} from '../../state';
+import { setMessage, setEngineers, useDispatch, useSelector, updateEngineer, addEngineer } from '../../state';
 import { useContextSelector } from 'use-context-selector';
 
 export function useEngineers() {
@@ -18,26 +10,11 @@ export function useEngineers() {
 
   const dispatch = useDispatch();
 
-  const { updateIsLoading, handleNegative } = useCommon();
+  const { updateIsLoading, handleNegative, handlePositive } = useCommon();
 
   const error = useSelector(getMessage);
 
-  function handleAddPositive(data: DbEngineer<string>) {
-    compose(dispatch, addEngineer, engineerDaysOffToDayjs)(data);
-    updateIsLoading('add-engineer');
-  }
-
-  function handleGetPositive(data: DbEngineer<string>[]) {
-    compose(dispatch, setEngineers, engineersDaysOffToDayjs)(data);
-    compose(dispatch, setIsLoading)(['get-engineers', false]);
-  }
-
-  function handleUpdatePositive(data: Partial<MongoDocument<Engineer>>) {
-    compose(dispatch, updateEngineer)(data);
-    compose(dispatch, setIsLoading)(['update-engineer', false]);
-  }
-
-  function add(data: RecordObject<AnyValue>) {
+  function add(data: RecordObject<AnyValue>, callback: () => void) {
     const item = 'add-engineer';
 
     updateIsLoading(item, true);
@@ -45,7 +22,11 @@ export function useEngineers() {
     if (error) compose(dispatch, setMessage)('');
 
     query<DbEngineer<string>>('engineer', 'add', data)
-      .then(r => (r.isOK ? handleAddPositive(r.payload) : handleNegative(r.message, item)))
+      .then(r =>
+        r.isOK
+          ? handlePositive(engineerDaysOffToDayjs(r.payload), addEngineer, item, callback)
+          : handleNegative(r.message, item),
+      )
       .catch(err => handleNegative(err.message, item));
   }
 
@@ -57,7 +38,11 @@ export function useEngineers() {
     if (error) compose(dispatch, setMessage)('');
 
     query<DbEngineer<string>[]>('engineer', 'getAll')
-      .then(r => (r.isOK ? handleGetPositive(r.payload) : handleNegative(r.message, item)))
+      .then(r =>
+        r.isOK
+          ? handlePositive(engineersDaysOffToDayjs(r.payload), setEngineers, item)
+          : handleNegative(r.message, item),
+      )
       .catch(err => handleNegative(err.message, item));
   }
 
@@ -69,7 +54,7 @@ export function useEngineers() {
     if (error) compose(dispatch, setMessage)('');
 
     query<'OK'>('engineer', 'update', data)
-      .then(r => (r.isOK ? handleUpdatePositive(data) : handleNegative(r.message, item)))
+      .then(r => (r.isOK ? handlePositive(data, updateEngineer, item) : handleNegative(r.message, item)))
       .catch(err => handleNegative(err.message, item));
   }
 

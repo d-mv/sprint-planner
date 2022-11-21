@@ -2,11 +2,10 @@ import { compose, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
 import { AppContext, AssignedWork, assignedWorkDayToDayjs, assignedWorksDayToDayjs } from '..';
-import { DbAssignedWork } from '../../shared';
+import { DbAssignedWork, useCommon } from '../../shared';
 import {
   setAssignedWorks,
   setMessage,
-  setIsLoading,
   useDispatch,
   useSelector,
   removeAssignedWork,
@@ -20,44 +19,38 @@ export function useAssignedWork() {
 
   const error = useSelector(getMessage);
 
-  function handleGetPositive(data: DbAssignedWork<string>[]) {
-    compose(dispatch, setAssignedWorks, assignedWorksDayToDayjs)(data);
-    compose(dispatch, setIsLoading)(['get-assigned-work', false]);
-  }
+  const { updateIsLoading, handleNegative, handlePositive } = useCommon();
 
-  function handleGetNegative(message: string) {
-    compose(dispatch, setMessage)(message);
-    compose(dispatch, setIsLoading)(['get-assigned-work', false]);
-  }
+  function add(data: Partial<AssignedWork>, callback: () => void) {
+    const item = 'add-assigned-work';
 
-  function handleAddPositive(data: DbAssignedWork<string>) {
-    compose(dispatch, addAssignedWork, assignedWorkDayToDayjs)(data);
-    compose(dispatch, setIsLoading)(['add-assigned-work', false]);
-  }
-
-  function handleAddNegative(message: string) {
-    compose(dispatch, setMessage)(message);
-    compose(dispatch, setIsLoading)(['add-assigned-work', false]);
-  }
-
-  function add(data: Partial<AssignedWork>) {
-    compose(dispatch, setIsLoading)(['add-assigned-work', true]);
+    updateIsLoading(item, true);
 
     if (error) compose(dispatch, setMessage)('');
 
     query<DbAssignedWork<string>>('assigned_work', 'add', data)
-      .then(r => (r.isOK ? handleAddPositive(r.payload) : handleAddNegative(r.message)))
-      .catch(err => handleAddNegative(err.message));
+      .then(r =>
+        r.isOK
+          ? handlePositive(assignedWorkDayToDayjs(r.payload), addAssignedWork, item, callback)
+          : handleNegative(r.message, item),
+      )
+      .catch(err => handleNegative(err.message, item));
   }
 
   function get() {
-    compose(dispatch, setIsLoading)(['get-assigned-work', true]);
+    const item = 'get-assigned-work';
+
+    updateIsLoading(item, true);
 
     if (error) compose(dispatch, setMessage)('');
 
     query<DbAssignedWork<string>[]>('assigned_work', 'getAll')
-      .then(r => (r.isOK ? handleGetPositive(r.payload) : handleGetNegative(r.message)))
-      .catch(err => handleGetNegative(err.message));
+      .then(r =>
+        r.isOK
+          ? handlePositive(assignedWorksDayToDayjs(r.payload), setAssignedWorks, item)
+          : handleNegative(r.message, item),
+      )
+      .catch(err => handleNegative(err.message, item));
   }
 
   function update() {
@@ -65,24 +58,16 @@ export function useAssignedWork() {
     console.log('update');
   }
 
-  function handleRemovePositive(data: string) {
-    compose(dispatch, removeAssignedWork)(data);
-    compose(dispatch, setIsLoading)(['remove-assigned-work', false]);
-  }
-
-  function handleRemoveNegative(message: string) {
-    compose(dispatch, setMessage)(message);
-    compose(dispatch, setIsLoading)(['remove-assigned-work', false]);
-  }
-
   function remove(assignedWorkId: string) {
-    compose(dispatch, setIsLoading)(['remove-assigned-work', true]);
+    const item = 'remove-assigned-work';
+
+    updateIsLoading(item, true);
 
     if (error) compose(dispatch, setMessage)('');
 
     query<'OK'>('assigned_work', 'delete', assignedWorkId)
-      .then(r => (r.isOK ? handleRemovePositive(assignedWorkId) : handleRemoveNegative(r.message)))
-      .catch(err => handleRemoveNegative(err.message));
+      .then(r => (r.isOK ? handlePositive(assignedWorkId, removeAssignedWork, item) : handleNegative(r.message, item)))
+      .catch(err => handleNegative(err.message, item));
   }
 
   return { add, get, update, remove };

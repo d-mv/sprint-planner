@@ -1,4 +1,4 @@
-import { FormScenario, FormTypes } from '../../shared';
+import { FormScenario, FormTypes } from '../models';
 
 export const createEngineerScenario: FormScenario = {
   _form: {

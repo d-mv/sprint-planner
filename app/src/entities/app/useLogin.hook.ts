@@ -1,7 +1,8 @@
 import { compose, pick } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
+import { useCommon } from '../../shared';
 
-import { setMessage, setIsConnected, setIsLoading, useDispatch, useSelector } from '../../state';
+import { setMessage, setIsConnected, useDispatch, useSelector } from '../../state';
 import { AppContext } from './app.contexts';
 
 export function useLogin() {
@@ -11,44 +12,30 @@ export function useLogin() {
 
   const error = useSelector(getMessage);
 
-  function handlePositive() {
-    compose(dispatch, setIsConnected)(true);
-    compose(dispatch, setIsLoading)(['login', false]);
-  }
-
-  function handleNegative(message: string) {
-    compose(dispatch, setMessage)(message);
-    compose(dispatch, setIsLoading)(['login', false]);
-  }
+  const { updateIsLoading, handleNegative, handlePositive } = useCommon();
 
   function connect(url: string) {
-    compose(dispatch, setIsLoading)(['login', true]);
+    const item = 'login';
+
+    updateIsLoading(item, true);
 
     if (error) compose(dispatch, setMessage)('');
 
     query<'OK'>('auth', 'connect', url)
-      .then(r => (r.isOK ? handlePositive() : handleNegative(r.message)))
-      .catch(err => handleNegative(err.message));
-  }
-
-  function handleDisconnectPositive() {
-    compose(dispatch, setIsConnected)(false);
-    compose(dispatch, setIsLoading)(['logout', false]);
-  }
-
-  function handleDisconnectNegative(message: string) {
-    compose(dispatch, setMessage)(message);
-    compose(dispatch, setIsLoading)(['logout', false]);
+      .then(r => (r.isOK ? handlePositive(true, setIsConnected, item) : handleNegative(r.message, item)))
+      .catch(err => handleNegative(err.message, item));
   }
 
   function disconnect() {
-    compose(dispatch, setIsLoading)(['logout', true]);
+    const item = 'logout';
+
+    updateIsLoading(item, true);
 
     if (error) compose(dispatch, setMessage)('');
 
     query<'OK'>('auth', 'disconnect')
-      .then(r => (r.isOK ? handleDisconnectPositive() : handleDisconnectNegative(r.message)))
-      .catch(err => handleDisconnectNegative(err.message));
+      .then(r => (r.isOK ? handlePositive(false, setIsConnected, item) : handleNegative(r.message, item)))
+      .catch(err => handleNegative(err.message, item));
   }
 
   return { connect, disconnect };

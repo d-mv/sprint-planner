@@ -1,6 +1,6 @@
-import { FormItemValueTypes, FormScenario, FormTypes } from '../../shared';
+import { FormScenario, FormTypes, FormItemValueTypes } from '../models';
 
-export const createWorkFormScenario: FormScenario = {
+export const createWorkScenario: FormScenario = {
   _form: {
     style: {
       width: '90%',

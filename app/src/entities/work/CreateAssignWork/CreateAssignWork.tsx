@@ -3,9 +3,8 @@ import { compose, o, path } from 'ramda';
 import { useContextSelector } from 'use-context-selector';
 
 import { AnyValue, RecordObject, Form, FormContext, LazyLoad } from '../../../shared';
-import { getIsLoading, setMessage, useDispatch, useSelector } from '../../../state';
+import { getIsLoading, getScenarioByLabel, setMessage, useDispatch, useSelector } from '../../../state';
 import { EngineerContext } from '../../engineer/engineer.contexts';
-import { createWorkFormScenario } from '../createWork.scenario';
 import { useWorks } from '../useWorks.hook';
 import classes from './CreateAssignWork.module.scss';
 
@@ -18,15 +17,18 @@ export function CreateAssignWork({ onCancel }: Props) {
 
   const dispatch = useDispatch();
 
-  const isLoading = useSelector(getIsLoading)('add-work');
+  const isLoading = useSelector(getIsLoading);
 
   const { add } = useWorks();
+
+  const scenario = useSelector(getScenarioByLabel('createWork'));
+
+  if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
     const startDate = String(path(['startDate'], form));
 
-    add(form, { engineerId, startDate });
-    onCancel();
+    add(form, { engineerId, startDate }, onCancel);
   }
 
   function handleError(message: string) {
@@ -38,10 +40,10 @@ export function CreateAssignWork({ onCancel }: Props) {
       <LazyLoad>
         <FormContext.Provider
           value={{
-            scenario: createWorkFormScenario,
+            scenario,
             submitData: handleSubmit,
             onError: handleError,
-            process: { submit: isLoading },
+            process: { submit: isLoading('add-work') },
             actions: { cancel: onCancel },
           }}
         >

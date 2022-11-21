@@ -1,10 +1,6 @@
-// import { disconnect } from 'mongoose';
-
-// import { connectDb } from '../db';
 import { failure, PromisedResult, Result, success } from '..';
 import { ControllerRequest } from '../../models';
-// import { Query } from '../models';
-// import { STATE } from '../../state';
+import { initSeed } from '../../seed';
 import { makeMatch } from '../../tools';
 
 export const AuthController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
@@ -14,6 +10,10 @@ export const AuthController = makeMatch<(arg: ControllerRequest) => PromisedResu
 
       await context.db.connect(query.payload);
       context.state.set('isConnectedToDb', true);
+
+      const result = await context.collections.scenario.find({});
+
+      if (!result.length) await initSeed();
 
       return success('OK');
     },

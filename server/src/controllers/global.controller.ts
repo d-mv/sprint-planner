@@ -1,12 +1,17 @@
 import { failure, PromisedResult, Result, success } from '../entities';
 import { ControllerRequest } from '../models';
-import { seed } from '../seed';
+import { syntheticSeed, initSeed } from '../seed';
 import { makeMatch } from '../tools';
 
 export const GlobalController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
   {
     seed: async () => {
-      await seed();
+      await syntheticSeed();
+
+      return success('OK');
+    },
+    init: async () => {
+      await initSeed();
 
       return success('OK');
     },

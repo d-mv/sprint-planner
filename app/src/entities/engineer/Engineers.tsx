@@ -5,7 +5,7 @@ import { getAssignedEngineers, getMessage, useSelector } from '../../state';
 import { Engineer } from './Engineer';
 import { MongoDocument, ErrorMessage, CONSTANTS, ifTrue } from '../../shared';
 import { EngineerContext } from './engineer.contexts';
-import { ColorLegend } from '../app';
+import { ColorLegend } from './ColorLegend';
 
 export function Engineers() {
   const assignedEngineers = useSelector(getAssignedEngineers);
