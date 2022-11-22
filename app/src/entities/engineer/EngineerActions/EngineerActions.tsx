@@ -1,18 +1,17 @@
+import { setupText, Optional, ifTrue } from '@mv-d/toolbelt';
 import { clsx } from 'clsx';
 import { useContextSelector } from 'use-context-selector';
 
-import { IconButton, Option } from '../../../shared';
+import { IconButton } from '../../../shared';
 import { useSelector, getUnAssignedWorksQty, getWorkDaysLeft } from '../../../state';
 import { EngineerContext } from '../engineer.contexts';
 import { TEXT } from '../../../shared/data/text.data';
-import { setupText } from '../../../shared/tools/text.tools';
 import classes from './EngineerActions.module.scss';
-import { ifTrue } from '../../../shared/tools/logic.tools';
 
 const TXT = setupText(TEXT)('engineer');
 
 interface Props {
-  isOpen: Option<string>;
+  isOpen: Optional<string>;
   toggleIsOpen: (arg0: string) => void;
 }
 

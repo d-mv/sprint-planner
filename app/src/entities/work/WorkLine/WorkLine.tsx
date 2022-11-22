@@ -1,11 +1,11 @@
 import { Typography } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
+import { ifTrue } from '@mv-d/toolbelt';
 import { clsx } from 'clsx';
 import { PropsWithChildren } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { ChipWithTooltip, Tooltip, useWorkIsOverSprint } from '../../../shared';
-import { ifTrue } from '../../../shared/tools/logic.tools';
 import { WorkContext } from '../work.contexts';
 import classes from './WorkLine.module.scss';
 

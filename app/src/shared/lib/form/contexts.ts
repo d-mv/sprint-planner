@@ -1,6 +1,6 @@
+import { AnyValue, RecordObject } from '@mv-d/toolbelt';
 import { createContext } from 'use-context-selector';
 
-import { RecordObject, AnyValue } from '../../models';
 import { FormScenario, FormItem, SectionFormItem } from './models';
 
 export interface FormContextType {

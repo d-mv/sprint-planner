@@ -1,13 +1,4 @@
-import { RecordObject } from '..';
-
-export function makeMatch<T = unknown, K = T>(object: RecordObject<T>, defaultReturn: K) {
-  return new Proxy(object, {
-    get(target, prop) {
-      if (prop in target) return target[prop.toString()];
-      else return defaultReturn;
-    },
-  });
-}
+import { RecordObject } from '@mv-d/toolbelt';
 
 export function sortScenarioKeys<Scenario>(obj: unknown): Scenario {
   if (!obj || typeof obj !== 'object') return obj as Scenario;

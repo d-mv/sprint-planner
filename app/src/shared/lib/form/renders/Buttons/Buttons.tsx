@@ -1,9 +1,7 @@
 import { Button } from '@mui/material';
-import { map, path, pick } from 'ramda';
-
+import { R, makeMatch, ifTrue } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
-import { ifTrue } from '../../../../tools/logic.tools';
-import { makeMatch } from '../../../../tools/object.tools';
+
 import { Divider, Spinner } from '../../../../ui/atoms';
 import { FormContext, FormInternalContext } from '../../contexts';
 import { FormButton } from '../../models';
@@ -18,14 +16,14 @@ const SPINNER_COLOR = makeMatch(
 
 export function Buttons() {
   const { scenario, actions, process, disabled } = useContextSelector(FormContext, c =>
-    pick(['scenario', 'actions', 'process', 'disabled'], c),
+    R.pick(['scenario', 'actions', 'process', 'disabled'], c),
   );
 
   const statuses = useContextSelector(FormInternalContext, c => c.statuses);
 
   const isProcessingPresent = process !== undefined;
 
-  const isProcess = (buttonItem: FormButton) => Boolean(path([buttonItem.id], process));
+  const isProcess = (buttonItem: FormButton) => Boolean(R.path([buttonItem.id], process));
 
   function getStatus(id: string, status: string): boolean {
     if (!statuses) return false;
@@ -67,7 +65,7 @@ export function Buttons() {
       <Button
         key={buttonItem.label}
         onClick={action}
-        type={ifTrue(noAction, 'submit')}
+        type={noAction ? 'submit' : 'button'}
         disabled={buttonItem.isDisabled ?? disabled?.includes(buttonItem.id) ?? getStatus(buttonItem.id, 'disabled')}
         className={ifTrue(isProcess(buttonItem), classes.processing)}
         variant={buttonItem.variant ?? 'contained'}
@@ -83,7 +81,7 @@ export function Buttons() {
   return (
     <div>
       <Divider width='100%' />
-      <div className={classes.container}>{map(renderButton, scenario.buttons)}</div>
+      <div className={classes.container}>{R.map(renderButton, scenario.buttons)}</div>
     </div>
   );
 }

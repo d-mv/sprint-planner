@@ -1,3 +1,4 @@
+import { makeMatch } from '@mv-d/toolbelt';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton as MuiIconButton, SvgIconProps, SxProps } from '@mui/material';
@@ -7,7 +8,6 @@ import SettingsSystemDaydreamRoundedIcon from '@mui/icons-material/SettingsSyste
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { Tooltip } from './Tooltip';
-import { makeMatch } from '../../tools/object.tools';
 
 const VARIANTS = makeMatch(
   {

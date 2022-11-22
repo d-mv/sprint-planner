@@ -1,7 +1,8 @@
+import { AnyValue, RecordObject } from '@mv-d/toolbelt';
+
 import { useSprints } from '../../../entities';
 import { useSelector, getScenarioByLabel } from '../../../state';
 import { FormContext, Form } from '../../lib';
-import { RecordObject, AnyValue } from '../../models';
 
 interface Props {
   onClose: () => void;

@@ -1,7 +1,6 @@
 import { Tooltip as MuiTooltip, Typography } from '@mui/material';
+import { ifTrue } from '@mv-d/toolbelt';
 import { ReactElement } from 'react';
-
-import { ifTrue } from '../../tools/logic.tools';
 
 interface Props {
   message: string;

@@ -1,12 +1,13 @@
-import { CONSTANTS, Option } from '../../shared';
-import { ifTrue } from '../../shared/tools/logic.tools';
+import { ifTrue, Optional } from '@mv-d/toolbelt';
+
+import { CONSTANTS } from '../../shared';
 import { CountOfCount } from './CountOfCount';
 import { EngineerActions } from './EngineerActions';
 import { EngineerName } from './EngineerName';
 
 interface Props {
   showActions: boolean;
-  isOpen: Option<string>;
+  isOpen: Optional<string>;
   toggleIsOpen: (arg0: string) => void;
 }
 

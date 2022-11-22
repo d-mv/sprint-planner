@@ -11,7 +11,7 @@ import './shared/classes.css';
 import { App } from './app';
 import reportWebVitals from './reportWebVitals';
 import { getMessage, StateProvider, useDispatch } from './state';
-import { setupQuery, theme } from './shared';
+import { CONFIG, setupQuery, theme } from './shared';
 import { AppContext } from './entities';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
@@ -38,6 +38,9 @@ root.render(
     </StateProvider>
   </StrictMode>,
 );
+
+// eslint-disable-next-line no-console
+if (CONFIG.isDev) console.log(CONFIG);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

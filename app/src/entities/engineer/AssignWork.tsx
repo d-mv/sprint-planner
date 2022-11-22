@@ -1,10 +1,11 @@
+import { AnyValue, ifTrue, Optional, RecordObject } from '@mv-d/toolbelt';
 import { MenuItem } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { compose } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { AnyValue, Option, RecordObject, Form, FormContext, useUnassignedWorkIsOverSprint, DbWork } from '../../shared';
+import { Form, FormContext, useUnassignedWorkIsOverSprint, DbWork } from '../../shared';
 import {
   getIsLoading,
   getScenarioByLabel,
@@ -16,7 +17,6 @@ import {
 import { EngineerContext } from './engineer.contexts';
 import { useAssignedWork } from '../work/useAssignedWorks.hook';
 import { WorkNextSprintMessage } from './WorkNextSprintMessage';
-import { ifTrue } from '../../shared/tools/logic.tools';
 
 interface Props {
   onCancel: () => void;
@@ -29,7 +29,7 @@ export function AssignWork({ onCancel }: Props) {
 
   const [selected, setSelected] = useState('');
 
-  const [startDate, setStartDate] = useState<Option<Dayjs>>();
+  const [startDate, setStartDate] = useState<Optional<Dayjs>>();
 
   const { add } = useAssignedWork();
 

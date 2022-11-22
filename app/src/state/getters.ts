@@ -1,16 +1,16 @@
+import { Optional, R } from '@mv-d/toolbelt';
 import dayjs, { Dayjs } from 'dayjs';
 import memoizeOne from 'memoize-one';
-import { omit, path, sum } from 'ramda';
 
 import { State } from '.';
 import { WorkToRender } from '../entities';
-import { DbWork, DbWorkToRender, FormScenario, Option } from '../shared';
+import { DbWork, DbWorkToRender, FormScenario } from '../shared';
 
 export const getScenarios = (state: State) => state.scenarios;
 
 export const getScenarioByLabel =
   (label: string) =>
-  (state: State): Option<FormScenario> => {
+  (state: State): Optional<FormScenario> => {
     const result = Object.entries(state.scenarios).find(([key]) => key === label);
 
     if (!result || !result[1]) return undefined;
@@ -29,7 +29,7 @@ export const getItemsLength = memoizeOne(getSprints);
 
 export const getDaysOff = (state: State) => state.daysOff;
 
-export const getIsDayOff = (state: State) => (day?: Option<Dayjs>) =>
+export const getIsDayOff = (state: State) => (day?: Optional<Dayjs>) =>
   day ? Boolean(state.daysOff.find(d => d.isSame(day, 'date'))) : false;
 
 export const getEngineers = (state: State) => state.engineers;
@@ -58,7 +58,7 @@ export function getWorksForEngineer(state: State) {
     const assignedWorks = state.assignedWorks.filter(work => work.engineerId === engineerId);
 
     return assignedWorks.map(assignedWork => ({
-      ...omit(['workId'], assignedWork),
+      ...R.omit(['workId'], assignedWork),
       work: state.works.find(work => work._id === assignedWork.workId) as DbWork,
     }));
   };
@@ -78,7 +78,10 @@ export function getWorksForEngineerPerSprint(state: State) {
       if (!assignedWorks.length) return [];
 
       return assignedWorks.map(assignedWork => {
-        return { ...omit(['workId'], assignedWork), work: state.works.find(work => work._id === assignedWork.workId)! };
+        return {
+          ...R.omit(['workId'], assignedWork),
+          work: state.works.find(work => work._id === assignedWork.workId)!,
+        };
       });
     };
   };
@@ -100,7 +103,7 @@ const sprintDays = (state: State) => state.sprints.map(sprint => sprint.days).fl
 
 export const getSprintDays = memoizeOne(sprintDays);
 
-export function findDayInDays(day: Dayjs, days: Dayjs[]): Option<Dayjs> {
+export function findDayInDays(day: Dayjs, days: Dayjs[]): Optional<Dayjs> {
   if (!days.length) return undefined;
 
   return days.find(d => d.isSame(day, 'date'));
@@ -142,7 +145,7 @@ const unassignedWorkDaysLeft = (state: State) => (engineerId: string) => {
     .map(assignedWork => state.works.find(work => work._id === assignedWork.workId)?.estimate ?? 0)
     .flat();
 
-  return workDays - sum(usedDays);
+  return workDays - R.sum(usedDays);
 };
 
 export const getWorkById = (state: State) => (workId: string) => state.works.find(work => work._id === workId);
@@ -155,6 +158,6 @@ export const getMessage = (state: State) => state.message;
 
 export const getIsConnected = (state: State) => state.auth.isConnected;
 
-export const getIsLoading = (state: State) => (key: string) => path([key], state.isLoading) ?? false;
+export const getIsLoading = (state: State) => (key: string) => R.path([key], state.isLoading) ?? false;
 
 export const getAllIsLoading = (state: State) => state.isLoading;

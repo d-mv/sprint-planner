@@ -1,4 +1,4 @@
-import { compose, pick } from 'ramda';
+import { R } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
 import { AppContext, AssignedWork, assignedWorkDayToDayjs, assignedWorksDayToDayjs } from '..';
@@ -13,7 +13,7 @@ import {
 } from '../../state';
 
 export function useAssignedWork() {
-  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+  const { query, getMessage } = useContextSelector(AppContext, c => R.pick(['query', 'getMessage'], c));
 
   const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ export function useAssignedWork() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<DbAssignedWork<string>>('assigned_work', 'add', data)
       .then(r =>
@@ -42,7 +42,7 @@ export function useAssignedWork() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<DbAssignedWork<string>[]>('assigned_work', 'getAll')
       .then(r =>
@@ -63,7 +63,7 @@ export function useAssignedWork() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<'OK'>('assigned_work', 'delete', assignedWorkId)
       .then(r => (r.isOK ? handlePositive(assignedWorkId, removeAssignedWork, item) : handleNegative(r.message, item)))

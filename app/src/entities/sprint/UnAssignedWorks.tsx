@@ -1,5 +1,5 @@
 import { List, Typography } from '@mui/material';
-import { map } from 'ramda';
+import { R } from '@mv-d/toolbelt';
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 
 import { DbWork, Divider } from '../../shared';
@@ -52,7 +52,7 @@ export function UnAssignedWorks() {
         Unassigned Works
       </Typography>
       <Divider />
-      <List style={getStyle()}>{map(renderWork, unAssignedWorks)}</List>
+      <List style={getStyle()}>{R.map(renderWork, unAssignedWorks)}</List>
     </div>
   );
 }

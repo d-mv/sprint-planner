@@ -1,4 +1,4 @@
-import { map, omit } from 'ramda';
+import { R } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 import { DbWorkToRender, Spinner } from '../../shared';
 
@@ -11,7 +11,7 @@ function renderWork(work: DbWorkToRender) {
   if (!work.work) return null;
 
   return (
-    <WorkContext.Provider key={work._id} value={{ assigned: omit(['work'], work), work: work.work }}>
+    <WorkContext.Provider key={work._id} value={{ assigned: R.omit(['work'], work), work: work.work }}>
       <AssignedWork />
     </WorkContext.Provider>
   );
@@ -30,5 +30,5 @@ export function EngineerWorks() {
 
   if (isLoading || isLoadingAssigned) return <Spinner />;
 
-  return <div>{map(renderWork, works)}</div>;
+  return <div id='engineer-works'>{R.map(renderWork, works)}</div>;
 }

@@ -1,3 +1,4 @@
+import { ifTrue, makeMatch, Optional } from '@mv-d/toolbelt';
 import { clsx } from 'clsx';
 import { useEffect, useState } from 'react';
 
@@ -15,10 +16,7 @@ import {
 import classes from './Main.module.scss';
 import { Header } from './Header';
 import { Menu } from './Menu';
-import { MenuItemIds, Option, Dialog, LazyLoad, AddEngineer, AddSprint, AssignEngineer } from '../../shared';
-import { ErrorBoundary } from '../../shared/tools/ErrorBoundary';
-import { ifTrue } from '../../shared/tools/logic.tools';
-import { makeMatch } from '../../shared/tools/object.tools';
+import { MenuItemIds, Dialog, LazyLoad, AddEngineer, AddSprint, AssignEngineer } from '../../shared';
 
 const DIALOGS = makeMatch(
   {
@@ -32,7 +30,7 @@ const DIALOGS = makeMatch(
 export function Main() {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
-  const [isOpen, setIsOpen] = useState<Option<MenuItemIds>>(undefined);
+  const [isOpen, setIsOpen] = useState<Optional<MenuItemIds>>(undefined);
 
   const { disconnect } = useLogin();
 
@@ -94,9 +92,7 @@ export function Main() {
       <Header toggle={toggleDrawer} />
       {ifTrue(isOpen, renderDialogContent)}
       <div className={clsx('line v-scroll', classes.container)}>
-        {/* <ErrorBoundary componentId='engineers'> */}
         <Engineers />
-        {/* </ErrorBoundary> */}
         <Sprints />
       </div>
       <Menu isOpen={drawerIsOpen} onClose={toggleDrawer} onAction={handleAction} />

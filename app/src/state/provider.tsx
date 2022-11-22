@@ -4,13 +4,13 @@ import { createContext, useContext } from 'use-context-selector';
 import { Dispatch, State } from '.';
 import { reducer } from './reducer';
 import { INITIAL_STATE } from './initial';
-import { Option } from '../shared';
+import { Optional } from '@mv-d/toolbelt';
 
-const StateContext = createContext<Option<State>>(undefined);
+const StateContext = createContext<Optional<State>>(undefined);
 
 StateContext.displayName = 'StateContext';
 
-const DispatchContext = createContext<Option<Dispatch>>(undefined);
+const DispatchContext = createContext<Optional<Dispatch>>(undefined);
 
 DispatchContext.displayName = 'DispatchContext';
 

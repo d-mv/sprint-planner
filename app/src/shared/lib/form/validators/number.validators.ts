@@ -2,11 +2,6 @@ import isDecimal from 'validator/es/lib/isDecimal';
 
 import { FormItem, SectionFormItem } from '../models';
 
-/**
- *
- * @param item
- * @param value
- */
 export function validateNumber(item: FormItem | SectionFormItem, value: string): boolean {
   if (!('validation' in item) || item.validation?.type !== 'number') return true;
 

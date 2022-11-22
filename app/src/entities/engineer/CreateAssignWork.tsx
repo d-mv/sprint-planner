@@ -1,7 +1,7 @@
-import { compose, path } from 'ramda';
+import { AnyValue, R, RecordObject } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
-import { AnyValue, RecordObject, Form, FormContext } from '../../shared';
+import { Form, FormContext } from '../../shared';
 import { getIsLoading, getScenarioByLabel, setMessage, useDispatch, useSelector } from '../../state';
 import { EngineerContext } from './engineer.contexts';
 import { useWorks } from '../work/useWorks.hook';
@@ -24,13 +24,13 @@ export function CreateAssignWork({ onCancel }: Props) {
   if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
-    const startDate = String(path(['startDate'], form));
+    const startDate = String(R.path(['startDate'], form));
 
     add(form, { engineerId, startDate }, onCancel);
   }
 
   function handleError(message: string) {
-    compose(dispatch, setMessage)(message);
+    R.compose(dispatch, setMessage)(message);
   }
 
   return (

@@ -1,4 +1,4 @@
-import { compose, pick } from 'ramda';
+import { R } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
 import { AppContext } from '..';
@@ -13,7 +13,7 @@ import {
 } from '../../state';
 
 export function useApp() {
-  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+  const { query, getMessage } = useContextSelector(AppContext, c => R.pick(['query', 'getMessage'], c));
 
   const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ export function useApp() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<string[]>('app', 'getAssignedEngineers')
       .then(r => (r.isOK ? handlePositive(r.payload, setAssignedEngineers, item) : handleNegative(r.message, item)))
@@ -38,7 +38,7 @@ export function useApp() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<string[]>('app', 'assignEngineer', data)
       .then(r =>

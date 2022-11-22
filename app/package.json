@@ -10,7 +10,7 @@
     "@getify/eslint-plugin-proper-arrows": "11.0.3",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.11",
-    "@mv-d/toolbelt": "^0.0.1",
+    "@mv-d/toolbelt": "0.4.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.16.5",

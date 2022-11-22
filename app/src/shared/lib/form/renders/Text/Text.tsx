@@ -1,5 +1,5 @@
+import { R } from '@mv-d/toolbelt';
 import { TextField } from '@mui/material';
-import { isNil } from 'ramda';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
@@ -30,7 +30,7 @@ export default function Text() {
   }
 
   useEffect(() => {
-    if (!isNil(item.defaultValue)) sendUpdate(defaultValue);
+    if (!R.isNil(item.defaultValue)) sendUpdate(defaultValue);
   }, [item, sendUpdate]);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {

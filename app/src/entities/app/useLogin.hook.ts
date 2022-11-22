@@ -1,12 +1,12 @@
-import { compose, pick } from 'ramda';
+import { R } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
-import { useCommon } from '../../shared';
 
+import { useCommon } from '../../shared';
 import { setMessage, setIsConnected, useDispatch, useSelector } from '../../state';
 import { AppContext } from './app.contexts';
 
 export function useLogin() {
-  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+  const { query, getMessage } = useContextSelector(AppContext, c => R.pick(['query', 'getMessage'], c));
 
   const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ export function useLogin() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<'OK'>('auth', 'connect', url)
       .then(r => (r.isOK ? handlePositive(true, setIsConnected, item) : handleNegative(r.message, item)))
@@ -31,7 +31,7 @@ export function useLogin() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<'OK'>('auth', 'disconnect')
       .then(r => (r.isOK ? handlePositive(false, setIsConnected, item) : handleNegative(r.message, item)))

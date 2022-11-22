@@ -1,10 +1,10 @@
 import { Popover } from '@mui/material';
 import { clsx } from 'clsx';
 import { Dayjs } from 'dayjs';
-import { map } from 'ramda';
+import { Optional, R } from '@mv-d/toolbelt';
 import { MouseEvent, useState } from 'react';
 
-import { MongoDocument, Option, CONSTANTS, DayPopup, useWorkDays, DbEngineer } from '../../shared';
+import { MongoDocument, CONSTANTS, DayPopup, useWorkDays, DbEngineer } from '../../shared';
 import { DayType } from '../days';
 import { Day } from '../days/Day';
 import { useEngineers } from '../engineer';
@@ -18,7 +18,7 @@ interface Props {
 export function SprintWorkDays({ workToRender, engineer }: Props) {
   const { days } = useWorkDays({ engineer, workToRender });
 
-  const [day, setDay] = useState<Option<Dayjs>>(null);
+  const [day, setDay] = useState<Optional<Dayjs>>(null);
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -59,7 +59,7 @@ export function SprintWorkDays({ workToRender, engineer }: Props) {
 
   return (
     <div className={clsx('align-center w-fit')} style={{ height: CONSTANTS.daysLineHeight }}>
-      {map(renderWorkDay, days)}
+      {R.map(renderWorkDay, days)}
       <Popover
         open={open}
         anchorEl={anchorEl}

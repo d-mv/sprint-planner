@@ -1,3 +1,4 @@
+import { setupText } from '@mv-d/toolbelt';
 import { Button, IconButton, Input, InputAdornment, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -8,7 +9,6 @@ import { ErrorMessage, Tooltip } from '../../shared';
 import classes from './Login.module.scss';
 import { getMessage, getIsLoading, useSelector } from '../../state';
 import { useLogin } from '../../entities';
-import { setupText } from '../../shared/tools/text.tools';
 import { TEXT } from '../../shared/data/text.data';
 
 const TXT = setupText(TEXT)('login');

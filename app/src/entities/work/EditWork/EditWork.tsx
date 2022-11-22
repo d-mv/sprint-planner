@@ -1,9 +1,9 @@
 import { clsx } from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
-import { assoc, compose, omit, path, pick } from 'ramda';
+import { AnyValue, R, RecordObject } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
-import { AnyValue, RecordObject, Form, FormContext, LazyLoad } from '../../../shared';
+import { Form, FormContext, LazyLoad } from '../../../shared';
 import { getIsLoading, getScenarioByLabel, setMessage, useDispatch, useSelector } from '../../../state';
 import { useWorks } from '../useWorks.hook';
 import { WorkContext } from '../work.contexts';
@@ -31,19 +31,19 @@ export function EditWork({ onCancel }: Props) {
   }
 
   function handleError(message: string) {
-    compose(dispatch, setMessage)(message);
+    R.compose(dispatch, setMessage)(message);
   }
 
   function getWorkToEdit(work: RecordObject<AnyValue>) {
-    let picked = pick(['_id', 'estimate', 'jiraEpic', 'jiraTicket', 'startDate', 'title'], work);
+    let picked = R.pick(['_id', 'estimate', 'jiraEpic', 'jiraTicket', 'startDate', 'title'], work);
 
-    const startDate = path(['startDate'], picked);
+    const startDate = R.path(['startDate'], picked);
 
     const isDayjs = Object.getPrototypeOf(startDate) === Object.getPrototypeOf(dayjs());
 
-    if (isDayjs) picked = assoc('startDate', (startDate as Dayjs).toString(), picked);
+    if (isDayjs) picked = R.assoc('startDate', (startDate as Dayjs).toString(), picked);
 
-    const allRequiredPresent = Object.values(omit(['jiraEpic', '_id'], picked)).every(Boolean);
+    const allRequiredPresent = Object.values(R.omit(['jiraEpic', '_id'], picked)).every(Boolean);
 
     return allRequiredPresent ? picked : {};
   }

@@ -1,3 +1,4 @@
+import { ifTrue, setupText } from '@mv-d/toolbelt';
 import { clsx } from 'clsx';
 import { useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
@@ -8,9 +9,7 @@ import { WorkContext } from '../../work/work.contexts';
 import { WorkLine } from '../../work/WorkLine';
 import classes from './AssignedWork.module.scss';
 import { TEXT } from '../../../shared/data/text.data';
-import { setupText } from '../../../shared/tools/text.tools';
 import { EditWork } from '../../work/EditWork';
-import { ifTrue } from '../../../shared/tools/logic.tools';
 
 const TXT = setupText(TEXT)('work');
 

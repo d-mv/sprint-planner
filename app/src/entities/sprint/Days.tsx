@@ -1,12 +1,12 @@
 import { Dayjs } from 'dayjs';
-import { compose, map } from 'ramda';
+import { Popover } from '@mui/material';
+import { Optional, R } from '@mv-d/toolbelt';
 import { MouseEvent, useState } from 'react';
 
 import { Sprint } from '.';
 import { Day } from '../days/Day';
 import { DayType } from '../days/days.models';
-import { Popover } from '@mui/material';
-import { DayPopup, MongoDocument, Option } from '../../shared';
+import { DayPopup, MongoDocument } from '../../shared';
 import { addRemoveDayOff, getIsDayOff, useDispatch, useSelector } from '../../state';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function Days({ sprint }: Props) {
-  const [day, setDay] = useState<Option<Dayjs>>(null);
+  const [day, setDay] = useState<Optional<Dayjs>>(null);
 
   const dispatch = useDispatch();
 
@@ -38,7 +38,7 @@ export function Days({ sprint }: Props) {
   }
 
   function handleChange() {
-    if (day) compose(dispatch, addRemoveDayOff)(day);
+    if (day) R.compose(dispatch, addRemoveDayOff)(day);
 
     handleClose();
   }
@@ -49,7 +49,7 @@ export function Days({ sprint }: Props) {
 
   return (
     <div className='line'>
-      {map(renderCell, sprint.days)}
+      {R.map(renderCell, sprint.days)}
       <Popover
         open={open}
         anchorEl={anchorEl}

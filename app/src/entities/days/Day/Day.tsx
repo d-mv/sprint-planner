@@ -1,3 +1,4 @@
+import { ifTrue } from '@mv-d/toolbelt';
 import { Typography } from '@mui/material';
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
 import { grey } from '@mui/material/colors';
@@ -9,7 +10,6 @@ import { CONFIG, DbDate } from '../../../shared';
 import { getIsDayOff, useSelector } from '../../../state';
 import classes from './Day.module.scss';
 import { buildId } from '../../../shared/tools/text.tools';
-import { ifTrue } from '../../../shared/tools/logic.tools';
 
 interface Props {
   withDate?: boolean;

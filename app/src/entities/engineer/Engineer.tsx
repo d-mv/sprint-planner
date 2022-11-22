@@ -1,8 +1,7 @@
 import { useState } from 'react';
+import { setupText, Optional, ifTrue } from '@mv-d/toolbelt';
 
-import { Message, CONSTANTS, Option, LazyLoad, Container } from '../../shared';
-import { ifTrue } from '../../shared/tools/logic.tools';
-import { setupText } from '../../shared/tools/text.tools';
+import { Message, CONSTANTS, LazyLoad, Container } from '../../shared';
 import { getUnAssignedWorksQty, useSelector } from '../../state';
 import { AssignWork } from './AssignWork';
 import { CreateAssignWork } from './CreateAssignWork';
@@ -16,7 +15,7 @@ const TXT = setupText(TEXT)('engineer');
 export function Engineer() {
   const unassignedWorksQty = useSelector(getUnAssignedWorksQty);
 
-  const [isOpen, setIsOpen] = useState<Option<string>>(undefined);
+  const [isOpen, setIsOpen] = useState<Optional<string>>(undefined);
 
   const [showActions, setShowActions] = useState(false);
 

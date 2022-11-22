@@ -1,8 +1,8 @@
+import { ifTrue, mapI } from '@mv-d/toolbelt';
 import { map } from 'ramda';
 import { Fragment } from 'react';
 
-import { DbWorkToRender, mapWithIndex, DbEngineer, CONSTANTS } from '../../shared';
-import { ifTrue } from '../../shared/tools/logic.tools';
+import { DbWorkToRender, DbEngineer, CONSTANTS } from '../../shared';
 import { getAssignedEngineers, getWorksForEngineer, useSelector } from '../../state';
 import { SprintWorkDays } from './SprintWorkDays';
 
@@ -35,7 +35,7 @@ export function SprintWorks() {
 
   return (
     <div id='sprints-works' className='column w-fit'>
-      {mapWithIndex(renderEngineerWorks, engineers)}
+      {mapI(renderEngineerWorks, engineers)}
     </div>
   );
 }

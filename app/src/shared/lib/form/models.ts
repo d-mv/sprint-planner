@@ -1,5 +1,5 @@
+import { RecordObject } from '@mv-d/toolbelt';
 import { CSSProperties } from 'react';
-import { RecordObject } from '../../models';
 
 export enum FormTypes {
   CUSTOM = 'custom',

@@ -1,13 +1,14 @@
+import { RecordObject } from '@mv-d/toolbelt';
 import { Dayjs } from 'dayjs';
 import { assoc } from 'ramda';
 
-import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario, RecordObject } from '../shared';
+import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario } from '../shared';
 import { INITIAL_STATE } from './initial';
 import { Action, MappedReducerFns, StateActions, State } from './types';
 
 export const MAP: MappedReducerFns = new Map();
 
-MAP.set(StateActions.UNAUTHORIZED, (state: State) => {
+MAP.set(StateActions.UNAUTHORIZED, () => {
   return INITIAL_STATE;
 });
 

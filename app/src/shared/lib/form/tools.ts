@@ -1,12 +1,9 @@
-import { compose, isEmpty, isNil, path } from 'ramda';
+import { RecordObject, R, AnyValue, makeMatch, isObject, Optional } from '@mv-d/toolbelt';
 import { FormEvent } from 'react';
 import dayjs from 'dayjs';
 
-import { AnyValue, RecordObject, Option } from '../../models';
 import { FormItem, FormItemValue, FormItemValueTypes, FormScenario, FormSection, SectionFormItem } from './models';
 import { checkIfAddDays, checkIfSubtractDays, format } from '../day.tools';
-import { isObject } from '../object.tools';
-import { makeMatch } from '../../tools/object.tools';
 
 export function validationHasFailed(obj: ValidityState) {
   return !Object.values(obj).some(Boolean);
@@ -54,7 +51,7 @@ export function getAllRequiredFormScenarioItems(items: (FormItem | SectionFormIt
 export function buildInitialValidation(scenario: FormScenario): RecordObject<boolean> {
   const result: RecordObject<boolean> = {};
 
-  const items = compose(getAllFormScenarioItemsWithValidation, getAllItems)(scenario);
+  const items = R.compose(getAllFormScenarioItemsWithValidation, getAllItems)(scenario);
 
   items.forEach(item => {
     result[item.dataId] = false;
@@ -65,7 +62,7 @@ export function buildInitialValidation(scenario: FormScenario): RecordObject<boo
 export function buildInitialRequired(scenario: FormScenario): RecordObject<boolean> {
   const result: RecordObject<boolean> = {};
 
-  const items = compose(getAllRequiredFormScenarioItems, getAllItems)(scenario);
+  const items = R.compose(getAllRequiredFormScenarioItems, getAllItems)(scenario);
 
   items.forEach(item => {
     result[item.dataId] = false;
@@ -91,7 +88,7 @@ export function getAllEnteredDataIsValid(data: RecordObject<AnyValue>, validated
   let result = true;
 
   Object.entries(data).forEach(([key, value]) => {
-    if (isEmpty(value) || isNil(value)) return;
+    if (R.isEmpty(value) || R.isNil(value)) return;
 
     if (!(key in validated)) return;
 
@@ -105,7 +102,7 @@ export async function buildForm(scenario: FormScenario, e: FormEvent<HTMLFormEle
   const form = new FormData();
 
   for await (const dataId of getAllScenarioDataIds(scenario)) {
-    const value = path(['target', 'elements', dataId, 'value'], e) as string;
+    const value = R.path(['target', 'elements', dataId, 'value'], e) as string;
 
     if (value !== undefined) form.set(dataId, value);
   }
@@ -122,7 +119,7 @@ const ARRAY_METHODS = makeMatch(
 
 function makeDefaultValueFromObject({ type, value }: FormItemValue, data?: unknown[]) {
   if (type === FormItemValueTypes.DATE) {
-    if (value === 'current') return compose(format(), dayjs)();
+    if (value === 'current') return R.compose(format(), dayjs)();
 
     const plus = checkIfAddDays(value);
 
@@ -132,7 +129,7 @@ function makeDefaultValueFromObject({ type, value }: FormItemValue, data?: unkno
 
     if (minus) return minus;
 
-    return compose(format(), dayjs)(value);
+    return R.compose(format(), dayjs)(value);
   } else if (type === FormItemValueTypes.DATA_SET) {
     return ARRAY_METHODS[value](data ?? []) ?? '';
   }
@@ -140,7 +137,7 @@ function makeDefaultValueFromObject({ type, value }: FormItemValue, data?: unkno
   return '';
 }
 
-export function makeDefaultValue(defaultValue: Option<string | FormItemValue>, data?: unknown[]): AnyValue {
+export function makeDefaultValue(defaultValue: Optional<string | FormItemValue>, data?: unknown[]): AnyValue {
   if (!defaultValue) return '';
 
   if (isObject(defaultValue)) return makeDefaultValueFromObject(defaultValue as FormItemValue, data);

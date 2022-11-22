@@ -9,4 +9,4 @@ config();
 
 if (CONFIG.db) connectDb(CONFIG.db);
 
-server(8888);
+server(CONFIG.port);

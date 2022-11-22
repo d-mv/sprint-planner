@@ -1,9 +1,8 @@
+import { AnyValue, ifTrue, makeMatch, R, RecordObject, setupText } from '@mv-d/toolbelt';
 import { Typography } from '@mui/material';
-import { assoc, isEmpty, isNil, map, path } from 'ramda';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { RecordObject, AnyValue } from '../../models';
 import { lazyLoad } from '../render.tools';
 import { FormContext, FormInternalContext, FormItemContext } from './contexts';
 import { FormItem, FormSection, FormTypes, SectionFormItem } from './models';
@@ -17,9 +16,7 @@ import {
   getAllEnteredDataIsValid,
   getAllRequiredAreValid,
 } from './tools';
-import { makeMatch, sortScenarioKeys } from '../../tools/object.tools';
-import { setupText } from '../../tools/text.tools';
-import { ifTrue } from '../../tools/logic.tools';
+import { sortScenarioKeys } from '../../tools/object.tools';
 
 const RENDERS = makeMatch(
   {
@@ -36,7 +33,7 @@ const RENDERS = makeMatch(
   () => null,
 );
 
-const TXT = setupText(TEXT)(['form']);
+const TXT = setupText(TEXT)('form');
 
 export default function Form() {
   const [scenario, submitForm, submitData, initial, components] = useContextSelector(FormContext, c => [
@@ -70,12 +67,12 @@ export default function Form() {
   }, [required]);
 
   const validateAndUpdateRequired = useCallback(() => {
-    if (!initial || isEmpty(initial)) return;
+    if (!initial || R.isEmpty(initial)) return;
 
     Object.keys(initial).forEach(key => {
-      if (!isNil(path([key], initial))) {
-        setRequired(state => assoc(key, true, state));
-        setValidated(state => assoc(key, true, state));
+      if (!R.isNil(R.path([key], initial))) {
+        setRequired(state => R.assoc(key, true, state));
+        setValidated(state => R.assoc(key, true, state));
       }
     });
   }, [initial]);
@@ -91,15 +88,15 @@ export default function Form() {
     const checkEntered = getAllEnteredDataIsValid(data, validated);
 
     // allow submission if all required added and all entered are validated
-    if (checkRequired && checkEntered) setStatuses(assoc('submit-disabled', false, statuses));
-    else setStatuses(assoc('submit-disabled', true, statuses));
+    if (checkRequired && checkEntered) setStatuses(R.assoc('submit-disabled', false, statuses));
+    else setStatuses(R.assoc('submit-disabled', true, statuses));
   }, [formValuesValid, requiredFields, validated]);
 
   if (!submitData && !submitForm) throw new Error(TXT('missingFuncs'));
 
   function handleValidated(element: string) {
     return function call(status: boolean) {
-      setValidated(state => assoc(element, status, state));
+      setValidated(state => R.assoc(element, status, state));
     };
   }
 
@@ -167,7 +164,7 @@ export default function Form() {
       <div key={sectionKey} style={{ margin: '1rem 0' }}>
         {ifTrue(section.label, <Typography variant='body2'>{section.label ?? ''}</Typography>)}
         <div id={`form-section-${sectionKey}`} style={section.style}>
-          {map(renderSectionItem(section.items), Object.keys(section.items))}
+          {R.map(renderSectionItem(section.items), Object.keys(section.items))}
         </div>
       </div>
     );
@@ -196,7 +193,7 @@ export default function Form() {
     <form id={scenario.id} onSubmit={handleSubmit} style={scenario._form?.style}>
       {ifTrue(scenario._form?.label, renderFormLabel)}
       <FormInternalContext.Provider value={{ statuses }}>
-        {map(renderItems, Object.keys(sortScenarioKeys(scenario.items)))}
+        {R.map(renderItems, Object.keys(sortScenarioKeys(scenario.items)))}
         <Buttons />
       </FormInternalContext.Provider>
     </form>

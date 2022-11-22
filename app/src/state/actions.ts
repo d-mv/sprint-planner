@@ -1,6 +1,7 @@
+import { RecordObject } from '@mv-d/toolbelt';
 import { Dayjs } from 'dayjs';
 
-import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario, RecordObject } from '../shared';
+import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario } from '../shared';
 import { Action, StateActions } from './types';
 
 export const unauthorized = (): Action => ({

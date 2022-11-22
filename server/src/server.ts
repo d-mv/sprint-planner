@@ -4,6 +4,7 @@ import compress from '@fastify/compress';
 import caching from '@fastify/caching';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
+import fastifyStatic from '@fastify/static';
 import { generateId, logger } from '@mv-d/toolbelt';
 
 import { apiRouter, generalRouter } from './routers';
@@ -45,6 +46,7 @@ export async function server(port: number) {
 
   app.register(apiRouter, { prefix: 'api/v1' });
   app.register(generalRouter, { prefix: '/' });
+  app.register(fastifyStatic, { root: '/Users/dmelnikov/code/sprint-planning/app/build', list: false });
 
   // start
   try {

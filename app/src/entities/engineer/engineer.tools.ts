@@ -1,6 +1,5 @@
-import { path } from 'ramda';
+import { AnyValue, RecordObject, R } from '@mv-d/toolbelt';
 
-import { AnyValue, RecordObject } from '../../shared';
 import { Person } from './engineer.models';
 
 export function makeName(person: Person) {
@@ -8,11 +7,11 @@ export function makeName(person: Person) {
 }
 
 export function makeNewEngineerObject(form: RecordObject<AnyValue>) {
-  const firstName = path(['firstName'], form);
+  const firstName = R.path(['firstName'], form);
 
-  const lastName = path(['lastName'], form);
+  const lastName = R.path(['lastName'], form);
 
-  const daysOff = path(['daysOff'], form);
+  const daysOff = R.path(['daysOff'], form);
 
   const person = { firstName, lastName };
 

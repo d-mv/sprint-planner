@@ -1,8 +1,8 @@
-import { assoc, compose, isEmpty } from 'ramda';
+import { R, RecordObject, Result } from '@mv-d/toolbelt';
 import { useCallback, useEffect } from 'react';
-import { DbScenario, FormScenario, RecordObject, setupQuery } from '../../shared';
+
+import { DbScenario, FormScenario, setupQuery } from '../../shared';
 import { getScenarios, LoadingActions, setIsLoading, setScenarios, useDispatch, useSelector } from '../../state';
-import { Result } from '../result';
 
 export function useScenario() {
   const scenarios = useSelector(getScenarios);
@@ -12,7 +12,7 @@ export function useScenario() {
   const query = setupQuery(dispatch);
 
   const updateIsLoading = useCallback(
-    (status = false) => compose(dispatch, setIsLoading)([LoadingActions.GET_SCENARIOS, status]),
+    (status = false) => R.compose(dispatch, setIsLoading)([LoadingActions.GET_SCENARIOS, status]),
     [dispatch],
   );
 
@@ -25,10 +25,10 @@ export function useScenario() {
       let r: RecordObject<FormScenario> = {};
 
       payload.forEach(p => {
-        r = assoc(p.label, JSON.parse(p.stringified) as FormScenario, r);
+        r = R.assoc(p.label, JSON.parse(p.stringified) as FormScenario, r);
       });
 
-      compose(dispatch, setScenarios)(r);
+      R.compose(dispatch, setScenarios)(r);
       updateIsLoading();
     },
     [dispatch, updateIsLoading],
@@ -45,6 +45,6 @@ export function useScenario() {
   }, [processPositive]);
 
   useEffect(() => {
-    if (!scenarios || isEmpty(scenarios)) fetchScenarios();
+    if (!scenarios || R.isEmpty(scenarios)) fetchScenarios();
   }, [fetchScenarios, scenarios]);
 }

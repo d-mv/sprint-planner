@@ -3,7 +3,7 @@ import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
 import MeetingRoomRoundedIcon from '@mui/icons-material/MeetingRoomRounded';
 import UpdateRoundedIcon from '@mui/icons-material/UpdateRounded';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
-import { AnyValue } from '../models';
+import { AnyValue } from '@mv-d/toolbelt';
 
 export enum MenuItemIds {
   ADD_SPRINT = 'addSprint',

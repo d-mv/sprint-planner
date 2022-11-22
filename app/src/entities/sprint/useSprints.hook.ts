@@ -1,33 +1,33 @@
-import { compose, pick } from 'ramda';
+import { AnyValue, R, RecordObject } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
 import { AppContext, sprintDateToDayjs, sprintDateToDayjsArray } from '..';
-import { AnyValue, DbSprint, RecordObject } from '../../shared';
+import { DbSprint } from '../../shared';
 import { setMessage, setIsLoading, setSprints, useDispatch, useSelector, addSprint } from '../../state';
 
 export function useSprints() {
-  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+  const { query, getMessage } = useContextSelector(AppContext, c => R.pick(['query', 'getMessage'], c));
 
   const dispatch = useDispatch();
 
   const error = useSelector(getMessage);
 
-  const updateIsLoading = (item: string, status = false) => compose(dispatch, setIsLoading)([item, status]);
+  const updateIsLoading = (item: string, status = false) => R.compose(dispatch, setIsLoading)([item, status]);
 
   function handleAddPositive(data: DbSprint<string>) {
-    compose(dispatch, addSprint, sprintDateToDayjs)(data);
+    R.compose(dispatch, addSprint, sprintDateToDayjs)(data);
     updateIsLoading('add-sprint');
   }
 
   function handleAddNegative(message: string) {
-    compose(dispatch, setMessage)(message);
+    R.compose(dispatch, setMessage)(message);
     updateIsLoading('add-sprint');
   }
 
   function add(data: RecordObject<AnyValue>) {
     updateIsLoading('add-sprint', true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<DbSprint<string>>('sprint', 'add', data)
       .then(r => (r.isOK ? handleAddPositive(r.payload) : handleAddNegative(r.message)))
@@ -35,19 +35,19 @@ export function useSprints() {
   }
 
   function handleGetPositive(data: DbSprint<string>[]) {
-    compose(dispatch, setSprints, sprintDateToDayjsArray)(data);
+    R.compose(dispatch, setSprints, sprintDateToDayjsArray)(data);
     updateIsLoading('get-sprint');
   }
 
   function handleGetNegative(message: string) {
-    compose(dispatch, setMessage)(message);
+    R.compose(dispatch, setMessage)(message);
     updateIsLoading('get-sprint');
   }
 
   function get() {
     updateIsLoading('get-sprint', true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<DbSprint<string>[]>('sprint', 'getAll')
       .then(r => (r.isOK ? handleGetPositive(r.payload) : handleGetNegative(r.message)))

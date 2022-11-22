@@ -1,11 +1,9 @@
 import { Button, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { compose, pick } from 'ramda';
+import { ifTrue, Optional, R } from '@mv-d/toolbelt';
 import { ChangeEvent, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { Option } from '../../../../models';
-import { ifTrue } from '../../../../tools/logic.tools';
 import { Message } from '../../../../ui';
 import { format } from '../../../day.tools';
 import { FormItemContext } from '../../contexts';
@@ -13,14 +11,14 @@ import { ListOfDays } from './ListOfDays';
 
 export default function DateSet() {
   const { item, onValidation, onChange, value } = useContextSelector(FormItemContext, c =>
-    pick(['item', 'onValidation', 'onChange', 'value'], c),
+    R.pick(['item', 'onValidation', 'onChange', 'value'], c),
   );
 
   const { style, label, buttons, defaultValue, individualStyles } = item;
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [date, setDate] = useState<Option<string>>(null);
+  const [date, setDate] = useState<Optional<string>>(null);
 
   const [error, setError] = useState('');
 
@@ -52,7 +50,7 @@ export default function DateSet() {
   function makeDefaultValue() {
     if (date) return date;
 
-    if (defaultValue === 'current') return compose(format(), dayjs)();
+    if (defaultValue === 'current') return R.compose(format(), dayjs)();
 
     return '';
   }

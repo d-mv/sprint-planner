@@ -1,14 +1,14 @@
-import { compose } from 'ramda';
+import { R } from '@mv-d/toolbelt';
 
 import { useDispatch, setIsLoading, setMessage, Action, LoadingActions } from '../../state';
 
 export function useCommon() {
   const dispatch = useDispatch();
 
-  const updateIsLoading = (item: string, status = false) => compose(dispatch, setIsLoading)([item, status]);
+  const updateIsLoading = (item: string, status = false) => R.compose(dispatch, setIsLoading)([item, status]);
 
   function handleNegative(message: string, item: string) {
-    compose(dispatch, setMessage)(message);
+    R.compose(dispatch, setMessage)(message);
     updateIsLoading(item);
   }
 
@@ -18,7 +18,7 @@ export function useCommon() {
     process: string | LoadingActions,
     callback?: () => void,
   ) {
-    compose(dispatch, actionFn)(data);
+    R.compose(dispatch, actionFn)(data);
     updateIsLoading(process);
 
     if (callback) callback();

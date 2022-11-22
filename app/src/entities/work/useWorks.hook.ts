@@ -1,8 +1,8 @@
-import { compose, pick } from 'ramda';
+import { AnyValue, R, RecordObject } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
 import { AppContext, assignedWorkDayToDayjs } from '..';
-import { AnyValue, RecordObject, DbAssignedWork, useCommon, DbWork } from '../../shared';
+import { DbAssignedWork, useCommon, DbWork } from '../../shared';
 import {
   setMessage,
   setWorks,
@@ -15,7 +15,7 @@ import {
 } from '../../state';
 
 export function useWorks() {
-  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+  const { query, getMessage } = useContextSelector(AppContext, c => R.pick(['query', 'getMessage'], c));
 
   const dispatch = useDispatch();
 
@@ -30,10 +30,10 @@ export function useWorks() {
 
   function handleAddPositive(data: DbWork | MixedAddResult, withAssign = false, callback?: () => void) {
     if (!withAssign) {
-      compose(dispatch, addWork)(data as DbWork);
+      R.compose(dispatch, addWork)(data as DbWork);
     } else if ('work' in data && 'assignedWork' in data) {
-      compose(dispatch, addWork)(data.work);
-      compose(dispatch, addAssignedWork, assignedWorkDayToDayjs)(data.assignedWork);
+      R.compose(dispatch, addWork)(data.work);
+      R.compose(dispatch, addAssignedWork, assignedWorkDayToDayjs)(data.assignedWork);
     }
 
     updateIsLoading('add-work');
@@ -50,7 +50,7 @@ export function useWorks() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query('work', 'add', { work, assign })
       .then(r => {
@@ -64,7 +64,7 @@ export function useWorks() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<DbWork[]>('work', 'getAll')
       .then(r => (r.isOK ? handlePositive(r.payload, setWorks, item) : handleNegative(r.message, item)))
@@ -72,8 +72,8 @@ export function useWorks() {
   }
 
   function handleUpdatePositive(data: MixedAddResult, callback: () => void) {
-    compose(dispatch, updateWork)(data.work);
-    compose(dispatch, updateAssignedWork, assignedWorkDayToDayjs)(data.assignedWork);
+    R.compose(dispatch, updateWork)(data.work);
+    R.compose(dispatch, updateAssignedWork, assignedWorkDayToDayjs)(data.assignedWork);
 
     updateIsLoading('update-work');
     callback();
@@ -84,7 +84,7 @@ export function useWorks() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<MixedAddResult>('work', 'update', data)
       .then(r => (r.isOK ? handleUpdatePositive(r.payload, callback) : handleNegative(r.message, item)))

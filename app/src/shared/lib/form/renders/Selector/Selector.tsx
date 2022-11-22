@@ -1,9 +1,8 @@
 import { InputLabel, Select, SelectChangeEvent } from '@mui/material';
-import { map } from 'ramda';
+import { ifTrue, R } from '@mv-d/toolbelt';
 import { useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { ifTrue } from '../../../../tools/logic.tools';
 import { Message } from '../../../../ui';
 import { FormContext, FormItemContext } from '../../contexts';
 import { makeDefaultValue } from '../../tools';
@@ -111,7 +110,7 @@ export default function Selector() {
           error={validation && !isValidated}
           defaultValue={defaultValue}
         >
-          {map(renderer, data)}
+          {R.map(renderer, data)}
         </Select>
       </>
     );

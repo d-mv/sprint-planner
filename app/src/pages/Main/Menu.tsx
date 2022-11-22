@@ -1,7 +1,7 @@
 import { Divider, Drawer, ListItemIcon, ListItemText, MenuItem, MenuList } from '@mui/material';
+import { ifTrue, mapI } from '@mv-d/toolbelt';
 
-import { MENU_ITEMS, mapWithIndex, MenuItemType, MenuItemIds } from '../../shared';
-import { ifTrue } from '../../shared/tools/logic.tools';
+import { MENU_ITEMS, MenuItemType, MenuItemIds } from '../../shared';
 
 interface Props {
   isOpen: boolean;
@@ -33,7 +33,7 @@ export function Menu({ isOpen, onClose, onAction }: Props) {
   return (
     <Drawer anchor='left' open={isOpen} onClose={onClose}>
       <div style={{ paddingTop: '7rem', width: '20rem' }}>
-        <MenuList>{mapWithIndex(renderMenuItem, MENU_ITEMS)}</MenuList>
+        <MenuList>{mapI(renderMenuItem, MENU_ITEMS)}</MenuList>
       </div>
     </Drawer>
   );

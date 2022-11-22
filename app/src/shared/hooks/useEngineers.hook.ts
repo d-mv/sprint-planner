@@ -1,13 +1,13 @@
-import { compose, pick } from 'ramda';
+import { RecordObject, AnyValue, R } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
-import { AnyValue, DbEngineer, RecordObject, useCommon } from '..';
+import { DbEngineer, useCommon } from '..';
 import { AppContext } from '../../entities/app/app.contexts';
 import { setMessage, setEngineers, useDispatch, useSelector, updateEngineer, addEngineer } from '../../state';
 import { engineerDaysOffToDayjs, engineersDaysOffToDayjs } from '../tools/days.tools';
 
 export function useEngineers() {
-  const { query, getMessage } = useContextSelector(AppContext, c => pick(['query', 'getMessage'], c));
+  const { query, getMessage } = useContextSelector(AppContext, c => R.pick(['query', 'getMessage'], c));
 
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ export function useEngineers() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<DbEngineer<string>>('engineer', 'add', data)
       .then(r =>
@@ -36,7 +36,7 @@ export function useEngineers() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<DbEngineer<string>[]>('engineer', 'getAll')
       .then(r =>
@@ -52,7 +52,7 @@ export function useEngineers() {
 
     updateIsLoading(item, true);
 
-    if (error) compose(dispatch, setMessage)('');
+    if (error) R.compose(dispatch, setMessage)('');
 
     query<DbEngineer<string>>('engineer', 'update', data)
       .then(r =>

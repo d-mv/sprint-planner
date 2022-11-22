@@ -1,4 +1,4 @@
-import deepEqual from 'deep-equal';
+import { deepEqual } from '@mv-d/toolbelt';
 
 import { State, Action } from '.';
 import { CONFIG } from '../shared';

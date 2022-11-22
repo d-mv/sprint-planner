@@ -1,5 +1,5 @@
+import { AnyValue } from '@mv-d/toolbelt';
 import { LazyExoticComponent, ComponentType, Suspense, PropsWithChildren } from 'react';
-import { AnyValue } from '../models';
 
 interface LazyLoadOptions {
   isDefault: boolean;

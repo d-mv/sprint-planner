@@ -1,41 +1,10 @@
+import { RecordObject, AnyValue } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
 import { EngineerContext } from './engineer.contexts';
 import { useEngineers } from '../../shared/hooks/useEngineers.hook';
-import { AnyValue, Container, Form, format, FormContext, FormScenario, FormTypes, RecordObject } from '../../shared';
-import { getIsLoading, useSelector } from '../../state';
-
-const scenario: FormScenario = {
-  id: 'engineerDaysOff',
-  _form: {
-    style: { width: '95%', margin: '0 auto' },
-  },
-  items: {
-    daysOff: {
-      order: 1,
-      dataId: 'daysOff',
-      label: 'Days Off',
-      type: FormTypes.DATE_SET,
-      defaultValue: 'current',
-      buttons: [{ id: 'primary', label: 'Add Day Off' }],
-      individualStyles: {
-        input: {
-          maxWidth: '20rem',
-          margin: '0 auto',
-        },
-        error: {
-          textAlign: 'center',
-          marginInlineStart: 'calc(50% - 8rem)',
-          width: 'fit-content',
-        },
-      },
-    },
-  },
-  buttons: [
-    { label: 'Submit', type: 'primary', id: 'submit', role: 'submit' },
-    { label: 'Cancel', variant: 'text', type: 'secondary', id: 'cancel' },
-  ],
-};
+import { Container, Form, format, FormContext } from '../../shared';
+import { getIsLoading, getScenarioByLabel, useSelector } from '../../state';
 
 interface Props {
   onClose: () => void;
@@ -47,6 +16,10 @@ export function EngineerDaysOff({ onClose }: Props) {
   const isLoading = useSelector(getIsLoading);
 
   const { update } = useEngineers();
+
+  const scenario = useSelector(getScenarioByLabel('engineerDaysOff'));
+
+  if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
     const daysOff = Array.from(new Set(form['daysOff']));
