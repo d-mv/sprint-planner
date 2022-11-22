@@ -7,3 +7,5 @@ export * from './createEngineerScenario.data';
 export * from './assignWorkScenario.data';
 
 export * from './createWorkScenario.data';
+
+export * from './engineerDaysOffScenario.data';

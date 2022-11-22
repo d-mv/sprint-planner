@@ -1,4 +1,4 @@
-import { RecordObject } from './general.models';
+import { RecordObject } from '@mv-d/toolbelt';
 
 export enum FormTypes {
   CUSTOM = 'custom',

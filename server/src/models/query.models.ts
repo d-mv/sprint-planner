@@ -1,4 +1,4 @@
-import { AnyValue, RecordObject } from './general.models';
+import { AnyValue, RecordObject } from '@mv-d/toolbelt';
 
 export interface Query<Payload = AnyValue> {
   domain: string;

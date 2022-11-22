@@ -1,13 +1,12 @@
 import { config } from 'dotenv';
 
 import { connectDb } from './adaptors';
+import { CONFIG } from './config';
 
 import { server } from './server';
 
 config();
 
-const MONGODB_URL = process.env['MONGODB_URL'];
-
-if (MONGODB_URL) connectDb(MONGODB_URL);
+if (CONFIG.db) connectDb(CONFIG.db);
 
 server(8888);

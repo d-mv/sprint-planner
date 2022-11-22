@@ -4,33 +4,34 @@ import compress from '@fastify/compress';
 import caching from '@fastify/caching';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
-import { apiRouter, generalRouter } from './routers';
+import { generateId, logger } from '@mv-d/toolbelt';
 
-const { log, dir } = console;
+import { apiRouter, generalRouter } from './routers';
+import { CONFIG } from './config';
+import { getter } from './tools';
 
 const isTest = process.env['NODE_ENV'] === 'test';
 
 export const app = fastify({
   logger: {
-    level: isTest ? 'fatal' : 'trace', //  "fatal" | "error" | "warn" | "info" | "debug" | "trace";
-    // serializers?: { [key: string]: SerializerFn };
-    // customLevels?: { [key: string]: number };
-    // formatters?: {
-    //     level?: (label: string, number: number) => object;
-    //     bindings?: (bindings: Bindings) => object;
-    //     log?: (object: object) => object;
-    // };
-    // redact?: string[] | redactOptions; // { paths: string[], censor?: string |((value: any, path: string[]) => any),  remove?: boolean }
+    level: isTest ? 'fatal' : 'trace',
+    transport: { target: 'pino-pretty', options: { colorize: CONFIG.isDev } },
+    serializers: {
+      req: req => ({
+        method: req.method,
+        url: req.url,
+        controller: getter(req.headers),
+        version: CONFIG.version,
+        hostname: req.hostname,
+      }),
+      error: err => ({
+        type: err.type,
+        message: err.message,
+        stack: err.stack,
+      }),
+    },
   },
-  // defaults
-  // ajv: {
-  //   customOptions: {
-  //     removeAdditional: true,
-  //     useDefaults: true,
-  //     coerceTypes: true,
-  // nullable: true,
-  // },
-  // },
+  genReqId: req => (req.id = generateId()),
 }).withTypeProvider<JsonSchemaToTsProvider>();
 
 export async function server(port: number) {
@@ -49,8 +50,8 @@ export async function server(port: number) {
   try {
     await app.listen({ port });
   } catch (err) {
-    log('!> Server caught an error:');
-    dir(err);
+    logger.error('!> Server caught an error:');
+    logger.dir(err);
   }
 
   return app;

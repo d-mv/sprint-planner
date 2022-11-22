@@ -1,5 +1,4 @@
-import colors from 'colors';
-
+import { R, colorette, logger } from '@mv-d/toolbelt';
 import {
   SprintCollection,
   EngineerCollection,
@@ -10,8 +9,7 @@ import {
 } from '../entities';
 
 export async function clearDbs() {
-  // eslint-disable-next-line no-console
-  console.log(colors.blue('Clearing collections...'));
+  R.compose(logger.info, colorette.blue)('Clearing collections...');
   // clear dbs
   await SprintCollection.deleteMany();
   await EngineerCollection.deleteMany();

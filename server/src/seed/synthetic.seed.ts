@@ -1,10 +1,9 @@
 import { faker } from '@faker-js/faker';
 import dayjs, { Dayjs } from 'dayjs';
-import { compose } from 'ramda';
+import { buildIntArray, capitalize, R } from '@mv-d/toolbelt';
 
 import { AssignedWorkCollection, EngineerCollection, SprintCollection, WorkCollection } from '../entities';
 import { incomingSprintToDbFormat } from '../entities/sprint/sprint.tools';
-import { buildArray, capitalize } from '../tools';
 import { appSeed } from './app.seed';
 import { clearDbs } from './clearDbs';
 import { scenariosSeed } from './scenarios.seed';
@@ -19,13 +18,13 @@ export async function syntheticSeed() {
 
   let endDate: Dayjs | undefined = undefined;
 
-  for await (const _ of buildArray(2)) {
+  for await (const _ of buildIntArray(2)) {
     const startDate: Dayjs = !endDate ? dayjs() : endDate;
 
     endDate = startDate.add(14, 'days');
 
     const sprint = {
-      name: compose(capitalize, lorem.words)(3),
+      name: R.compose(capitalize, lorem.words)(3),
       startDate: startDate.toString(),
       endDate: endDate.toString(),
       days: [],
@@ -37,7 +36,7 @@ export async function syntheticSeed() {
 
   const engineerIds: string[] = [];
 
-  for await (const _ of buildArray(5)) {
+  for await (const _ of buildIntArray(5)) {
     const { _id } = await EngineerCollection.create({
       person: {
         firstName: name.firstName(),
@@ -53,18 +52,18 @@ export async function syntheticSeed() {
 
   const workIds: string[] = [];
 
-  for await (const _ of buildArray(30)) {
+  for await (const _ of buildIntArray(30)) {
     const { _id } = await WorkCollection.create({
       jiraTicket: `ECP-${random.numeric(5)}`,
       jiraEpic: binaryChoice(`ECP-${random.numeric(5)}`, ''),
       estimate: random.numeric(1),
-      title: compose(capitalize, lorem.sentence)(),
+      title: R.compose(capitalize, lorem.sentence)(),
     });
 
     workIds.push(_id.toString());
   }
 
-  for await (const id of buildArray(5)) {
+  for await (const id of buildIntArray(5)) {
     const engineerId = engineerIds[id];
 
     const workId = workIds[id];

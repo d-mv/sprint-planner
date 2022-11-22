@@ -1,14 +1,14 @@
+import { makeMatch, negativeResponse } from '@mv-d/toolbelt';
+
 import {
   AuthController,
   EngineerController,
-  failure,
   SprintController,
   WorkController,
   AssignedWorkController,
   AppController,
   ScenarioController,
 } from '../entities';
-import { makeMatch } from '../tools';
 import { GlobalController } from './global.controller';
 
 export const QueryController = makeMatch(
@@ -22,5 +22,5 @@ export const QueryController = makeMatch(
     app: AppController,
     scenario: ScenarioController,
   },
-  () => failure('Domain is not found', 400),
+  () => negativeResponse('Domain is not found', 400),
 );

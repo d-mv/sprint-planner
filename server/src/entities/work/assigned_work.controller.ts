@@ -1,37 +1,46 @@
-import { failure, success, Result, PromisedResult } from '..';
-import { ControllerRequest } from '../../models';
-import { makeMatch } from '../../tools';
+import {
+  AnyValue,
+  makeMatch,
+  negativeResponse,
+  positiveResponse,
+  PromisedServerResult,
+  ServerResult,
+} from '@mv-d/toolbelt';
 
-export const AssignedWorkController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
+import { ControllerRequest } from '../../models';
+
+// eslint-disable-next-line prettier/prettier
+export const AssignedWorkController = makeMatch<(arg: ControllerRequest) => PromisedServerResult<AnyValue> | ServerResult<AnyValue>
+>(
   {
     add: async ({ query, context }) => {
       const result = await context.collections.assignedWork.create(query.payload);
 
-      return success(result);
+      return positiveResponse(result);
     },
     delete: async ({ query, context }) => {
       const result = await context.collections.assignedWork.deleteOne({ _id: query.payload });
 
-      if (result.deletedCount) return success('OK');
+      if (result.deletedCount) return positiveResponse('OK');
 
-      return failure('Failed to delete item', 500);
+      return negativeResponse('Failed to delete item', 500);
     },
     update: async ({ query, context }) => {
       const item = query.payload;
 
-      if (!item) return failure('Missing data', 400);
+      if (!item) return negativeResponse('Missing data', 400);
 
       const result = await context.collections.assignedWork.updateOne(query.payload);
 
-      if (result.modifiedCount) return success('OK');
+      if (result.modifiedCount) return positiveResponse('OK');
 
-      return failure('Failed to update record', 500);
+      return negativeResponse('Failed to update record', 500);
     },
     getAll: async ({ context }) => {
       const result = await context.collections.assignedWork.find({});
 
-      return success(result);
+      return positiveResponse(result);
     },
   },
-  () => failure('AssignedWork controller action is not found', 400),
+  () => negativeResponse('AssignedWork controller action is not found', 400),
 );

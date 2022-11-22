@@ -1,8 +1,17 @@
-import { failure, success, Result, PromisedResult } from '..';
-import { ControllerRequest } from '../../models';
-import { makeMatch } from '../../tools';
+import {
+  AnyValue,
+  makeMatch,
+  negativeResponse,
+  positiveResponse,
+  PromisedServerResult,
+  ServerResult,
+} from '@mv-d/toolbelt';
 
-export const AppController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
+import { ControllerRequest } from '../../models';
+
+// eslint-disable-next-line prettier/prettier
+export const AppController = makeMatch<(arg: ControllerRequest) => PromisedServerResult<AnyValue> | ServerResult<AnyValue>
+>(
   {
     assignEngineer: async ({ query, context }) => {
       const app = await context.collections.app.findOne({});
@@ -11,46 +20,46 @@ export const AppController = makeMatch<(arg: ControllerRequest) => PromisedResul
         const assignedEngineers = [...app.assignedEngineers, query.payload];
 
         await app.updateOne({ assignedEngineers });
-        return success([assignedEngineers]);
+        return positiveResponse([assignedEngineers]);
       }
 
       await context.collections.app.create({ assignedEngineers: [query.payload] });
-      return success([query.payload]);
+      return positiveResponse([query.payload]);
     },
     removeEngineer: async ({ query, context }) => {
       const app = (await context.collections.app.find({}))[0];
 
-      if (!app) return success('OK');
+      if (!app) return positiveResponse('OK');
 
       const assignedEngineers = app.assignedEngineers.filter(engineer => engineer !== query.payload);
 
       await app.updateOne({ assignedEngineers });
-      return success('OK');
+      return positiveResponse('OK');
     },
     getAssignedEngineers: async ({ context }) => {
       const app = (await context.collections.app.find({}))[0];
 
-      if (app) return success(app.assignedEngineers);
+      if (app) return positiveResponse(app.assignedEngineers);
 
-      return success([]);
+      return positiveResponse([]);
     },
     updateIdleTime: async ({ query, context }) => {
       const int = parseInt(query.payload);
 
-      if (!Number.isInteger(int)) return failure('Incorrect value, should be an integer');
+      if (!Number.isInteger(int)) return negativeResponse('Incorrect value, should be an integer', 400);
 
       const app = (await context.collections.app.find({}))[0];
 
       if (app) {
         const result = await context.collections.app.updateOne({ _id: app._id, idleTimeS: int });
 
-        if (result.modifiedCount === 1) return success('OK');
+        if (result.modifiedCount === 1) return positiveResponse('OK');
 
-        return failure('Unable to update');
+        return negativeResponse('Unable to update', 500);
       }
 
-      return failure('Unable to update. DB is not initialized?');
+      return negativeResponse('Unable to update. DB is not initialized?', 500);
     },
   },
-  () => failure('Engineer controller action is not found', 400),
+  () => negativeResponse('Engineer controller action is not found', 400),
 );

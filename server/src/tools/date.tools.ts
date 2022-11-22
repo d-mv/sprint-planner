@@ -1,11 +1,9 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { compose, map } from 'ramda';
+import { AnyValue, buildIntArray, R } from '@mv-d/toolbelt';
 import durationPlugin from 'dayjs/plugin/duration';
 import { Document, Types } from 'mongoose';
 
 import { DayType, Engineer, Sprint } from '../entities';
-import { buildArray } from './object.tools';
-import { AnyValue } from '../models';
 
 dayjs.extend(durationPlugin);
 
@@ -41,7 +39,7 @@ export function buildSprintDays(date: Sprint<string> & { daysOff: string[] }): D
     };
   }
 
-  return compose(map(mapperFn), buildArray, duration)(start, end);
+  return R.compose(R.map(mapperFn), buildIntArray, duration)(start, end);
 }
 
 const sorter = (a: Date, b: Date) => {

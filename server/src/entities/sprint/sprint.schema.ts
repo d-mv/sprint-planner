@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+
 import { DayType, Sprint } from './sprint.models';
 
 const DaysOffSchema = new Schema<DayType>({

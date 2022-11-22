@@ -1,16 +1,26 @@
-import { failure, success, Result, PromisedResult, Work } from '..';
-import { ControllerRequest } from '../../models';
-import { makeMatch } from '../../tools';
+import {
+  AnyValue,
+  makeMatch,
+  negativeResponse,
+  positiveResponse,
+  PromisedServerResult,
+  ServerResult,
+} from '@mv-d/toolbelt';
 
-export const WorkController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
+import { Work } from '..';
+import { ControllerRequest } from '../../models';
+
+// eslint-disable-next-line prettier/prettier
+export const WorkController = makeMatch<(arg: ControllerRequest) => PromisedServerResult<AnyValue> | ServerResult<AnyValue>
+>(
   {
     add: async ({ query, context }) => {
-      if (!query.payload) return failure('Nothing to create', 400);
+      if (!query.payload) return negativeResponse('Nothing to create', 400);
 
       if ('assign' in query.payload && 'engineerId' in query.payload.assign && 'startDate' in query.payload.assign) {
         const { work, assign } = query.payload;
 
-        if (!work) return failure('Nothing to create', 400);
+        if (!work) return negativeResponse('Nothing to create', 400);
 
         const result = await context.collections.work.create(work);
 
@@ -20,24 +30,24 @@ export const WorkController = makeMatch<(arg: ControllerRequest) => PromisedResu
           startDate: assign.startDate,
         });
 
-        return success({ work: result, assignedWork: assignResult });
+        return positiveResponse({ work: result, assignedWork: assignResult });
       } else {
         const result = await context.collections.work.create(query.payload);
 
-        return success(result);
+        return positiveResponse(result);
       }
     },
     delete: async ({ query, context }) => {
       const result = await context.collections.work.deleteOne(query.payload);
 
-      if (result.deletedCount) return success('OK');
+      if (result.deletedCount) return positiveResponse('OK');
 
-      return failure('Failed to delete item', 500);
+      return negativeResponse('Failed to delete item', 500);
     },
     update: async ({ query, context }) => {
       const item = query.payload;
 
-      if (!item) return failure('Missing data', 400);
+      if (!item) return negativeResponse('Missing data', 400);
 
       const assignedItemToUpdate = await context.collections.assignedWork.findOne({ _id: item._id });
 
@@ -69,16 +79,16 @@ export const WorkController = makeMatch<(arg: ControllerRequest) => PromisedResu
 
         const assignedWork = await context.collections.assignedWork.findOne({ _id });
 
-        return success({ work, assignedWork });
+        return positiveResponse({ work, assignedWork });
       }
 
-      return failure('Failed to update record', 500);
+      return negativeResponse('Failed to update record', 500);
     },
     getAll: async ({ context }) => {
       const result = await context.collections.work.find({});
 
-      return success(result);
+      return positiveResponse(result);
     },
   },
-  () => failure('Work controller action is not found', 400),
+  () => negativeResponse('Work controller action is not found', 400),
 );

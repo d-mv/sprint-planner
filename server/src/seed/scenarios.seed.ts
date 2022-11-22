@@ -1,4 +1,4 @@
-import colors from 'colors';
+import { R, colorette, logger } from '@mv-d/toolbelt';
 import serializeJavascript from 'serialize-javascript';
 
 import {
@@ -7,6 +7,7 @@ import {
   createEngineerScenario,
   assignWorkScenario,
   createWorkScenario,
+  engineerDaysOffScenario,
 } from '../data';
 import { Scenario, ScenarioCollection } from '../entities';
 
@@ -17,11 +18,11 @@ export async function scenariosSeed() {
     { label: 'createEngineer', stringified: serializeJavascript(createEngineerScenario, { isJSON: true }) },
     { label: 'assignWork', stringified: serializeJavascript(assignWorkScenario, { isJSON: true }) },
     { label: 'createWork', stringified: serializeJavascript(createWorkScenario, { isJSON: true }) },
+    { label: 'engineerDaysOff', stringified: serializeJavascript(engineerDaysOffScenario, { isJSON: true }) },
   ];
 
   for await (const scenario of SCENARIOS) {
-    // eslint-disable-next-line no-console
-    console.log(colors.green(`Adding ${scenario.label} scenario...`));
+    R.compose(logger.log, colorette.green)(`Adding ${scenario.label} scenario...`);
     await ScenarioCollection.create(scenario);
   }
 }

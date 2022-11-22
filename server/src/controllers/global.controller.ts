@@ -1,20 +1,29 @@
-import { failure, PromisedResult, Result, success } from '../entities';
+import {
+  AnyValue,
+  makeMatch,
+  negativeResponse,
+  positiveResponse,
+  PromisedServerResult,
+  ServerResult,
+} from '@mv-d/toolbelt';
+
 import { ControllerRequest } from '../models';
 import { syntheticSeed, initSeed } from '../seed';
-import { makeMatch } from '../tools';
 
-export const GlobalController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
+// eslint-disable-next-line prettier/prettier
+export const GlobalController = makeMatch<(arg: ControllerRequest) => PromisedServerResult<AnyValue> | ServerResult<AnyValue>
+>(
   {
     seed: async () => {
       await syntheticSeed();
 
-      return success('OK');
+      return positiveResponse('OK');
     },
     init: async () => {
       await initSeed();
 
-      return success('OK');
+      return positiveResponse('OK');
     },
   },
-  () => failure('GlobalController action is not found', 400),
+  () => negativeResponse('Global controller action is not found', 400),
 );

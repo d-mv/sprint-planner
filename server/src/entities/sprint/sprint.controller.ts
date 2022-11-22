@@ -1,41 +1,47 @@
-import { failure, success, Result, PromisedResult } from '..';
+import {
+  AnyValue,
+  makeMatch,
+  negativeResponse,
+  positiveResponse,
+  PromisedServerResult,
+  ServerResult,
+} from '@mv-d/toolbelt';
+
 import { ControllerRequest } from '../../models';
-import { makeMatch } from '../../tools';
 import { incomingSprintToDbFormat } from './sprint.tools';
 
-export const SprintController = makeMatch<(arg: ControllerRequest) => PromisedResult | Result>(
+// eslint-disable-next-line prettier/prettier
+export const SprintController = makeMatch<(arg: ControllerRequest) => PromisedServerResult<AnyValue> | ServerResult<AnyValue>
+>(
   {
     add: async ({ query, context }) => {
-      // eslint-disable-next-line no-console
-      console.dir(query.payload, { depth: 15 });
-
       const result = await context.collections.sprint.create(incomingSprintToDbFormat(query.payload));
 
-      return success(result);
+      return positiveResponse(result);
     },
     delete: async ({ query, context }) => {
       const result = await context.collections.sprint.deleteOne(query.payload);
 
-      if (result.deletedCount) return success('OK');
+      if (result.deletedCount) return positiveResponse('OK');
 
-      return failure('Failed to delete item', 500);
+      return negativeResponse('Failed to delete item', 500);
     },
     update: async ({ query, context }) => {
       const item = query.payload;
 
-      if (!item) return failure('Missing data', 400);
+      if (!item) return negativeResponse('Missing data', 400);
 
       const result = await context.collections.sprint.updateOne(query.payload);
 
-      if (result.modifiedCount) return success('OK');
+      if (result.modifiedCount) return positiveResponse('OK');
 
-      return failure('Failed to update record', 500);
+      return negativeResponse('Failed to update record', 500);
     },
     getAll: async ({ context }) => {
       const result = await context.collections.sprint.find({});
 
-      return success(result);
+      return positiveResponse(result);
     },
   },
-  () => failure('Sprint controller action is not found', 400),
+  () => negativeResponse('Sprint controller action is not found', 400),
 );

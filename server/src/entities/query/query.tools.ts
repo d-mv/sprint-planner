@@ -1,15 +1,16 @@
-import { path } from 'ramda';
+import { AnyValue, PromisedServerResult, R, RecordObject, ServerResult } from '@mv-d/toolbelt';
 
-import { RecordObject, ControllerRequest } from '../../models';
-import { Result, PromisedResult } from '../result';
+import { ControllerRequest } from '../../models';
 
 export function request(
-  controller: RecordObject<RecordObject<(arg0: ControllerRequest) => Result | PromisedResult>>,
+  controller: RecordObject<
+    RecordObject<(arg0: ControllerRequest) => ServerResult<AnyValue> | PromisedServerResult<AnyValue>>
+  >,
   data: ControllerRequest,
 ) {
   const { query } = data;
 
-  const fn = path([query.domain, query.action], controller);
+  const fn = R.path([query.domain, query.action], controller);
 
   return fn(data);
 }

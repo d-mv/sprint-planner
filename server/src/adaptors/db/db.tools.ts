@@ -1,17 +1,12 @@
 import { connect } from 'mongoose';
-import { path } from 'ramda';
-import colors from 'colors';
-
-import { STATE } from '../../entities';
+import { R, colorette, logger, getMessageFromError } from '@mv-d/toolbelt';
 
 export async function connectDb(url: string) {
   try {
     await connect(url);
 
-    STATE.isConnectedToDb = true;
-    // eslint-disable-next-line no-console
-    console.log(colors.blue('DB is connected'));
+    R.compose(logger.log, colorette.blue)('DB is connected');
   } catch (err) {
-    throw new Error(path(['message'], err) ?? 'Unknown error when connecting to DB');
+    throw new Error(getMessageFromError(err) ?? 'Unknown error when connecting to DB');
   }
 }

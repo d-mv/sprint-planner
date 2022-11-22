@@ -1,19 +1,12 @@
-import { log } from 'console';
-import { path } from 'ramda';
+import { logger, getMessageFromError, success } from '@mv-d/toolbelt';
 import mongoose from 'mongoose';
 import { FastifyInstance } from 'fastify';
-import { randomUUID } from 'crypto';
-import { performance } from 'perf_hooks';
-import colors from 'colors';
 
 import { Query } from '../models';
 import { QueryController } from '../controllers';
 import {
-  failure,
   request,
   SprintCollection,
-  set,
-  get,
   EngineerCollection,
   WorkCollection,
   AssignedWorkCollection,
@@ -22,6 +15,7 @@ import {
 } from '../entities';
 import { clearTimeout } from 'timers';
 import { CONFIG } from '../config';
+import { checkQuery } from '../tools';
 
 let errorMessage = '';
 
@@ -31,8 +25,7 @@ let cachedIdleTime = CONFIG.idleTime;
 
 function disconnectFromDb(idleTime: number) {
   return function call() {
-    // eslint-disable-next-line no-console
-    console.log(colors.blue(`Idle time ${idleTime / 1000}s is out, disconnecting...`));
+    logger.info(`Idle time ${idleTime / 1000}s is out, disconnecting...`);
 
     errorMessage = `System was disconnected after idle time of ${idleTime / 1000}s`;
     clearTimeout(timeout);
@@ -45,44 +38,29 @@ export function apiRouter(
   _opts: Record<string, unknown>, // ?
   next: (err?: Error | undefined) => void,
 ) {
-  server.post<{ Body: Query }>('/query', async ({ body }, res) => {
-    const requestId = randomUUID();
-
-    log(colors.blue(`>> #${requestId} ${body.domain}/${body.action}`));
-    performance.mark(`${requestId}-start`);
-
-    const isConnectRequest = body.domain === 'auth' && body.action === 'connect';
-
-    const isDisConnectRequest = body.domain === 'auth' && body.action === 'disconnect';
-
-    const isIdleTimeUpdateRequest = body.domain === 'app' && body.action === 'updateIdleTimes';
+  server.post<{ Body: Query }>('/query', async ({ body, id }, res) => {
+    const { isConnectRequest, isDisConnectRequest, isIdleTimeUpdateRequest } = checkQuery(body);
 
     const dbDisconnected = mongoose.connection.readyState === 0;
 
     // if db is disconnected and it's a non-connect request - we can't proceed
     if (dbDisconnected && !isConnectRequest) {
-      // eslint-disable-next-line no-console
-      console.log(colors.red('System is disconnected'));
+      logger.error('System is disconnected');
       return res.code(401).send(errorMessage ?? 'System is not connected to DB');
     }
 
     // if this is non-disconnect or connect request, we need to restart timeout
     if (!isConnectRequest && !isDisConnectRequest) {
-      // eslint-disable-next-line no-console
-      console.log(colors.blue('Regular request - restarting timeout'));
-
       if (timeout) clearTimeout(timeout);
 
       timeout = setTimeout(disconnectFromDb(cachedIdleTime), cachedIdleTime);
     }
 
-    let isPositive = true;
-
     try {
       const result = await request(QueryController, {
         query: body,
         context: {
-          requestId,
+          requestId: id,
           db: mongoose,
           collections: {
             sprint: SprintCollection,
@@ -92,7 +70,6 @@ export function apiRouter(
             app: AppCollection,
             scenario: ScenarioCollection,
           },
-          state: { set, get },
         },
       });
 
@@ -101,21 +78,7 @@ export function apiRouter(
 
       // if connected - timeout needs to start
       if (isConnectRequest && result.isOK) {
-        // eslint-disable-next-line no-console
-        console.log(colors.blue('Successfully connected'));
-        // eslint-disable-next-line no-console
-        console.log(colors.blue('Fetching idleTime...'));
-
-        const app = await AppCollection.findOne({});
-
-        if (app) {
-          // eslint-disable-next-line no-console
-          console.log(colors.blue(`Idle time is found - ${app.idleTimeS}s`));
-          cachedIdleTime = app.idleTimeS * 1000;
-        } else {
-          // eslint-disable-next-line no-console
-          console.log(colors.yellow(`Idle time is not found, using default one - ${cachedIdleTime / 1000}s`));
-        }
+        cachedIdleTime = result.payload.idleTimeMS;
 
         if (timeout) clearTimeout(timeout);
 
@@ -124,21 +87,15 @@ export function apiRouter(
 
       // if disconnected - timeout is also not needed
       if (isDisConnectRequest && result.isOK && timeout) {
-        // eslint-disable-next-line no-console
-        console.log(colors.blue('Successfully disconnected > clearing timeout'));
+        logger.error('Successfully disconnected > clearing timeout');
         clearTimeout(timeout);
       }
 
-      return result;
+      if (result.isOK) return success(result.payload);
+
+      return res.code(result.code).send(result.message);
     } catch (err) {
-      isPositive = false;
-      return failure(path(['message'], err) ?? 'Unknown controller error', 500);
-    } finally {
-      const measure = performance.measure(requestId, `${requestId}-start`);
-
-      const message = `<< #${requestId} ${isPositive ? 'OK' : 'ERROR'}, time: ${measure.duration}`;
-
-      log(isPositive ? colors.green(message) : colors.red(message));
+      return res.code(500).send(getMessageFromError(err) ?? 'Unknown controller error');
     }
   });
 
