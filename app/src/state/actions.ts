@@ -3,6 +3,10 @@ import { Dayjs } from 'dayjs';
 import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario, RecordObject } from '../shared';
 import { Action, StateActions } from './types';
 
+export const unauthorized = (): Action => ({
+  type: StateActions.UNAUTHORIZED,
+});
+
 export const setScenarios = (payload: RecordObject<FormScenario>): Action => ({
   type: StateActions.SET_SCENARIOS,
   payload,

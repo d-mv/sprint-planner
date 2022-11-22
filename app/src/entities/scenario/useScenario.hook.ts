@@ -1,6 +1,6 @@
-import { assoc, compose, isEmpty, isNil } from 'ramda';
+import { assoc, compose, isEmpty } from 'ramda';
 import { useCallback, useEffect } from 'react';
-import { DbScenario, FormScenario, query, RecordObject } from '../../shared';
+import { DbScenario, FormScenario, RecordObject, setupQuery } from '../../shared';
 import { getScenarios, LoadingActions, setIsLoading, setScenarios, useDispatch, useSelector } from '../../state';
 import { Result } from '../result';
 
@@ -8,6 +8,8 @@ export function useScenario() {
   const scenarios = useSelector(getScenarios);
 
   const dispatch = useDispatch();
+
+  const query = setupQuery(dispatch);
 
   const updateIsLoading = useCallback(
     (status = false) => compose(dispatch, setIsLoading)([LoadingActions.GET_SCENARIOS, status]),

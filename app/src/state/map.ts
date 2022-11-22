@@ -7,6 +7,10 @@ import { Action, MappedReducerFns, StateActions, State } from './types';
 
 export const MAP: MappedReducerFns = new Map();
 
+MAP.set(StateActions.UNAUTHORIZED, (state: State) => {
+  return INITIAL_STATE;
+});
+
 MAP.set(StateActions.SET_SCENARIOS, (state: State, action: Action<RecordObject<FormScenario>>) => {
   return assoc('scenarios', action.payload ?? {}, state);
 });

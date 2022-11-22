@@ -2,15 +2,10 @@ import { faker } from '@faker-js/faker';
 import dayjs, { Dayjs } from 'dayjs';
 import { compose } from 'ramda';
 
-import {
-  AppCollection,
-  AssignedWorkCollection,
-  EngineerCollection,
-  SprintCollection,
-  WorkCollection,
-} from '../entities';
+import { AssignedWorkCollection, EngineerCollection, SprintCollection, WorkCollection } from '../entities';
 import { incomingSprintToDbFormat } from '../entities/sprint/sprint.tools';
 import { buildArray, capitalize } from '../tools';
+import { appSeed } from './app.seed';
 import { clearDbs } from './clearDbs';
 import { scenariosSeed } from './scenarios.seed';
 import { generateEngineersDaysOff, binaryChoice } from './tools.seed';
@@ -54,9 +49,7 @@ export async function syntheticSeed() {
     engineerIds.push(_id.toString());
   }
 
-  const assignedEngineers = engineerIds.slice(0, 5);
-
-  await AppCollection.create({ assignedEngineers });
+  await appSeed(engineerIds);
 
   const workIds: string[] = [];
 

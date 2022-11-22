@@ -10,20 +10,30 @@ import './shared/classes.css';
 
 import { App } from './app';
 import reportWebVitals from './reportWebVitals';
-import { getMessage, StateProvider } from './state';
-import { theme, query } from './shared';
+import { getMessage, StateProvider, useDispatch } from './state';
+import { setupQuery, theme } from './shared';
 import { AppContext } from './entities';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
+
+function AppWrapper() {
+  const dispatch = useDispatch();
+
+  const query = setupQuery(dispatch);
+
+  return (
+    <AppContext.Provider value={{ query, getMessage }}>
+      <App />
+    </AppContext.Provider>
+  );
+}
 
 root.render(
   <StrictMode>
     <StateProvider>
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <AppContext.Provider value={{ query, getMessage }}>
-          <App />
-        </AppContext.Provider>
+        <AppWrapper />
       </ThemeProvider>
     </StateProvider>
   </StrictMode>,

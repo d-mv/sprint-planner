@@ -1,12 +1,13 @@
 import { compose } from 'ramda';
 import { createContext } from 'use-context-selector';
 
-import { query } from '../../shared';
+import { AnyValue } from '../../shared';
 import { as } from '../../shared/tools/type.tools';
 import { getMessage } from '../../state';
+import { Result } from '../result';
 
 export interface AppContextType {
-  query: typeof query;
+  query: <T = AnyValue>(domain: string, action: string, payload?: AnyValue) => Promise<Result<T>>;
   getMessage: typeof getMessage;
 }
 

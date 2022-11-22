@@ -3,6 +3,7 @@ import { Dayjs } from 'dayjs';
 import { AnyValue, DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario, RecordObject } from '../shared';
 
 export enum StateActions {
+  UNAUTHORIZED = 'unauthorized',
   SET_SCENARIOS = 'setScenarios',
   SET_MESSAGE = 'setMessage',
   SET_IS_CONNECTED = 'setIsConnected',

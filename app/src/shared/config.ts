@@ -1,7 +1,8 @@
 import { blueGrey, grey, indigo, pink } from '@mui/material/colors';
-import { env } from './tools/env.tools';
+import { env, buildConfig } from '@mv-d/toolbelt';
 
 export const CONFIG = {
+  ...buildConfig({ noVersion: true }),
   mongoDb: env('REACT_APP_MONGODB_URL').value ?? '',
   backend: env('REACT_APP_BACKEND').expect(),
   colors: {
