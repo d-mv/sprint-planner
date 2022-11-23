@@ -46,14 +46,13 @@ export async function server(port: number) {
 
   app.register(apiRouter, { prefix: 'api/v1' });
   app.register(generalRouter, { prefix: '/' });
-  app.register(fastifyStatic, { root: '/Users/dmelnikov/code/sprint-planning/app/build', list: false });
+  app.register(fastifyStatic, { root: CONFIG.pathToBuild, list: false });
 
   // start
   try {
-    await app.listen({ port });
+    await app.listen({ port, host: CONFIG.address });
   } catch (err) {
-    logger.error('!> Server caught an error:');
-    logger.dir(err);
+    logger.error(err, 'Server caught error');
   }
 
   return app;

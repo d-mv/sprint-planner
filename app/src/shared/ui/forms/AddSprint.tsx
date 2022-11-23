@@ -16,7 +16,7 @@ export function AddSprint({ onClose }: Props) {
   if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
-    add(form);
+    add(form, onClose);
   }
 
   return (

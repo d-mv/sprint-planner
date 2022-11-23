@@ -1,7 +1,21 @@
- @PHONY: docker-build
- docker-build:
-	docker build --pull --rm -f Dockerfile -t sprint-planner .
+.PHONY: start
+start:
+	docker compose -p sprint-planner up
 
-@PHONY: docker-run
-docker-run:
-    docker run --rm -it -p 8081:8081 sprint-planner
+.PHONY: build-start
+build-start:
+	docker compose kill || true
+	docker compose -p sprint-planner --env-file .env build
+	docker compose -p sprint-planner up
+
+.PHONY: re-build-start
+re-build-start:
+	docker compose kill || true
+	docker compose -p sprint-planner --env-file .env build --no-cache
+	docker compose -p sprint-planner up
+
+.PHONY: build-start-local
+build-start-local:
+	docker compose kill || true
+	docker compose -p sprint-planner --env-file .env.local build
+	docker compose -p sprint-planner up

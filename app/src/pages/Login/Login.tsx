@@ -5,7 +5,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { ChangeEvent, useState } from 'react';
 import { clsx } from 'clsx';
 
-import { ErrorMessage, Tooltip } from '../../shared';
+import { ErrorMessage, Tooltip, useKeyPress } from '../../shared';
 import classes from './Login.module.scss';
 import { getMessage, getIsLoading, useSelector } from '../../state';
 import { useLogin } from '../../entities';
@@ -37,8 +37,10 @@ export function Login() {
   }
 
   function handleSubmit() {
-    connect(value);
+    if (value) connect(value);
   }
+
+  useKeyPress({ onEnter: handleSubmit });
 
   function renderMessage() {
     if (isLoading) return <Typography variant='body2'>{TXT('isloading')}</Typography>;

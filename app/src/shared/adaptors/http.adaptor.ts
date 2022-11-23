@@ -1,4 +1,4 @@
-import { AnyValue, as, axios, Result, R, failure } from '@mv-d/toolbelt';
+import { AnyValue, as, axios, Result, R, failure, getMessageFromError } from '@mv-d/toolbelt';
 
 import { CONFIG } from '../config';
 import { Dispatch, unauthorized } from '../../state';
@@ -16,13 +16,16 @@ export function setupQuery(dispatch: Dispatch<unknown>) {
     } catch (err) {
       const error = as<axios.AxiosError>(err);
 
-      // eslint-disable-next-line no-console
-      console.log(error);
-
       if (error.response?.status === 401) {
         R.compose(dispatch, unauthorized)();
         return failure(String(error.response?.data) ?? 'Unauthorized');
-      } else return failure(error.message);
+      } else {
+        let message = (R.path(['response', 'data'], err) as string) ?? '';
+
+        if (!message) message = getMessageFromError(err);
+
+        return failure(message);
+      }
     }
   };
 }

@@ -43,7 +43,7 @@ export default function DateInput() {
       variant='standard'
       onChange={handleChange}
       error={validation && !isValidated}
-      value={defaultValue}
+      defaultValue={value ?? defaultValue ?? undefined}
       style={style}
       type='date'
       InputLabelProps={{

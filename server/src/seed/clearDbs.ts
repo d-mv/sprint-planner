@@ -1,4 +1,4 @@
-import { R, colorette, logger } from '@mv-d/toolbelt';
+import { logger } from '@mv-d/toolbelt';
 import {
   SprintCollection,
   EngineerCollection,
@@ -9,7 +9,7 @@ import {
 } from '../entities';
 
 export async function clearDbs() {
-  R.compose(logger.info, colorette.blue)('Clearing collections...');
+  logger.infoB('Clearing collections...');
   // clear dbs
   await SprintCollection.deleteMany();
   await EngineerCollection.deleteMany();

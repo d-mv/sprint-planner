@@ -35,7 +35,7 @@ export function buildSprintDays(date: Sprint<string> & { daysOff: string[] }): D
       date: date.toDate(),
       month,
       isWeekend: checkIfWeekend(date),
-      isOff: daysOff.includes(format(date)),
+      isOff: (daysOff ?? []).includes(format(date)),
     };
   }
 

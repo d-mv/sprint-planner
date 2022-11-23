@@ -1,4 +1,4 @@
-import { R, colorette, logger } from '@mv-d/toolbelt';
+import { logger } from '@mv-d/toolbelt';
 import serializeJavascript from 'serialize-javascript';
 
 import {
@@ -22,7 +22,7 @@ export async function scenariosSeed() {
   ];
 
   for await (const scenario of SCENARIOS) {
-    R.compose(logger.log, colorette.green)(`Adding ${scenario.label} scenario...`);
+    logger.info(`Adding ${scenario.label} scenario...`);
     await ScenarioCollection.create(scenario);
   }
 }

@@ -2,8 +2,8 @@ import { AnyValue, R, RecordObject } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
 import { AppContext, sprintDateToDayjs, sprintDateToDayjsArray } from '..';
-import { DbSprint } from '../../shared';
-import { setMessage, setIsLoading, setSprints, useDispatch, useSelector, addSprint } from '../../state';
+import { DbSprint, useCommon } from '../../shared';
+import { setMessage, setSprints, useDispatch, useSelector, addSprint } from '../../state';
 
 export function useSprints() {
   const { query, getMessage } = useContextSelector(AppContext, c => R.pick(['query', 'getMessage'], c));
@@ -12,46 +12,36 @@ export function useSprints() {
 
   const error = useSelector(getMessage);
 
-  const updateIsLoading = (item: string, status = false) => R.compose(dispatch, setIsLoading)([item, status]);
+  const { updateIsLoading, handleNegative, handlePositive } = useCommon();
 
-  function handleAddPositive(data: DbSprint<string>) {
-    R.compose(dispatch, addSprint, sprintDateToDayjs)(data);
-    updateIsLoading('add-sprint');
-  }
+  function add(data: RecordObject<AnyValue>, callback: () => void) {
+    const item = 'add-sprint';
 
-  function handleAddNegative(message: string) {
-    R.compose(dispatch, setMessage)(message);
-    updateIsLoading('add-sprint');
-  }
-
-  function add(data: RecordObject<AnyValue>) {
-    updateIsLoading('add-sprint', true);
+    updateIsLoading(item, true);
 
     if (error) R.compose(dispatch, setMessage)('');
 
     query<DbSprint<string>>('sprint', 'add', data)
-      .then(r => (r.isOK ? handleAddPositive(r.payload) : handleAddNegative(r.message)))
-      .catch(err => handleAddNegative(err.message));
-  }
-
-  function handleGetPositive(data: DbSprint<string>[]) {
-    R.compose(dispatch, setSprints, sprintDateToDayjsArray)(data);
-    updateIsLoading('get-sprint');
-  }
-
-  function handleGetNegative(message: string) {
-    R.compose(dispatch, setMessage)(message);
-    updateIsLoading('get-sprint');
+      .then(r =>
+        r.isOK
+          ? handlePositive(sprintDateToDayjs(r.payload), addSprint, item, callback)
+          : handleNegative(r.message, item),
+      )
+      .catch(err => handleNegative(err.message, item));
   }
 
   function get() {
-    updateIsLoading('get-sprint', true);
+    const item = 'get-sprint';
+
+    updateIsLoading(item, true);
 
     if (error) R.compose(dispatch, setMessage)('');
 
     query<DbSprint<string>[]>('sprint', 'getAll')
-      .then(r => (r.isOK ? handleGetPositive(r.payload) : handleGetNegative(r.message)))
-      .catch(err => handleGetNegative(err.message));
+      .then(r =>
+        r.isOK ? handlePositive(sprintDateToDayjsArray(r.payload), setSprints, item) : handleNegative(r.message, item),
+      )
+      .catch(err => handleNegative(err.message, item));
   }
 
   function update() {
