@@ -44,15 +44,5 @@ export function useSprints() {
       .catch(err => handleNegative(err.message, item));
   }
 
-  function update() {
-    // eslint-disable-next-line no-console
-    console.log('update');
-  }
-
-  function remove() {
-    // eslint-disable-next-line no-console
-    console.log('remove');
-  }
-
-  return { add, get, update, remove };
+  return { add, get };
 }

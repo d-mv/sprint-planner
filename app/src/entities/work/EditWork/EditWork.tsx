@@ -13,7 +13,7 @@ interface Props {
   onCancel: () => void;
 }
 
-export function EditWork({ onCancel }: Props) {
+export default function EditWork({ onCancel }: Props) {
   const { assigned, work } = useContextSelector(WorkContext, c => c);
 
   const dispatch = useDispatch();

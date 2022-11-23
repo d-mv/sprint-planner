@@ -10,7 +10,7 @@ interface Props {
   onClose: () => void;
 }
 
-export function AssignEngineer({ onClose }: Props) {
+export default function AssignEngineer({ onClose }: Props) {
   const { assignEngineer } = useApp();
 
   const unAssignedEngineers = useSelector(getUnassignedEngineers);

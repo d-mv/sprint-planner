@@ -8,7 +8,7 @@ interface Props {
   onClose: () => void;
 }
 
-export function AddEngineer({ onClose }: Props) {
+export default function AddEngineer({ onClose }: Props) {
   const isLoading = useSelector(getIsLoading);
 
   const { add } = useEngineers();

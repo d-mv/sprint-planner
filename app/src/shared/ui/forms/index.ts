@@ -1,5 +1,7 @@
-export * from './AddEngineer';
+import { lazy } from 'react';
 
-export * from './AddSprint';
+export const AddEngineer = lazy(() => import('./AddEngineer'));
 
-export * from './AssignEngineer';
+export const AddSprint = lazy(() => import('./AddSprint'));
+
+export const AssignEngineer = lazy(() => import('./AssignEngineer'));

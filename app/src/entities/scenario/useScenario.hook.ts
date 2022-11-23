@@ -1,4 +1,4 @@
-import { R, RecordObject, Result } from '@mv-d/toolbelt';
+import { logger, R, RecordObject, Result } from '@mv-d/toolbelt';
 import { useCallback, useEffect } from 'react';
 
 import { DbScenario, FormScenario, setupQuery } from '../../shared';
@@ -39,7 +39,7 @@ export function useScenario() {
     query<DbScenario[]>('scenario', 'getAll')
       .then(processPositive)
       .catch(err => {
-        console.error(err);
+        logger.error(err);
         updateIsLoading();
       });
   }, [processPositive]);

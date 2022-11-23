@@ -31,9 +31,6 @@ export default function DateSet() {
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     if (error) setError('');
 
-    // eslint-disable-next-line no-console
-    console.log(e.currentTarget.value, value);
-
     if (value && Array.isArray(value) && value.includes(e.currentTarget.value)) setError('Already added');
 
     setDate(e.currentTarget.value);

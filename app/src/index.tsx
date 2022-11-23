@@ -1,4 +1,5 @@
 import { StrictMode } from 'react';
+import { logger } from '@mv-d/toolbelt';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { createRoot } from 'react-dom/client';
@@ -39,8 +40,7 @@ root.render(
   </StrictMode>,
 );
 
-// eslint-disable-next-line no-console
-if (CONFIG.isDev) console.log(CONFIG);
+if (CONFIG.isDev) logger.dir(CONFIG);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

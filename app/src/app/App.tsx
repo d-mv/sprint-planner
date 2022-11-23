@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { ifTrue } from '@mv-d/toolbelt';
 
-import { CONFIG } from '../shared';
+import { CONFIG, LazyLoad } from '../shared';
 import { useLogin } from '../entities';
 import { Loading, Login, Main } from '../pages';
 import { getIsConnected, StateActions, useDispatch, useSelector } from '../state';
@@ -25,9 +25,11 @@ export function App() {
 
   return (
     <>
-      {ifTrue(isConnected, renderMain)}
-      {ifTrue(!isConnected, renderLogin)}
-      <Loading />
+      <LazyLoad>
+        {ifTrue(isConnected, renderMain)}
+        {ifTrue(!isConnected, renderLogin)}
+        <Loading />
+      </LazyLoad>
     </>
   );
 }

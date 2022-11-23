@@ -91,10 +91,5 @@ export function useWorks() {
       .catch(err => handleNegative(err.message, item));
   }
 
-  function remove() {
-    // eslint-disable-next-line no-console
-    console.log('remove');
-  }
-
-  return { add, get, update, remove };
+  return { add, get, update };
 }

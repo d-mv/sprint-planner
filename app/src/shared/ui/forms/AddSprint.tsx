@@ -8,7 +8,7 @@ interface Props {
   onClose: () => void;
 }
 
-export function AddSprint({ onClose }: Props) {
+export default function AddSprint({ onClose }: Props) {
   const { add } = useSprints();
 
   const scenario = useSelector(getScenarioByLabel('createSprint'));

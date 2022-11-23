@@ -53,11 +53,6 @@ export function useAssignedWork() {
       .catch(err => handleNegative(err.message, item));
   }
 
-  function update() {
-    // eslint-disable-next-line no-console
-    console.log('update');
-  }
-
   function remove(assignedWorkId: string) {
     const item = 'remove-assigned-work';
 
@@ -70,5 +65,5 @@ export function useAssignedWork() {
       .catch(err => handleNegative(err.message, item));
   }
 
-  return { add, get, update, remove };
+  return { add, get, remove };
 }

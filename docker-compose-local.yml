@@ -2,6 +2,18 @@ version: '3.9'
 
 services:
 
+  # mongo:
+  #   image: mongo
+  #   restart: always
+  #   ports:
+  #     - 8082:27017
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #   networks:
+  #     sprint-planner:
+  #       ipv4_address: ${MONGO_ADDRESS}
+
   sprint-planner:
     build:
       context: .
@@ -10,6 +22,8 @@ services:
         - REACT_APP_BACKEND=${REACT_APP_BACKEND}
     restart: always
     container_name: sprint-planner
+    # depends_on:
+    #   - mongo
     ports:
       - ${SERVER_EXTERNAL_PORT}:8000
     networks:

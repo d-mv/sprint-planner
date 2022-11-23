@@ -2,18 +2,24 @@ import { useState } from 'react';
 import { setupText, Optional, ifTrue } from '@mv-d/toolbelt';
 
 import { Message, CONSTANTS, LazyLoad, Container } from '../../shared';
-import { getUnAssignedWorksQty, useSelector } from '../../state';
+import { getUnAssignedWorksQty, getWorksForEngineer, useSelector } from '../../state';
 import { AssignWork } from './AssignWork';
 import { CreateAssignWork } from './CreateAssignWork';
 import { EngineerDaysOff } from './EngineerDaysOff';
 import { EngineerLine } from './EngineerLine';
 import { EngineerWorks } from './EngineerWorks';
 import { TEXT } from '../../shared/data/text.data';
+import { useContextSelector } from 'use-context-selector';
+import { EngineerContext } from './engineer.contexts';
 
 const TXT = setupText(TEXT)('engineer');
 
 export function Engineer() {
   const unassignedWorksQty = useSelector(getUnAssignedWorksQty);
+
+  const engineer = useContextSelector(EngineerContext, c => c.engineer);
+
+  const works = useSelector(getWorksForEngineer)(engineer._id);
 
   const [isOpen, setIsOpen] = useState<Optional<string>>(undefined);
 
@@ -66,6 +72,12 @@ export function Engineer() {
     );
   }
 
+  const renderWorks = () => (
+    <LazyLoad>
+      <EngineerWorks />
+    </LazyLoad>
+  );
+
   return (
     <div className='column s-between'>
       <div
@@ -78,7 +90,7 @@ export function Engineer() {
         <EngineerLine showActions={showActions} isOpen={isOpen} toggleIsOpen={toggleIsOpen} />
         {ifTrue(isOpen, renderForms)}
       </div>
-      <EngineerWorks />
+      {ifTrue(works.length, renderWorks)}
     </div>
   );
 }

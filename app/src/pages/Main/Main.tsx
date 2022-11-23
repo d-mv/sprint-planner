@@ -27,7 +27,7 @@ const DIALOGS = makeMatch(
   () => null,
 );
 
-export function Main() {
+export default function Main() {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
   const [isOpen, setIsOpen] = useState<Optional<MenuItemIds>>(undefined);

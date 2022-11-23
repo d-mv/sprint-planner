@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
-import { IconButton, CONSTANTS } from '../../../shared';
+import { IconButton, CONSTANTS, LazyLoad } from '../../../shared';
 import { useAssignedWork } from '../../work/useAssignedWorks.hook';
 import { WorkContext } from '../../work/work.contexts';
 import { WorkLine } from '../../work/WorkLine';
@@ -38,7 +38,11 @@ export function AssignedWork() {
   }
 
   function renderEdit() {
-    return <EditWork onCancel={toggleEdit} />;
+    return (
+      <LazyLoad>
+        <EditWork onCancel={toggleEdit} />
+      </LazyLoad>
+    );
   }
 
   return (

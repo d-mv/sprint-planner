@@ -1,11 +1,11 @@
 import { R } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
-import { DbWorkToRender, Spinner } from '../../shared';
+import { DbWorkToRender, Spinner } from '../../../shared';
 
-import { getIsLoading, getWorksForEngineer, useSelector } from '../../state';
-import { WorkContext } from '../work';
-import { AssignedWork } from './AssignedWork';
-import { EngineerContext } from './engineer.contexts';
+import { getIsLoading, getWorksForEngineer, useSelector } from '../../../state';
+import { WorkContext } from '../../work';
+import { AssignedWork } from '../AssignedWork';
+import { EngineerContext } from '../engineer.contexts';
 
 function renderWork(work: DbWorkToRender) {
   if (!work.work) return null;
@@ -17,7 +17,7 @@ function renderWork(work: DbWorkToRender) {
   );
 }
 
-export function EngineerWorks() {
+export default function EngineerWorks() {
   const engineer = useContextSelector(EngineerContext, c => c.engineer);
 
   const works = useSelector(getWorksForEngineer)(engineer._id);
