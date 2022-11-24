@@ -1,11 +1,10 @@
 import { Dayjs } from 'dayjs';
-import { MongoDocument } from '../../shared';
 
-import { DayType } from '../days';
+import { DbDate } from '../../shared';
 
 export interface Sprint<Day = Dayjs> {
   name: string;
   startDate: Day;
   endDate: Day;
-  days: MongoDocument<DayType<Day>>[];
+  days: DbDate<Day>[];
 }

@@ -2,6 +2,12 @@
   --border: 0.1rem solid #e0e0e0;
 }
 
+button {
+  border-width: 0;
+  border-style: none;
+  border-color: none;
+}
+
 .center {
   display: grid;
   place-items: center;
@@ -31,16 +37,8 @@
   border-top: var(--border);
 }
 
-.border-right {
-  border-right: var(--border);
-}
-
 .border-bottom {
   border-bottom: var(--border);
-}
-
-.border-right-none {
-  border-right: none;
 }
 
 .border-top-w-0 {

@@ -1,6 +1,5 @@
 import { Collapse } from '@mui/material';
 import { ifTrue, R } from '@mv-d/toolbelt';
-import { Fragment, useEffect, useState } from 'react';
 
 import { DbWorkToRender, DbEngineer } from '../../shared';
 import {
@@ -38,7 +37,7 @@ export function SprintWorks() {
 
     return (
       <Collapse key={engineer._id} in={isUnfolded}>
-        <div style={{ height: `${4 * heightM}rem` }} />
+        <div id='empty-space-stub' style={{ height: `${4 * heightM}rem` }} />
         {ifTrue(works?.length, () => R.map(renderAssignedWork(engineer), works))}
       </Collapse>
     );

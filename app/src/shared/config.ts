@@ -11,7 +11,7 @@ export const CONFIG = {
     weekend: { backgroundColor: grey[100], color: blueGrey['800'] },
     work: { backgroundColor: indigo[100] },
     regular: { backgroundColor: '#fff', color: blueGrey['800'] },
-    border: 'var(--border)',
+    border: `0.1rem solid ${grey[200]}`,
     todayBorder: pink[500],
   },
 };

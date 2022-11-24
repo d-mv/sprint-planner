@@ -1,14 +1,14 @@
 import { Popover } from '@mui/material';
 import { clsx } from 'clsx';
 import { Dayjs } from 'dayjs';
-import { Optional, R } from '@mv-d/toolbelt';
+import { mapI, Optional, R } from '@mv-d/toolbelt';
 import { MouseEvent, useState } from 'react';
 
-import { MongoDocument, CONSTANTS, DayPopup, useWorkDays, DbEngineer } from '../../shared';
-import { DayType } from '../days';
+import { CONSTANTS, DayPopup, useWorkDays, DbEngineer, DbDate } from '../../shared';
 import { Day } from '../days/Day';
 import { useEngineers } from '../engineer';
 import { WorkToRender } from '../work';
+import { buildId } from '../../shared/tools/text.tools';
 
 interface Props {
   workToRender: WorkToRender;
@@ -53,13 +53,17 @@ export function SprintWorkDays({ workToRender, engineer }: Props) {
     }
   }
 
-  function renderWorkDay(day: MongoDocument<DayType>) {
-    return <Day key={day._id} day={day} onClick={handleClick} />;
+  function renderWorkDay(day: DbDate, index: number) {
+    return <Day key={day._id} day={day} isLast={index === days.length - 1} onClick={handleClick} />;
   }
 
   return (
-    <div className={clsx('align-center w-fit')} style={{ height: CONSTANTS.daysLineHeight }}>
-      {R.map(renderWorkDay, days)}
+    <div
+      id={buildId('sprint-work-days', engineer._id)}
+      className={clsx('align-center w-fit')}
+      style={{ height: CONSTANTS.daysLineHeight }}
+    >
+      {mapI(renderWorkDay, days)}
       <Popover
         open={open}
         anchorEl={anchorEl}

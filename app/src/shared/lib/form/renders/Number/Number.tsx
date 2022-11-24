@@ -39,7 +39,6 @@ export default function Number() {
       autoComplete={item.autoComplete}
       autoFocus={item.autoFocus}
       className={className}
-      defaultValue={defaultValue}
       error={validation && isTouched && !isValidated}
       id={item.dataId}
       label={label}
@@ -50,7 +49,7 @@ export default function Number() {
       style={style}
       type='number'
       variant='standard'
-      value={value}
+      value={value ?? defaultValue}
     />
   );
 }

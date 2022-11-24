@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useCallback, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { FormContext, FormItemContext } from '../../contexts';
@@ -14,28 +14,29 @@ export default function DateInput() {
 
   const defaultValue = makeDefaultValue(item.defaultValue);
 
-  function sendUpdate(v: string) {
-    onChange(v);
-    onValidation(true);
+  const sendUpdate = useCallback(
+    (v: string) => {
+      onChange(v);
+      onValidation(true);
 
-    if (triggerFns && triggers?.length)
-      triggers?.forEach(trigger => {
-        if (trigger in triggerFns) triggerFns[trigger](v);
-      });
-  }
+      if (triggerFns && triggers?.length)
+        triggers?.forEach(trigger => {
+          if (trigger in triggerFns) triggerFns[trigger](v);
+        });
+    },
+    [onChange, onValidation, triggerFns, triggers],
+  );
 
   useEffect(() => {
     if (!value && item.defaultValue) {
       sendUpdate(defaultValue);
     }
-  }, [item]);
+  }, [defaultValue, item, sendUpdate]);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.currentTarget.value) sendUpdate(e.currentTarget.value);
   }
 
-  // eslint-disable-next-line no-console
-  console.log(value, defaultValue);
   return (
     <TextField
       id={item.dataId}
@@ -45,7 +46,7 @@ export default function DateInput() {
       variant='standard'
       onChange={handleChange}
       error={validation && !isValidated}
-      defaultValue={value ?? defaultValue ?? undefined}
+      value={value}
       style={style}
       type='date'
       InputLabelProps={{

@@ -2,22 +2,21 @@ import { ifTrue } from '@mv-d/toolbelt';
 import { Typography } from '@mui/material';
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
 import { grey } from '@mui/material/colors';
-import { clsx } from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
 import { CSSProperties, MouseEvent } from 'react';
 
-import { CONFIG, DbDate } from '../../../shared';
-import { getIsDayOff, useSelector } from '../../../state';
-import classes from './Day.module.scss';
-import { buildId } from '../../../shared/tools/text.tools';
+import { CONFIG, DbDate } from '../../shared';
+import { getIsDayOff, useSelector } from '../../state';
+import { buildId } from '../../shared/tools/text.tools';
 
 interface Props {
+  isLast?: boolean;
   withDate?: boolean;
   day: DbDate;
   onClick?: (date: Dayjs) => (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
-export function Day({ day, onClick, withDate }: Props) {
+export function Day({ day, isLast, onClick, withDate }: Props) {
   const isDayOff = useSelector(getIsDayOff);
 
   const { date, month, isWeekend, isOff, isWork } = day;
@@ -30,8 +29,10 @@ export function Day({ day, onClick, withDate }: Props) {
     if (onClick) onClick(date)(e);
   }
 
-  function getColor(): CSSProperties {
+  function getStyle(): CSSProperties {
     let style: CSSProperties = {
+      height: '3rem',
+      width: '4.6rem',
       backgroundColor: CONFIG.colors.regular.backgroundColor,
       color: CONFIG.colors.regular.color,
       border: CONFIG.colors.border,
@@ -47,11 +48,20 @@ export function Day({ day, onClick, withDate }: Props) {
 
     if (isToday) return { ...style, borderColor: CONFIG.colors.todayBorder };
 
-    return { ...style, borderRight: 'none' };
+    if (isLast) return style;
+
+    return {
+      ...style,
+      borderRight: 'none',
+    };
   }
 
   function renderDate() {
-    return <Typography variant='subtitle1' color={getColor().color}>{`${month}/${date.date().toString()}`}</Typography>;
+    return (
+      <Typography variant='subtitle1' color={CONFIG.colors.regular.color}>{`${month}/${date
+        .date()
+        .toString()}`}</Typography>
+    );
   }
 
   function renderTodayIcon() {
@@ -61,11 +71,11 @@ export function Day({ day, onClick, withDate }: Props) {
   return (
     <button
       key={day._id}
-      id={buildId('day', day._id)}
+      id={buildId(`day-${isLast}`, day._id)}
       onClick={handleClick}
       disabled={!onClick}
-      className={clsx('center', classes.container)}
-      style={getColor()}
+      className='center'
+      style={getStyle()}
     >
       {ifTrue(withDate, renderDate)}
       {ifTrue(!withDate && isToday, renderTodayIcon)}

@@ -9,7 +9,7 @@ specifiers:
   '@getify/eslint-plugin-proper-arrows': 11.0.3
   '@mui/icons-material': ^5.10.9
   '@mui/material': ^5.10.11
-  '@mv-d/toolbelt': 0.5.0
+  '@mv-d/toolbelt': 0.6.1
   '@pmmmwh/react-refresh-webpack-plugin': ^0.5.3
   '@svgr/webpack': ^5.5.0
   '@testing-library/jest-dom': ^5.16.5
@@ -109,7 +109,7 @@ dependencies:
   '@getify/eslint-plugin-proper-arrows': 11.0.3_eslint@8.27.0
   '@mui/icons-material': 5.10.15_oev7u2jo7ua7d3mgxqd6sscfw4
   '@mui/material': 5.10.15_thp4wrxo45nyllusrnt46mid4u
-  '@mv-d/toolbelt': 0.5.0
+  '@mv-d/toolbelt': 0.6.1
   '@pmmmwh/react-refresh-webpack-plugin': 0.5.9_unmakpayn7vcxadrrsbqlrpehy
   '@svgr/webpack': 5.5.0
   '@testing-library/jest-dom': 5.16.5
@@ -2429,8 +2429,8 @@ packages:
       react-is: 18.2.0
     dev: false
 
-  /@mv-d/toolbelt/0.5.0:
-    resolution: {integrity: sha512-cabPKtlFybJ9+c/rDfUihCIZX+IrnFrFJ1FsD+v5ibECS5ZsqN04hP2PTUUsEJPRScDtA0LXEglOjrUqyu+ZsQ==}
+  /@mv-d/toolbelt/0.6.1:
+    resolution: {integrity: sha512-EGDZbor5nNjOvfkf0CdpdtsktrVIV19HEoTFypqmSC8bNI9Upj1AI0YaPJwqLWGk+/bNGKL7pDKWFWOy8F4mhQ==}
     dependencies:
       '@types/deep-equal': 1.0.1
       '@types/ramda': 0.28.20

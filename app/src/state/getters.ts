@@ -175,26 +175,28 @@ export const getAllIsLoading = (state: State) => state.isLoading;
 export const getHeightMultiplierForSprintWorks = (state: State) => (engineerId: string) => {
   const myIndex = R.indexOf(engineerId, state.assignedEngineers);
 
-  const totalEngineers = state.assignedEngineers.filter((_, i) => i < myIndex);
+  const reversed = R.reverse(state.assignedEngineers.slice(0, myIndex));
 
-  let foldedEngineers = 0;
-  totalEngineers.forEach(engineer => {
-    if (!state.unfoldEngineers.includes(engineer)) foldedEngineers += 1;
-  });
+  let closedBeforeMe = 0;
 
-  let heightM = 1;
+  if (reversed.length) {
+    let i = 0;
+    do {
+      if (!state.unfoldEngineers.includes(reversed[i])) closedBeforeMe += 1;
+      else break;
 
-  // const eng = state.engineers.find(e => e._id === engineerId);
+      i += 1;
+    } while (i < reversed.length);
+  }
 
-  if (totalEngineers.length === foldedEngineers) heightM += foldedEngineers;
-
-  return heightM;
+  return 1 + closedBeforeMe;
 };
 
 export const getHeightMultiplierForUnassignedWorks = (state: State) => {
   if (!state.unfoldEngineers.length) return state.assignedEngineers.length;
 
   let lastIndex = 0;
+
   state.assignedEngineers.forEach((engineer, index) => {
     if (state.unfoldEngineers.includes(engineer)) lastIndex = index;
   });

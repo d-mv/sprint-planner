@@ -1,0 +1,14 @@
+{
+  "javascript": { "formatter": { "quoteStyle": "single" } },
+  "formatter": {
+    "ignore": ["**/*.json", "**/*.yaml"],
+    "indentStyle": "tab"
+  },
+  "linter": {
+    "enabled": true,
+    "ignore": ["**/*.json", "**/*.yaml"],
+    "rules": {
+      "recommended": true
+    }
+  }
+}

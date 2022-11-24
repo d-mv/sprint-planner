@@ -1,12 +1,11 @@
 import { Dayjs } from 'dayjs';
 import { Popover } from '@mui/material';
-import { Optional, R } from '@mv-d/toolbelt';
+import { mapI, Optional, R } from '@mv-d/toolbelt';
 import { MouseEvent, useState } from 'react';
 
 import { Sprint } from '.';
 import { Day } from '../days/Day';
-import { DayType } from '../days/days.models';
-import { DayPopup, MongoDocument } from '../../shared';
+import { DayPopup, DbDate } from '../../shared';
 import { addRemoveDayOff, getIsDayOff, useDispatch, useSelector } from '../../state';
 
 interface Props {
@@ -43,13 +42,13 @@ export function Days({ sprint }: Props) {
     handleClose();
   }
 
-  function renderCell(day: MongoDocument<DayType>) {
-    return <Day withDate key={day._id} day={day} onClick={handleClick} />;
+  function renderCell(day: DbDate, index: number) {
+    return <Day withDate key={day._id} day={day} isLast={index === sprint.days.length - 1} onClick={handleClick} />;
   }
 
   return (
     <div className='line'>
-      {R.map(renderCell, sprint.days)}
+      {mapI(renderCell, sprint.days)}
       <Popover
         open={open}
         anchorEl={anchorEl}

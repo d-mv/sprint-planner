@@ -102,13 +102,12 @@ export default function Selector() {
           labelId={labelId}
           className={className}
           required={isRequired}
-          value={value}
+          value={value ?? defaultValue}
           onChange={handleChange}
           variant='standard'
           style={{ display: 'flex', maxWidth: '80%', ...style }}
           onBlur={handleFocus}
           error={validation && !isValidated}
-          defaultValue={defaultValue}
         >
           {R.map(renderer, data)}
         </Select>

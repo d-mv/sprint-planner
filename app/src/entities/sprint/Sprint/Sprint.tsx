@@ -1,11 +1,10 @@
-import { Sprint as SprintType } from '../sprint.models';
 import { Days } from '../Days';
 import { SprintName } from '../SprintName';
-import { MongoDocument } from '../../../shared';
+import { DbSprint } from '../../../shared';
 import classes from './Sprint.module.scss';
 
 interface Props {
-  sprint: MongoDocument<SprintType>;
+  sprint: DbSprint;
 }
 
 export function Sprint({ sprint }: Props) {
