@@ -13,7 +13,7 @@ interface Props {
 export function EngineerDaysOff({ onClose }: Props) {
   const engineer = useContextSelector(EngineerContext, c => c.engineer);
 
-  const isLoading = useSelector(getIsLoading);
+  const isLoading = useSelector(getIsLoading)('update-engineer');
 
   const { update } = useEngineers();
 
@@ -22,6 +22,8 @@ export function EngineerDaysOff({ onClose }: Props) {
   if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
+    if (isLoading) return;
+
     const daysOff = Array.from(new Set(form['daysOff']));
 
     update({ _id: engineer._id, daysOff }, onClose);
@@ -33,7 +35,7 @@ export function EngineerDaysOff({ onClose }: Props) {
         value={{
           scenario,
           submitData: handleSubmit,
-          process: { submit: isLoading('update-engineer') },
+          process: { submit: isLoading },
           actions: { cancel: onClose },
           initial: {
             daysOff: engineer.daysOff.map(format()),

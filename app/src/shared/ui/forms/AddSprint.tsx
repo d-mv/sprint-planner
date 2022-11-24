@@ -1,7 +1,7 @@
 import { AnyValue, RecordObject } from '@mv-d/toolbelt';
 
 import { useSprints } from '../../../entities';
-import { useSelector, getScenarioByLabel } from '../../../state';
+import { useSelector, getScenarioByLabel, getIsLoading } from '../../../state';
 import { FormContext, Form } from '../../lib';
 
 interface Props {
@@ -11,12 +11,14 @@ interface Props {
 export default function AddSprint({ onClose }: Props) {
   const { add } = useSprints();
 
+  const isLoading = useSelector(getIsLoading)('add-sprint');
+
   const scenario = useSelector(getScenarioByLabel('createSprint'));
 
   if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
-    add(form, onClose);
+    if (isLoading) add(form, onClose);
   }
 
   return (
@@ -26,6 +28,9 @@ export default function AddSprint({ onClose }: Props) {
         submitData: handleSubmit,
         actions: {
           cancel: onClose,
+        },
+        process: {
+          submit: isLoading,
         },
       }}
     >

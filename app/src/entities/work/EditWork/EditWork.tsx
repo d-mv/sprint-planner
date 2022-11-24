@@ -1,9 +1,9 @@
 import { clsx } from 'clsx';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { AnyValue, R, RecordObject } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
-import { Form, FormContext, LazyLoad } from '../../../shared';
+import { Form, format, FormContext, LazyLoad } from '../../../shared';
 import { getIsLoading, getScenarioByLabel, setMessage, useDispatch, useSelector } from '../../../state';
 import { useWorks } from '../useWorks.hook';
 import { WorkContext } from '../work.contexts';
@@ -18,7 +18,7 @@ export default function EditWork({ onCancel }: Props) {
 
   const dispatch = useDispatch();
 
-  const isLoading = useSelector(getIsLoading)('add-work');
+  const isLoading = useSelector(getIsLoading)('update-work');
 
   const { update } = useWorks();
 
@@ -27,7 +27,7 @@ export default function EditWork({ onCancel }: Props) {
   if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
-    update(form, onCancel);
+    if (!isLoading) update(form, onCancel);
   }
 
   function handleError(message: string) {
@@ -37,11 +37,9 @@ export default function EditWork({ onCancel }: Props) {
   function getWorkToEdit(work: RecordObject<AnyValue>) {
     let picked = R.pick(['_id', 'estimate', 'jiraEpic', 'jiraTicket', 'startDate', 'title'], work);
 
-    const startDate = R.path(['startDate'], picked);
+    const startDate = dayjs(R.path(['startDate'], picked));
 
-    const isDayjs = Object.getPrototypeOf(startDate) === Object.getPrototypeOf(dayjs());
-
-    if (isDayjs) picked = R.assoc('startDate', (startDate as Dayjs).toString(), picked);
+    picked = R.assoc('startDate', format()(startDate), picked);
 
     const allRequiredPresent = Object.values(R.omit(['jiraEpic', '_id'], picked)).every(Boolean);
 

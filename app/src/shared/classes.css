@@ -76,6 +76,10 @@
   justify-content: space-around;
 }
 
+.j-end {
+  justify-content: flex-end;
+}
+
 .m-b-start-1 {
   margin-block-start: 1rem;
 }
@@ -140,4 +144,8 @@
 
 .m-vertical {
   margin: 1rem auto;
+}
+
+.list-of-spans span + span {
+  margin-inline-start: 1rem;
 }

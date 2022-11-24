@@ -1,15 +1,25 @@
-import { ifTrue, mapI } from '@mv-d/toolbelt';
-import { map } from 'ramda';
-import { Fragment } from 'react';
+import { Collapse } from '@mui/material';
+import { ifTrue, R } from '@mv-d/toolbelt';
+import { Fragment, useEffect, useState } from 'react';
 
-import { DbWorkToRender, DbEngineer, CONSTANTS } from '../../shared';
-import { getAssignedEngineers, getWorksForEngineer, useSelector } from '../../state';
+import { DbWorkToRender, DbEngineer } from '../../shared';
+import {
+  getAssignedEngineers,
+  getHeightMultiplierForSprintWorks,
+  getIsEngineerUnfolded,
+  getWorksForEngineer,
+  useSelector,
+} from '../../state';
 import { SprintWorkDays } from './SprintWorkDays';
 
 export function SprintWorks() {
   const engineers = useSelector(getAssignedEngineers);
 
-  const works = useSelector(getWorksForEngineer);
+  const getWorks = useSelector(getWorksForEngineer);
+
+  const checkUnfolded = useSelector(getIsEngineerUnfolded);
+
+  const checkBeforeMe = useSelector(getHeightMultiplierForSprintWorks);
 
   function renderAssignedWork(engineer: DbEngineer) {
     return function call(work: DbWorkToRender) {
@@ -19,23 +29,24 @@ export function SprintWorks() {
     };
   }
 
-  function renderEngineerWorks(engineer: DbEngineer, index: number) {
-    const w = works(engineer._id);
+  function renderEngineerWorks(engineer: DbEngineer) {
+    const works = getWorks(engineer._id);
+
+    const isUnfolded = checkUnfolded(engineer._id);
+
+    const heightM = checkBeforeMe(engineer._id);
 
     return (
-      <Fragment key={engineer._id}>
-        <div
-          className={ifTrue(!index, 'border-bottom', 'border-top border-bottom')}
-          style={{ height: '4.2rem', backgroundColor: CONSTANTS.engineerLineColor }}
-        />
-        {ifTrue(w?.length, () => map(renderAssignedWork(engineer), w))}
-      </Fragment>
+      <Collapse key={engineer._id} in={isUnfolded}>
+        <div style={{ height: `${4 * heightM}rem` }} />
+        {ifTrue(works?.length, () => R.map(renderAssignedWork(engineer), works))}
+      </Collapse>
     );
   }
 
   return (
     <div id='sprints-works' className='column w-fit'>
-      {mapI(renderEngineerWorks, engineers)}
+      {R.map(renderEngineerWorks, engineers)}
     </div>
   );
 }

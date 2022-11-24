@@ -60,7 +60,7 @@ export function AssignWork({ onCancel }: Props) {
   }
 
   function handleSubmit(form: RecordObject<AnyValue>) {
-    add({ ...form, engineerId }, onCancel);
+    if (!isLoading) add({ ...form, engineerId }, onCancel);
   }
 
   function handleError(message: string) {

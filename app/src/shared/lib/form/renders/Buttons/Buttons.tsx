@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import { R, makeMatch, ifTrue } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
+import { useKeyPress } from '../../../../hooks';
 
 import { Divider, Spinner } from '../../../../ui/atoms';
 import { FormContext, FormInternalContext } from '../../contexts';
@@ -50,6 +51,12 @@ export function Buttons() {
 
     return buttonItem.label;
   }
+
+  function handleEscape() {
+    if (actions && 'cancel' in actions) actions.cancel();
+  }
+
+  useKeyPress({ onEscape: handleEscape });
 
   function renderButton(buttonItem: FormButton) {
     // eslint-disable-next-line no-useless-return, @typescript-eslint/no-empty-function

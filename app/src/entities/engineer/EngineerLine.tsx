@@ -17,7 +17,10 @@ export function EngineerLine({ showActions, isOpen, toggleIsOpen }: Props) {
   return (
     <div
       className='align-center w-100 padding-1'
-      style={{ backgroundColor: CONSTANTS.engineerLineColor, height: '4rem' }}
+      style={{
+        backgroundColor: showActions ? CONSTANTS.selectedEngineerLineColor : CONSTANTS.engineerLineColor,
+        height: '4rem',
+      }}
     >
       <EngineerName />
       {ifTrue(showActions, renderActions)}

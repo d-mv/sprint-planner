@@ -10,6 +10,8 @@ services:
         - REACT_APP_BACKEND=${REACT_APP_BACKEND}
     restart: always
     container_name: sprint-planner
+    environment:
+      - SERVER_ADDRESS=${SERVER_ADDRESS}
     ports:
       - ${SERVER_EXTERNAL_PORT}:8000
     networks:

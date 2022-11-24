@@ -1,4 +1,5 @@
 import {
+  R,
   AnyValue,
   makeMatch,
   negativeResponse,
@@ -30,7 +31,11 @@ export const AssignedWorkController = makeMatch<(arg: ControllerRequest) => Prom
 
       if (!item) return negativeResponse('Missing data', 400);
 
-      const result = await context.collections.assignedWork.updateOne(query.payload);
+      const _id = R.path(['_id'], query.payload);
+
+      const changes = R.omit(['_id'], query.payload);
+
+      const result = await context.collections.assignedWork.updateOne({ _id }, changes);
 
       if (result.modifiedCount) return positiveResponse('OK');
 

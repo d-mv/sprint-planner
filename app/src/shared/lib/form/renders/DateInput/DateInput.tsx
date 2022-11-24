@@ -34,6 +34,8 @@ export default function DateInput() {
     if (e.currentTarget.value) sendUpdate(e.currentTarget.value);
   }
 
+  // eslint-disable-next-line no-console
+  console.log(value, defaultValue);
   return (
     <TextField
       id={item.dataId}

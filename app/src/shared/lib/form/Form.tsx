@@ -36,13 +36,9 @@ const RENDERS = makeMatch(
 const TXT = setupText(TEXT)('form');
 
 export default function Form() {
-  const [scenario, submitForm, submitData, initial, components] = useContextSelector(FormContext, c => [
-    c.scenario,
-    c.submitForm,
-    c.submitData,
-    c.initial,
-    c.components,
-  ]);
+  const { scenario, submitForm, submitData, initial, components } = useContextSelector(FormContext, c =>
+    R.pick(['scenario', 'submitForm', 'submitData', 'initial', 'components'], c),
+  );
 
   const [data, setData] = useState<RecordObject<AnyValue>>({ ...initial });
 

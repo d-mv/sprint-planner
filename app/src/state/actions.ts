@@ -4,6 +4,16 @@ import { Dayjs } from 'dayjs';
 import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario } from '../shared';
 import { Action, StateActions } from './types';
 
+export const unfoldAllEngineers = (): Action<string> => ({
+  type: StateActions.UNFOLD,
+  payload: '_all',
+});
+
+export const unfoldEngineer = (payload?: string): Action<string> => ({
+  type: StateActions.UNFOLD,
+  payload,
+});
+
 export const unauthorized = (): Action => ({
   type: StateActions.UNAUTHORIZED,
 });

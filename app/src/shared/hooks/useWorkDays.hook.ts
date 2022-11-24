@@ -44,13 +44,17 @@ export function useWorkDays({ workToRender, engineer }: UseWorkDaysProps) {
 
     if (shouldReturnDay(day)) return day;
 
+    const isAlreadyFinished = startDate.add(pointsLeft, 'days').isBefore(date, 'date');
+
+    if (isAlreadyFinished) return day;
+
     const isSameAsStart = date.isSame(startDate, 'date');
 
-    const isAfterAsStart = date.isAfter(startDate, 'date');
+    const isAfterStart = date.isAfter(startDate, 'date');
 
-    if (!isSameAsStart && !isAfterAsStart) return day;
+    if (!isSameAsStart && !isAfterStart) return day;
 
-    if (isSameAsStart || (pointsLeft && isAfterAsStart)) {
+    if (isSameAsStart || (pointsLeft && isAfterStart)) {
       pointsLeft -= 1;
 
       if (!pointsLeft) lastDay = day;

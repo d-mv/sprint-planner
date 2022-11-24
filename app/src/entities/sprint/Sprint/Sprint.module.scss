@@ -1,22 +1,8 @@
 .list {
-	button + button {
-		border-right: none;
-	}
-
 	button {
-
-
-
-
-
 		&:first-of-type {
 			border-left: none;
 		}
-
-		&:last-of-type {
-			border-right: none !important;
-		}
-
 	}
 
 }

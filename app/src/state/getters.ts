@@ -6,6 +6,16 @@ import { State } from '.';
 import { WorkToRender } from '../entities';
 import { DbWork, DbWorkToRender, FormScenario } from '../shared';
 
+export const getAllEngineersUnfolded = (state: State) =>
+  state.assignedEngineers.length === state.unfoldEngineers.length;
+
+export const getAllEngineersFolded = (state: State) => !state.unfoldEngineers.length;
+
+export const getUnfoldedEngineers = (state: State) => state.unfoldEngineers;
+
+export const getIsEngineerUnfolded = (state: State) => (engineerId: string) =>
+  state.unfoldEngineers.includes(engineerId);
+
 export const getScenarios = (state: State) => state.scenarios;
 
 export const getScenarioByLabel =
@@ -161,3 +171,35 @@ export const getIsConnected = (state: State) => state.auth.isConnected;
 export const getIsLoading = (state: State) => (key: string) => R.path([key], state.isLoading) ?? false;
 
 export const getAllIsLoading = (state: State) => state.isLoading;
+
+export const getHeightMultiplierForSprintWorks = (state: State) => (engineerId: string) => {
+  const myIndex = R.indexOf(engineerId, state.assignedEngineers);
+
+  const totalEngineers = state.assignedEngineers.filter((_, i) => i < myIndex);
+
+  let foldedEngineers = 0;
+  totalEngineers.forEach(engineer => {
+    if (!state.unfoldEngineers.includes(engineer)) foldedEngineers += 1;
+  });
+
+  let heightM = 1;
+
+  // const eng = state.engineers.find(e => e._id === engineerId);
+
+  if (totalEngineers.length === foldedEngineers) heightM += foldedEngineers;
+
+  return heightM;
+};
+
+export const getHeightMultiplierForUnassignedWorks = (state: State) => {
+  if (!state.unfoldEngineers.length) return state.assignedEngineers.length;
+
+  let lastIndex = 0;
+  state.assignedEngineers.forEach((engineer, index) => {
+    if (state.unfoldEngineers.includes(engineer)) lastIndex = index;
+  });
+
+  const qtyFolded = state.assignedEngineers.length - lastIndex - 1;
+
+  return qtyFolded;
+};

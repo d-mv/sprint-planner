@@ -1,6 +1,12 @@
-import { AnyValue, RecordObject, R } from '@mv-d/toolbelt';
+import { AnyValue, RecordObject, R, makePlural } from '@mv-d/toolbelt';
 
 import { Person } from './engineer.models';
+
+export function makeWorksQty(qtyWorks: number) {
+  if (!qtyWorks) return '';
+
+  return `${qtyWorks} ${makePlural('work', qtyWorks)}`;
+}
 
 export function makeName(person: Person) {
   return `${person.lastName}, ${person.firstName}`;

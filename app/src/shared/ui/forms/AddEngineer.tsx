@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function AddEngineer({ onClose }: Props) {
-  const isLoading = useSelector(getIsLoading);
+  const isLoading = useSelector(getIsLoading)('add-engineer');
 
   const { add } = useEngineers();
 
@@ -18,7 +18,7 @@ export default function AddEngineer({ onClose }: Props) {
   if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
-    add(makeNewEngineerObject(form), onClose);
+    if (!isLoading) add(makeNewEngineerObject(form), onClose);
   }
 
   return (
@@ -30,7 +30,7 @@ export default function AddEngineer({ onClose }: Props) {
           cancel: onClose,
         },
         process: {
-          submit: isLoading('add-engineer'),
+          submit: isLoading,
         },
       }}
     >

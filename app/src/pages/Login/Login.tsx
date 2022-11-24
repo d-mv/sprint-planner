@@ -37,7 +37,7 @@ export function Login() {
   }
 
   function handleSubmit() {
-    if (value) connect(value);
+    if (value && !isLoading) connect(value);
   }
 
   useKeyPress({ onEnter: handleSubmit });

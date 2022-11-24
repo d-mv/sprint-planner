@@ -56,7 +56,7 @@ export const WorkController = makeMatch<(arg: ControllerRequest) => PromisedServ
       const { startDate, _id, estimate, jiraEpic, jiraTicket, title } = item;
 
       if (startDate) {
-        const result = await context.collections.assignedWork.updateOne({ _id, startDate });
+        const result = await context.collections.assignedWork.updateOne({ _id }, { startDate });
 
         if (result.modifiedCount) assignedUpdateResult = 1;
         else assignedUpdateResult = 0;

@@ -11,4 +11,5 @@ export const INITIAL_STATE: State = {
   scenarios: {},
   sprints: [],
   works: [],
+  unfoldEngineers: [],
 };

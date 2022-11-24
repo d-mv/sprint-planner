@@ -4,6 +4,7 @@ import { Dayjs } from 'dayjs';
 import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario } from '../shared';
 
 export enum StateActions {
+  UNFOLD = 'unfold',
   UNAUTHORIZED = 'unauthorized',
   SET_SCENARIOS = 'setScenarios',
   SET_MESSAGE = 'setMessage',
@@ -48,6 +49,7 @@ export interface State {
   assignedWorks: DbAssignedWork[];
   message: string;
   scenarios: RecordObject<FormScenario>;
+  unfoldEngineers: string[];
   auth: {
     isConnected: boolean;
   };

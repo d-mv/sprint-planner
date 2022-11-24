@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 
 import { getMessage, getIsLoading, getSprints, useSelector } from '../../../state';
 import classes from './Sprints.module.scss';
-import { Container, DbSprint, Message, Spacer, Spinner } from '../../../shared';
+import { CONSTANTS, Container, DbSprint, Message, Spinner } from '../../../shared';
 import { SprintWorks } from '../SprintWorks';
 import { UnAssignedWorks } from '../UnAssignedWorks';
 import { Sprint } from '../Sprint';
@@ -33,12 +33,11 @@ export function Sprints() {
 
   return (
     <div id='sprints-container' className={clsx('column h-fit w-fit h-scroll')}>
-      <div id='sprints' className={clsx('line w-fit', classes.sprints)}>
+      <div id='sprints' className={clsx('line w-fit', classes.sprints)} style={{ height: CONSTANTS.subHeaderHeight }}>
         {R.map(renderSprint, sprints)}
       </div>
       {ifTrue(!sprints.length, renderMessage)}
       {ifTrue(sprints.length, renderWorks)}
-      <Spacer vertical style={{ height: '2rem' }} />
       <UnAssignedWorks />
     </div>
   );

@@ -1,8 +1,15 @@
 import { useState } from 'react';
-import { setupText, Optional, ifTrue } from '@mv-d/toolbelt';
+import { R, setupText, Optional, ifTrue } from '@mv-d/toolbelt';
 
 import { Message, CONSTANTS, LazyLoad, Container } from '../../shared';
-import { getUnAssignedWorksQty, getWorksForEngineer, useSelector } from '../../state';
+import {
+  getIsEngineerUnfolded,
+  getUnAssignedWorksQty,
+  getWorksForEngineer,
+  unfoldEngineer,
+  useDispatch,
+  useSelector,
+} from '../../state';
 import { AssignWork } from './AssignWork';
 import { CreateAssignWork } from './CreateAssignWork';
 import { EngineerDaysOff } from './EngineerDaysOff';
@@ -11,6 +18,7 @@ import { EngineerWorks } from './EngineerWorks';
 import { TEXT } from '../../shared/data/text.data';
 import { useContextSelector } from 'use-context-selector';
 import { EngineerContext } from './engineer.contexts';
+import { Collapse } from '@mui/material';
 
 const TXT = setupText(TEXT)('engineer');
 
@@ -21,13 +29,26 @@ export function Engineer() {
 
   const works = useSelector(getWorksForEngineer)(engineer._id);
 
+  const isUnfold = useSelector(getIsEngineerUnfolded)(engineer._id);
+
+  const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = useState<Optional<string>>(undefined);
 
   const [showActions, setShowActions] = useState(false);
 
+  function unfold() {
+    if (isUnfold) return;
+
+    R.compose(dispatch, unfoldEngineer)(engineer._id);
+  }
+
   function toggleIsOpen(item: string) {
     if (isOpen === item) setIsOpen(undefined);
-    else setIsOpen(item);
+    else {
+      setIsOpen(item);
+      unfold();
+    }
   }
 
   function handleToggle(item: string) {
@@ -72,11 +93,17 @@ export function Engineer() {
     );
   }
 
-  const renderWorks = () => (
-    <LazyLoad>
-      <EngineerWorks />
-    </LazyLoad>
-  );
+  function renderWorks() {
+    if (!works.length) return null;
+
+    return (
+      <LazyLoad>
+        <EngineerWorks />
+      </LazyLoad>
+    );
+  }
+
+  const renderWorksIfNeeded = () => (works.length ? renderWorks() : null);
 
   return (
     <div className='column s-between'>
@@ -84,13 +111,12 @@ export function Engineer() {
         id='engineer'
         onMouseEnter={openActions}
         onMouseLeave={closeActions}
-        className='border border-right-none'
         style={{ width: CONSTANTS.engineersWidth }}
       >
         <EngineerLine showActions={showActions} isOpen={isOpen} toggleIsOpen={toggleIsOpen} />
         {ifTrue(isOpen, renderForms)}
       </div>
-      {ifTrue(works.length, renderWorks)}
+      <Collapse in={isUnfold}>{renderWorksIfNeeded()}</Collapse>
     </div>
   );
 }

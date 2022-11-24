@@ -22,7 +22,7 @@ export default function AssignEngineer({ onClose }: Props) {
   if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
-    assignEngineer(form.engineerId, onClose);
+    if (!isLoading) assignEngineer(form.engineerId, onClose);
   }
 
   const getEngineers = () => unAssignedEngineers;

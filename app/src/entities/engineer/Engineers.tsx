@@ -5,6 +5,7 @@ import { Engineer } from './Engineer';
 import { ErrorMessage, CONSTANTS, DbEngineer, Message, Container } from '../../shared';
 import { EngineerContext } from './engineer.contexts';
 import { ColorLegend } from './ColorLegend';
+import { EngineersPaneActions } from './EngineersPaneActions';
 
 export function Engineers() {
   const assignedEngineers = useSelector(getAssignedEngineers);
@@ -36,6 +37,7 @@ export function Engineers() {
       </div>
       {R.map(renderEngineer, assignedEngineers)}
       {ifTrue(!assignedEngineers.length, renderNoEngineersMessage)}
+      <EngineersPaneActions />
     </div>
   );
 }

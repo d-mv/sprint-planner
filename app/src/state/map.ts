@@ -8,6 +8,23 @@ import { Action, MappedReducerFns, StateActions, State } from './types';
 
 export const MAP: MappedReducerFns = new Map();
 
+MAP.set(StateActions.UNFOLD, (state: State, action: Action<string>) => {
+  if (!action.payload) return assoc('unfoldEngineers', [], state);
+
+  if (action.payload === '_all') return assoc('unfoldEngineers', state.assignedEngineers, state);
+
+  const isIncluded = state.unfoldEngineers.includes(action.payload);
+
+  if (isIncluded)
+    return assoc(
+      'unfoldEngineers',
+      state.unfoldEngineers.filter(eng => eng !== action.payload),
+      state,
+    );
+
+  return assoc('unfoldEngineers', [...state.unfoldEngineers, action.payload], state);
+});
+
 MAP.set(StateActions.UNAUTHORIZED, () => {
   return INITIAL_STATE;
 });

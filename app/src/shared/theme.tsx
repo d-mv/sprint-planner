@@ -5,8 +5,9 @@ export const CONSTANTS = {
   daysLineHeight: '4rem',
   engineerLineHeight: '5.5rem',
   engineersWidth: '57rem',
-  subHeaderHeight: '6.5rem',
+  subHeaderHeight: '7rem',
   engineerLineColor: blue[50],
+  selectedEngineerLineColor: blue[100],
 };
 
 export const theme = createTheme({

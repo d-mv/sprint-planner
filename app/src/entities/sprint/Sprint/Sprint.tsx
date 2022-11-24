@@ -10,7 +10,7 @@ interface Props {
 
 export function Sprint({ sprint }: Props) {
   return (
-    <section id='sprint' className='column border' style={{ borderBottom: 'none' }}>
+    <section id='sprint' className='column' style={{ borderBottom: 'none' }}>
       <div id='sprint__header' className={classes.list}>
         <SprintName sprint={sprint} />
         <Days sprint={sprint} />

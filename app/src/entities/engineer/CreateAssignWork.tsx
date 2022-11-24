@@ -15,7 +15,7 @@ export function CreateAssignWork({ onCancel }: Props) {
 
   const dispatch = useDispatch();
 
-  const isLoading = useSelector(getIsLoading);
+  const isLoading = useSelector(getIsLoading)('add-work');
 
   const { add } = useWorks();
 
@@ -24,6 +24,8 @@ export function CreateAssignWork({ onCancel }: Props) {
   if (!scenario) return null;
 
   function handleSubmit(form: RecordObject<AnyValue>) {
+    if (isLoading) return;
+
     const startDate = String(R.path(['startDate'], form));
 
     add(form, { engineerId, startDate }, onCancel);
@@ -39,7 +41,7 @@ export function CreateAssignWork({ onCancel }: Props) {
         scenario,
         submitData: handleSubmit,
         onError: handleError,
-        process: { submit: isLoading('add-work') },
+        process: { submit: isLoading },
         actions: { cancel: onCancel },
       }}
     >

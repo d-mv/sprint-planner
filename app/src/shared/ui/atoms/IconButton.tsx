@@ -6,6 +6,8 @@ import WorkHistoryRoundedIcon from '@mui/icons-material/WorkHistoryRounded';
 import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import SettingsSystemDaydreamRoundedIcon from '@mui/icons-material/SettingsSystemDaydreamRounded';
 import MenuIcon from '@mui/icons-material/Menu';
+import SubtitlesOffOutlinedIcon from '@mui/icons-material/SubtitlesOffOutlined';
+import SubtitlesOutlinedIcon from '@mui/icons-material/SubtitlesOutlined';
 
 import { Tooltip } from './Tooltip';
 
@@ -17,6 +19,8 @@ const VARIANTS = makeMatch(
     createWork: WorkRoundedIcon,
     dayOff: SettingsSystemDaydreamRoundedIcon,
     menu: MenuIcon,
+    hide: SubtitlesOffOutlinedIcon,
+    show: SubtitlesOutlinedIcon,
   },
   () => <div id='no-icon-found' />,
 );
