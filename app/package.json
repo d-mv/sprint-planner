@@ -11,7 +11,7 @@
     "@getify/eslint-plugin-proper-arrows": "11.0.3",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.11",
-    "@mv-d/toolbelt": "0.6.1",
+    "@mv-d/toolbelt": "0.8.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -90,6 +90,7 @@
     "sass-loader": "^12.3.0",
     "semver": "^7.3.5",
     "source-map-loader": "^3.0.0",
+    "stream-browserify": "^3.0.0",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.2.5",
     "ts-jest": "^29.0.3",
@@ -111,20 +112,10 @@
     "test:dependencies": "depcheck"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "babel": {
-    "presets": [
-      "react-app"
-    ]
+    "presets": ["react-app"]
   }
 }

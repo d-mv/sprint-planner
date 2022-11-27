@@ -1,19 +1,8 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { AnyValue, buildIntArray, R } from '@mv-d/toolbelt';
-import durationPlugin from 'dayjs/plugin/duration';
+import { AnyValue, buildIntArray, duration, isWeekend, R, sortDays } from '@mv-d/toolbelt';
 import { Document, Types } from 'mongoose';
 
 import { DayType, Engineer, Sprint } from '../entities';
-
-dayjs.extend(durationPlugin);
-
-export function duration(start: Dayjs, end: Dayjs): number {
-  return end.diff(start, 'days', false);
-}
-
-export function checkIfWeekend(date: Dayjs): boolean {
-  return [5, 6].includes(date.day());
-}
 
 export function format(date: Dayjs) {
   return date.format('YYYY-MM-DD');
@@ -34,17 +23,13 @@ export function buildSprintDays(date: Sprint<string> & { daysOff: string[] }): D
     return {
       date: date.toDate(),
       month,
-      isWeekend: checkIfWeekend(date),
+      isWeekend: isWeekend(date),
       isOff: (daysOff ?? []).includes(format(date)),
     };
   }
 
   return R.compose(R.map(mapperFn), buildIntArray, duration)(start, end);
 }
-
-const sorter = (a: Date, b: Date) => {
-  return dayjs(a).diff(dayjs(b), 'days');
-};
 
 type E = Document<unknown, AnyValue, Engineer> &
   Engineer & {
@@ -54,5 +39,5 @@ type E = Document<unknown, AnyValue, Engineer> &
 export function sortDaysOff(engineer: E) {
   const json = engineer.toJSON();
 
-  return { ...json, daysOff: json.daysOff.sort(sorter) };
+  return { ...json, daysOff: sortDays(json.daysOff) };
 }

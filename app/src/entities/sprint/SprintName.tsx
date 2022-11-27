@@ -1,17 +1,18 @@
 import { Typography } from '@mui/material';
+import { isBetween } from '@mv-d/toolbelt';
 import dayjs from 'dayjs';
 
-import { checkIfBetween, getWorkingDaysDiff, DbSprint } from '../../shared';
+import { getWorkingDaysDiff, DbSprint } from '../../shared';
 
 interface Props {
   sprint: DbSprint;
 }
 
 export function SprintName({ sprint }: Props) {
-  const isBetween = checkIfBetween(dayjs(), sprint.startDate, sprint.endDate);
+  const maybeBetween = isBetween(dayjs(), sprint.startDate, sprint.endDate);
 
   function makeString(): string {
-    if (!isBetween) return sprint.name;
+    if (!maybeBetween) return sprint.name;
 
     const hasLeft = `${getWorkingDaysDiff(dayjs(), sprint.endDate)}`;
 

@@ -21,7 +21,7 @@
     "@fastify/static": "^6.5.1",
     "@fastify/type-provider-json-schema-to-ts": "^2.1.1",
     "@getify/eslint-plugin-proper-arrows": "11.0.3",
-    "@mv-d/toolbelt": "0.5.0",
+    "@mv-d/toolbelt": "0.8.1",
     "@types/jest": "^29.2.1",
     "@types/node": "^18.11.9",
     "@types/serialize-javascript": "^5.0.2",
