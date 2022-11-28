@@ -1,5 +1,4 @@
-import { Optional, R } from '@mv-d/toolbelt';
-import dayjs, { Dayjs } from 'dayjs';
+import { dayjs, Optional, R, DayJS } from '@mv-d/toolbelt';
 import memoizeOne from 'memoize-one';
 
 import { State } from '.';
@@ -39,7 +38,7 @@ export const getItemsLength = memoizeOne(getSprints);
 
 export const getDaysOff = (state: State) => state.daysOff;
 
-export const getIsDayOff = (state: State) => (day?: Optional<Dayjs>) =>
+export const getIsDayOff = (state: State) => (day?: Optional<DayJS.Dayjs>) =>
   day ? Boolean(state.daysOff.find(d => d.isSame(day, 'date'))) : false;
 
 export const getEngineers = (state: State) => state.engineers;
@@ -113,7 +112,7 @@ const sprintDays = (state: State) => state.sprints.map(sprint => sprint.days).fl
 
 export const getSprintDays = memoizeOne(sprintDays);
 
-export function findDayInDays(day: Dayjs, days: Dayjs[]): Optional<Dayjs> {
+export function findDayInDays(day: DayJS.Dayjs, days: DayJS.Dayjs[]): Optional<DayJS.Dayjs> {
   if (!days.length) return undefined;
 
   return days.find(d => d.isSame(day, 'date'));
@@ -130,7 +129,7 @@ const workDaysPerEngineer = (state: State) => (engineerId: string) => {
 
   const { daysOff } = engineer;
 
-  const workDays: Dayjs[] = [];
+  const workDays: DayJS.Dayjs[] = [];
 
   sprint.forEach(day => {
     if (day.isOff || day.isWeekend || checkIfDayOff(day.date)) return;

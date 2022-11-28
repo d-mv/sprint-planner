@@ -1,8 +1,7 @@
-import { ifTrue } from '@mv-d/toolbelt';
+import { dayjs, DayJS, ifTrue } from '@mv-d/toolbelt';
 import { Typography } from '@mui/material';
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
 import { grey } from '@mui/material/colors';
-import dayjs, { Dayjs } from 'dayjs';
 import { CSSProperties, MouseEvent } from 'react';
 
 import { CONFIG, DbDate } from '../../shared';
@@ -13,7 +12,7 @@ interface Props {
   isLast?: boolean;
   withDate?: boolean;
   day: DbDate;
-  onClick?: (date: Dayjs) => (event: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (date: DayJS.Dayjs) => (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function Day({ day, isLast, onClick, withDate }: Props) {

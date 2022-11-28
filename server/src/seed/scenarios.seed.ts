@@ -1,5 +1,4 @@
-import { logger } from '@mv-d/toolbelt';
-import serializeJavascript from 'serialize-javascript';
+import { logger, serializeJavascript } from '@mv-d/toolbelt';
 
 import {
   createSprintScenario,

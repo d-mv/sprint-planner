@@ -1,6 +1,5 @@
 import { Typography } from '@mui/material';
-import { isBetween } from '@mv-d/toolbelt';
-import dayjs from 'dayjs';
+import { dayjs, isBetween } from '@mv-d/toolbelt';
 
 import { getWorkingDaysDiff, DbSprint } from '../../shared';
 

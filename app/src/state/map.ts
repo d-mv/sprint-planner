@@ -1,6 +1,4 @@
-import { RecordObject } from '@mv-d/toolbelt';
-import { Dayjs } from 'dayjs';
-import { assoc } from 'ramda';
+import { R, DayJS, RecordObject } from '@mv-d/toolbelt';
 
 import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario } from '../shared';
 import { INITIAL_STATE } from './initial';
@@ -9,20 +7,20 @@ import { Action, MappedReducerFns, StateActions, State } from './types';
 export const MAP: MappedReducerFns = new Map();
 
 MAP.set(StateActions.UNFOLD, (state: State, action: Action<string>) => {
-  if (!action.payload) return assoc('unfoldEngineers', [], state);
+  if (!action.payload) return R.assoc('unfoldEngineers', [], state);
 
-  if (action.payload === '_all') return assoc('unfoldEngineers', state.assignedEngineers, state);
+  if (action.payload === '_all') return R.assoc('unfoldEngineers', state.assignedEngineers, state);
 
   const isIncluded = state.unfoldEngineers.includes(action.payload);
 
   if (isIncluded)
-    return assoc(
+    return R.assoc(
       'unfoldEngineers',
       state.unfoldEngineers.filter(eng => eng !== action.payload),
       state,
     );
 
-  return assoc('unfoldEngineers', [...state.unfoldEngineers, action.payload], state);
+  return R.assoc('unfoldEngineers', [...state.unfoldEngineers, action.payload], state);
 });
 
 MAP.set(StateActions.UNAUTHORIZED, () => {
@@ -30,17 +28,17 @@ MAP.set(StateActions.UNAUTHORIZED, () => {
 });
 
 MAP.set(StateActions.SET_SCENARIOS, (state: State, action: Action<RecordObject<FormScenario>>) => {
-  return assoc('scenarios', action.payload ?? {}, state);
+  return R.assoc('scenarios', action.payload ?? {}, state);
 });
 
 MAP.set(StateActions.SET_MESSAGE, (state: State, action: Action<string>) => {
-  return assoc('message', action.payload ?? '', state);
+  return R.assoc('message', action.payload ?? '', state);
 });
 
 MAP.set(StateActions.SET_IS_CONNECTED, (state: State, action: Action<boolean>) => {
   if (action.payload === undefined) return state;
 
-  return action.payload ? assoc('auth', assoc('isConnected', action.payload, state.auth), state) : INITIAL_STATE;
+  return action.payload ? R.assoc('auth', R.assoc('isConnected', action.payload, state.auth), state) : INITIAL_STATE;
 });
 
 MAP.set(StateActions.SET_IS_LOADING, (state: State, action: Action<[key: string, value: boolean]>) => {
@@ -48,7 +46,7 @@ MAP.set(StateActions.SET_IS_LOADING, (state: State, action: Action<[key: string,
 
   const [key, value] = action.payload;
 
-  return assoc('isLoading', assoc(key, value, state.isLoading), state);
+  return R.assoc('isLoading', R.assoc(key, value, state.isLoading), state);
 });
 
 MAP.set(StateActions.SET_SPRINTS, (state: State, action: Action<DbSprint[]>) => {
@@ -72,13 +70,13 @@ MAP.set(StateActions.SET_ENGINEERS, (state: State, action: Action<DbEngineer[]>)
 MAP.set(StateActions.ADD_ENGINEER, (state: State, action: Action<DbEngineer>) => {
   if (!action.payload) return state;
 
-  return assoc('engineers', [...state.engineers, action.payload], state);
+  return R.assoc('engineers', [...state.engineers, action.payload], state);
 });
 
 MAP.set(StateActions.ASSIGN_ENGINEER, (state: State, action: Action<string>) => {
   if (!action.payload) return state;
 
-  return assoc('assignedEngineers', [...state.assignedEngineers, action.payload], state);
+  return R.assoc('assignedEngineers', [...state.assignedEngineers, action.payload], state);
 });
 
 MAP.set(StateActions.UPDATE_ENGINEER, (state: State, action: Action<Partial<DbEngineer>>) => {
@@ -127,7 +125,7 @@ MAP.set(StateActions.SET_WORKS, (state: State, action: Action<DbWork[]>) => {
 MAP.set(StateActions.ADD_WORK, (state: State, action: Action<DbWork>) => {
   if (!action.payload) return state;
 
-  return assoc('works', [...state.works, action.payload], state);
+  return R.assoc('works', [...state.works, action.payload], state);
 });
 
 MAP.set(StateActions.UPDATE_WORK, (state: State, action: Action<DbWork>) => {
@@ -139,7 +137,7 @@ MAP.set(StateActions.UPDATE_WORK, (state: State, action: Action<DbWork>) => {
     return work;
   });
 
-  return assoc('works', works, state);
+  return R.assoc('works', works, state);
 });
 
 MAP.set(StateActions.UPDATE_ASSIGNED_WORK, (state: State, action: Action<DbAssignedWork>) => {
@@ -151,32 +149,32 @@ MAP.set(StateActions.UPDATE_ASSIGNED_WORK, (state: State, action: Action<DbAssig
     return work;
   });
 
-  return assoc('assignedWorks', works, state);
+  return R.assoc('assignedWorks', works, state);
 });
 // to revise
-MAP.set(StateActions.ADD_REMOVE_DAY_OFF, (state: State, action: Action<Dayjs>) => {
+MAP.set(StateActions.ADD_REMOVE_DAY_OFF, (state: State, action: Action<DayJS.Dayjs>) => {
   if (!action.payload) return state;
 
   const isPresent = state.daysOff.find(d => d.isSame(action.payload, 'date'));
 
   if (isPresent)
-    return assoc(
+    return R.assoc(
       'daysOff',
       state.daysOff.filter(d => !d.isSame(action.payload, 'date')),
       state,
     );
 
-  return assoc('daysOff', [...state.daysOff, action.payload], state);
+  return R.assoc('daysOff', [...state.daysOff, action.payload], state);
 });
 
 // MAP.set(StateActions.CREATE_ENGINEER, (state: State, action: Action<Engineer>) => {
 //   if (!action.payload) return state;
 
-//   return assoc('engineers', [...state.engineers, action.payload], state);
+//   return R.assoc('engineers', [...state.engineers, action.payload], state);
 // });
 
 MAP.set(StateActions.ASSIGN_WORK, (state: State, action: Action<DbAssignedWork>) => {
   if (!action.payload) return state;
 
-  return assoc('assignedWorks', [...state.assignedWorks, action.payload], state);
+  return R.assoc('assignedWorks', [...state.assignedWorks, action.payload], state);
 });

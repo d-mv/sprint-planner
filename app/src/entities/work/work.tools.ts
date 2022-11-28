@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { dayjs } from '@mv-d/toolbelt';
 
 import { DbAssignedWork } from '../../shared';
 

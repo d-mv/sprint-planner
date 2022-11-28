@@ -1,7 +1,5 @@
-import { AnyValue, ifTrue, Optional, RecordObject } from '@mv-d/toolbelt';
+import { R, AnyValue, dayjs, DayJS, ifTrue, Optional, RecordObject } from '@mv-d/toolbelt';
 import { MenuItem } from '@mui/material';
-import dayjs, { Dayjs } from 'dayjs';
-import { compose } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
@@ -29,7 +27,7 @@ export function AssignWork({ onCancel }: Props) {
 
   const [selected, setSelected] = useState('');
 
-  const [startDate, setStartDate] = useState<Optional<Dayjs>>();
+  const [startDate, setStartDate] = useState<Optional<DayJS.Dayjs>>();
 
   const { add } = useAssignedWork();
 
@@ -64,7 +62,7 @@ export function AssignWork({ onCancel }: Props) {
   }
 
   function handleError(message: string) {
-    compose(dispatch, setMessage)(message);
+    R.compose(dispatch, setMessage)(message);
   }
 
   function dateTrigger(v: string) {

@@ -1,6 +1,5 @@
-import { RecordObject, R, AnyValue, makeMatch, isObject, Optional } from '@mv-d/toolbelt';
+import { RecordObject, R, AnyValue, makeMatch, isObject, Optional, dayjs } from '@mv-d/toolbelt';
 import { FormEvent } from 'react';
-import dayjs from 'dayjs';
 
 import { FormItem, FormItemValue, FormItemValueTypes, FormScenario, FormSection, SectionFormItem } from './models';
 import { checkIfAddDays, checkIfSubtractDays, format } from '../day.tools';

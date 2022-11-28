@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { dayjs } from '@mv-d/toolbelt';
 
 import { WorkToRender } from '../../entities/work/work.models';
 import { useSelector, getSprintDays, getIsDayOff } from '../../state';

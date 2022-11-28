@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker';
-import dayjs, { Dayjs } from 'dayjs';
-import { buildIntArray, capitalize, R } from '@mv-d/toolbelt';
+import { buildIntArray, capitalize, R, dayjs, DayJS } from '@mv-d/toolbelt';
 
 import { AssignedWorkCollection, EngineerCollection, SprintCollection, WorkCollection } from '../entities';
 import { incomingSprintToDbFormat } from '../entities/sprint/sprint.tools';
@@ -16,10 +15,10 @@ export async function syntheticSeed() {
 
   // seed
 
-  let endDate: Dayjs | undefined = undefined;
+  let endDate: DayJS.Dayjs | undefined = undefined;
 
   for await (const _ of buildIntArray(2)) {
-    const startDate: Dayjs = !endDate ? dayjs() : endDate;
+    const startDate: DayJS.Dayjs = !endDate ? dayjs() : endDate;
 
     endDate = startDate.add(14, 'days');
 

@@ -1,13 +1,12 @@
-import { isWeekend, buildIntArray, Optional, R, add, subtract } from '@mv-d/toolbelt';
-import dayjs, { Dayjs } from 'dayjs';
+import { isWeekend, buildIntArray, Optional, R, add, subtract, DayJS, dayjs } from '@mv-d/toolbelt';
 
 export function format(format = 'YYYY-MM-DD') {
-  return function call(date: Dayjs) {
+  return function call(date: DayJS.Dayjs) {
     return date.format(format);
   };
 }
 
-export function getWorkingDaysDiff(from: Dayjs, till: Dayjs): number {
+export function getWorkingDaysDiff(from: DayJS.Dayjs, till: DayJS.Dayjs): number {
   let counter = 0;
 
   const totalDays = till.diff(from, 'days');

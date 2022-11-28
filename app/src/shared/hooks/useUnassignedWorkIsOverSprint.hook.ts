@@ -1,5 +1,4 @@
-import { Optional } from '@mv-d/toolbelt';
-import { Dayjs } from 'dayjs';
+import { DayJS, Optional } from '@mv-d/toolbelt';
 
 import { useSelector, getCurrentSprint, getWorkById } from '../../state';
 
@@ -8,7 +7,7 @@ export function useUnassignedWorkIsOverSprint() {
 
   const getter = useSelector(getWorkById);
 
-  return function call(startDate: Optional<Dayjs>, workId: string) {
+  return function call(startDate: Optional<DayJS.Dayjs>, workId: string) {
     if (!startDate || !workId) return false;
 
     const work = getter(workId);

@@ -1,5 +1,4 @@
-import dayjs from 'dayjs';
-
+import { dayjs } from '@mv-d/toolbelt';
 import { DbEngineer } from '../models';
 
 export function engineerDaysOffToDayjs(engineer: DbEngineer<string>): DbEngineer {

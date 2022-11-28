@@ -1,10 +1,9 @@
-import dayjs, { Dayjs } from 'dayjs';
-import { AnyValue, buildIntArray, duration, isWeekend, R, sortDays } from '@mv-d/toolbelt';
+import { AnyValue, buildIntArray, dayjs, DayJS, duration, isWeekend, R, sortDays } from '@mv-d/toolbelt';
 import { Document, Types } from 'mongoose';
 
 import { DayType, Engineer, Sprint } from '../entities';
 
-export function format(date: Dayjs) {
+export function format(date: DayJS.Dayjs) {
   return date.format('YYYY-MM-DD');
 }
 

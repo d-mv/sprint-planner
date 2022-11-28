@@ -1,6 +1,5 @@
-import { Dayjs } from 'dayjs';
 import { Popover } from '@mui/material';
-import { mapI, Optional, R } from '@mv-d/toolbelt';
+import { DayJS, mapI, Optional, R } from '@mv-d/toolbelt';
 import { MouseEvent, useState } from 'react';
 
 import { Sprint } from '.';
@@ -13,7 +12,7 @@ interface Props {
 }
 
 export function Days({ sprint }: Props) {
-  const [day, setDay] = useState<Optional<Dayjs>>(null);
+  const [day, setDay] = useState<Optional<DayJS.Dayjs>>(null);
 
   const dispatch = useDispatch();
 
@@ -25,7 +24,7 @@ export function Days({ sprint }: Props) {
 
   const isChecked = isDayOff(day);
 
-  function handleClick(date: Dayjs) {
+  function handleClick(date: DayJS.Dayjs) {
     return function call(event: MouseEvent<HTMLButtonElement>) {
       setDay(date);
       setAnchorEl(event.currentTarget);

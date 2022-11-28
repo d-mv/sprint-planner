@@ -1,6 +1,5 @@
 import { Typography } from '@mui/material';
-import dayjs from 'dayjs';
-import { R, mapI } from '@mv-d/toolbelt';
+import { R, mapI, dayjs } from '@mv-d/toolbelt';
 import { useContextSelector } from 'use-context-selector';
 
 import { IconButton } from '../../../../ui';

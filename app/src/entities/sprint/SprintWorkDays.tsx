@@ -1,7 +1,6 @@
 import { Popover } from '@mui/material';
 import { clsx } from 'clsx';
-import { Dayjs } from 'dayjs';
-import { mapI, Optional, R } from '@mv-d/toolbelt';
+import { DayJS, mapI, Optional } from '@mv-d/toolbelt';
 import { MouseEvent, useState } from 'react';
 
 import { CONSTANTS, DayPopup, useWorkDays, DbEngineer, DbDate } from '../../shared';
@@ -18,7 +17,7 @@ interface Props {
 export function SprintWorkDays({ workToRender, engineer }: Props) {
   const { days } = useWorkDays({ engineer, workToRender });
 
-  const [day, setDay] = useState<Optional<Dayjs>>(null);
+  const [day, setDay] = useState<Optional<DayJS.Dayjs>>(null);
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -28,7 +27,7 @@ export function SprintWorkDays({ workToRender, engineer }: Props) {
 
   const open = Boolean(anchorEl);
 
-  function handleClick(date: Dayjs) {
+  function handleClick(date: DayJS.Dayjs) {
     return function call(event: MouseEvent<HTMLButtonElement>) {
       const isEngineerDayOff = Boolean(engineer.daysOff.find(d => d.isSame(date, 'date')));
 

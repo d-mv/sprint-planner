@@ -1,5 +1,4 @@
-import { RecordObject } from '@mv-d/toolbelt';
-import { Dayjs } from 'dayjs';
+import { DayJS, RecordObject } from '@mv-d/toolbelt';
 
 import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario } from '../shared';
 import { Action, StateActions } from './types';
@@ -114,7 +113,7 @@ export const updateAssignedWork = (payload: DbAssignedWork): Action => ({
 });
 
 // to revise:
-export const addRemoveDayOff = (payload: Dayjs): Action => ({
+export const addRemoveDayOff = (payload: DayJS.Dayjs): Action => ({
   type: StateActions.ADD_REMOVE_DAY_OFF,
   payload,
 });

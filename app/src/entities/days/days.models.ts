@@ -1,6 +1,6 @@
-import { Dayjs } from 'dayjs';
+import { DayJS } from '@mv-d/toolbelt';
 
-export interface DayType<Day = Dayjs> {
+export interface DayType<Day = DayJS.Dayjs> {
   date: Day;
   month: number;
   isWeekend?: boolean;

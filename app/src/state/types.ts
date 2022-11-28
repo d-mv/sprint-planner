@@ -1,5 +1,4 @@
-import { AnyValue, RecordObject } from '@mv-d/toolbelt';
-import { Dayjs } from 'dayjs';
+import { AnyValue, DayJS, RecordObject } from '@mv-d/toolbelt';
 
 import { DbAssignedWork, DbEngineer, DbSprint, DbWork, FormScenario } from '../shared';
 
@@ -42,7 +41,7 @@ export interface Action<T = AnyValue> {
 export interface State {
   isLoading: RecordObject<boolean>;
   sprints: DbSprint[];
-  daysOff: Dayjs[];
+  daysOff: DayJS.Dayjs[];
   engineers: DbEngineer[];
   assignedEngineers: string[];
   works: DbWork[];
