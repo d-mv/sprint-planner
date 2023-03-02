@@ -1,0 +1,12 @@
+{
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#ce5e18",
+    "titleBar.activeForeground": "#fff",
+    "titleBar.inactiveBackground": "#ce5e1880"
+  },
+  "cSpell.words": [
+    "actix",
+    "dotenv",
+    "healthcheck"
+  ]
+}

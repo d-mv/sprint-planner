@@ -1,0 +1,70 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+current_branch=`git rev-parse --abbrev-ref HEAD`
+if [[ $current_branch =~ master|main|develop ]]; then
+    message="Please don't commit directly to $current_branch."
+    echo "\033[1;31mERROR: $message\033[0m";
+    exit 1
+fi
+
+repo_dir=`git rev-parse --show-toplevel`
+
+message="[Policy] Checking code in $repo_dir with ESlint..."
+echo "\033[1;34mInfo: $message\033[0m"
+
+npm run lint
+
+if [ $? -eq 1 ]; then
+    message="[Policy] ESlint check failed, please use ESlint plugin to your IDE to format your code."
+    echo "\033[1;31mERROR: $message\033[0m";
+    exit 1
+else
+    message="[Policy] Passed ESlint checking."
+    echo "\033[1;32mOK: $message\033[0m"
+fi
+
+
+message="[Policy] Checking code in $repo_dir with TypeScript compiler..."
+echo "\033[1;34mInfo: $message\033[0m"
+
+npm run test:typescript
+
+if [ $? -eq 1 ]; then
+    message="[Policy] TypeScript check failed, please check the issues in your code."
+    echo "\033[1;31mERROR: $message\033[0m";
+    exit 1
+else
+    message="[Policy] Passed TypeScript checking."
+    echo "\033[1;32mOK: $message\033[0m"
+fi
+
+message="[Policy] Testing code in $repo_dir..."
+echo "\033[1;34mInfo: $message\033[0m"
+
+npm run test
+
+if [ $? -eq 1 ]; then
+    message="[Policy] Testing failed, please check the issues in your code."
+    echo "\033[1;31mERROR: $message\033[0m";
+    exit 1
+else
+    message="[Policy] Passed tests."
+    echo "\033[1;32mOK: $message\033[0m"
+fi
+
+message="[Policy] Checking code in $repo_dir for unused dependencies"
+echo "\033[1;34mInfo: $message\033[0m"
+
+npm run test:dependencies
+
+if [ $? -eq 1 ]; then
+    message="[Policy] Checking failed, please check the unused dependencies your code."
+    echo "\033[1;31mERROR: $message\033[0m";
+    exit 1
+else
+    message="[Policy] Passed checking."
+    echo "\033[1;32mOK: $message\033[0m"
+    exit 0
+fi
+

@@ -34,19 +34,13 @@ export function useWorkDays({ workToRender, engineer }: UseWorkDaysProps) {
   const isOverSprint = false;
 
   const shouldReturnDay = ({ date, isWeekend, isOff }: DbDate): boolean => {
-    if (!pointsLeft || isOff || isWeekend || isDayOff(date)) return true;
-
-    return false;
+    return !pointsLeft || isOff || isWeekend || isDayOff(date);
   };
 
   const mapper = (day: DbDate) => {
     const { date } = day;
 
     if (shouldReturnDay(day)) return day;
-
-    const isAlreadyFinished = startDate.add(pointsLeft, 'days').isBefore(date, 'date');
-
-    if (isAlreadyFinished) return day;
 
     const isSameAsStart = date.isSame(startDate, 'date');
 
